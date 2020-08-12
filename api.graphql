@@ -180,6 +180,9 @@ type Query {
   adminUsersCount(cursor: UserWhereUniqueInput, orderBy: UserOrderByInput, skip: Int, take: Int, where: UserWhereInput): Int
   blogPosts(cursor: BlogPostWhereUniqueInput, skip: Int, take: Int, where: BlogPostWhereInput): [BlogPost!]!
   me: User
+  user(where: UserWhereUniqueInput!): User
+  users(cursor: UserWhereUniqueInput, orderBy: [UserOrderByInput!], skip: Int, take: Int, where: UserWhereInput): [User!]!
+  usersCount(cursor: UserWhereUniqueInput, orderBy: UserOrderByInput, skip: Int, take: Int, where: UserWhereInput): Int
 }
 
 type SignupResult {

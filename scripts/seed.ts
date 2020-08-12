@@ -33,7 +33,8 @@ const seed = async ({
 const argv = require("minimist")(process.argv.slice(2));
 
 if (process.env.SEED_DISABLED === "1") {
-  console.log("seed disabled");
+  // eslint-disable-next-line no-console
+  console.info("seed disabled");
   process.exit(0);
 }
 const options = {

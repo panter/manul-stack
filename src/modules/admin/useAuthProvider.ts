@@ -3,6 +3,7 @@ import { useMemo } from "react"
 import { LOGIN_WITH_PASSWORD_MUTATION } from "../user/hooks/useLoginWithPassword";
 import { LOGOUT_MUTATION } from "../user/hooks/useLogout";
 import { getMe, ME_QUERY } from "../user/hooks/useMe";
+import { LoginWithPassword, LoginWithPasswordVariables } from "../user/hooks/types/LoginWithPassword";
 
 const useAuthProvider = () => {
   const apolloClient = useApolloClient()
@@ -17,24 +18,23 @@ const useAuthProvider = () => {
       return getMe(data)
     }
     return {
-      login: async ({ phoneNumber, code }) => {
-        await apolloClient.mutate({
-          mutation: LOGIN_WITH_PASSWORD,
+      login: async ({ email, password }) => {
+        await apolloClient.mutate<LoginWithPassword, LoginWithPasswordVariables>({
+          mutation: LOGIN_WITH_PASSWORD_MUTATION,
           variables: {
-            phoneNumber,
-            code,
+            email,
+            password,
           },
         })
 
-        const { isAdmin } = await fetchMe()
+        // const { isAdmin } = await fetchMe()
 
-        if (!isAdmin) {
-          throw new Error("error")
-        }
+        // if (!isAdmin) {
+        //   throw new Error("error")
+        // }
         return true
       },
       logout: async () => {
-        //await logout()
         apolloClient.mutate({ mutation: LOGOUT_MUTATION })
         return Promise.resolve()
       },
@@ -43,11 +43,11 @@ const useAuthProvider = () => {
         console.error(error)
       },
       checkAuth: async () => {
-        const { isAdmin } = await fetchMe()
+        // const { isAdmin } = await fetchMe()
 
-        if (!isAdmin) {
-          throw new Error()
-        }
+        // if (!isAdmin) {
+        //   throw new Error()
+        // }
         return true
       },
       getPermissions: () => Promise.resolve(),

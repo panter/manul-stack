@@ -1,13 +1,30 @@
 // import App from "next/app";
 import type { AppProps /*, AppContext */ } from "next/app";
 import { Reset } from "styled-reset";
+import React from "react"
+import withApollo from "next-with-apollo"
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client"
+import { getDataFromTree } from "@apollo/client/react/ssr"
 
-function MyApp({ Component, pageProps }: AppProps) {
+
+const withApolloClient = withApollo(
+  ({ initialState }) => {
+    return new ApolloClient({
+      uri: `${!process.browser ? `${process.env.ROOT_URL}` : ""}/api/graphql`,
+      ssrMode: !process.browser,
+      cache: new InMemoryCache().restore(initialState || {}),
+    }) as any
+  },
+  { getDataFromTree },
+)
+
+
+function MyApp({ Component, pageProps, apollo }) {
   return (
-    <>
+    <ApolloProvider client={apollo}>
       <Reset />
       <Component {...pageProps} />
-    </>
+    </ApolloProvider>
   );
 }
 
@@ -23,4 +40,4 @@ function MyApp({ Component, pageProps }: AppProps) {
 //   return { ...appProps }
 // }
 
-export default MyApp;
+export default withApolloClient(MyApp);

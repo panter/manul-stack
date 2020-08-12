@@ -1,7 +1,17 @@
 import { schema, use } from "nexus";
 import { prisma } from "nexus-plugin-prisma";
-import { booleanArg } from "nexus/components/schema";
 
+import "./modules/user";
+import { auth } from "nexus-plugin-jwt-auth";
+import { APP_SECRET } from "./utils";
+
+use(
+  auth({
+    appSecret: APP_SECRET,
+    useCookie: true,
+    cookieName: "token",
+  })
+);
 use(
   prisma({
     features: {
@@ -9,32 +19,6 @@ use(
     },
   })
 );
-
-schema.objectType({
-  name: "User",
-  definition(t) {
-    t.model.id();
-    t.model.email();
-
-    t.model.blogPosts();
-
-    t.int("numberOfBlogPosts", {
-      args: {
-        includeUnpublished: booleanArg(),
-      },
-      resolve(user, { includeUnpublished }, context) {
-        return context.db.blogPost.count({
-          where: {
-            ...(includeUnpublished ? {} : { published: true }),
-            userId: {
-              equals: user.id,
-            },
-          },
-        });
-      },
-    });
-  },
-});
 
 schema.objectType({
   name: "BlogPost",

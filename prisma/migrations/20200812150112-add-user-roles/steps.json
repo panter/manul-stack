@@ -1,0 +1,41 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateModel",
+      "model": "UserRole"
+    },
+    {
+      "tag": "CreateField",
+      "model": "UserRole",
+      "field": "id",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "UserRole",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateField",
+      "model": "UserRole",
+      "field": "users",
+      "type": "User",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "roles",
+      "type": "UserRole",
+      "arity": "List"
+    }
+  ]
+}

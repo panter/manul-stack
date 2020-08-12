@@ -1,9 +1,20 @@
-import { schema, use } from "nexus";
+import { schema, use, settings } from "nexus";
 import { prisma } from "nexus-plugin-prisma";
-
+import { shield } from "nexus-plugin-shield";
 import "./modules/user";
 import { auth } from "nexus-plugin-jwt-auth";
 import { APP_SECRET } from "./utils";
+import { rules } from "./permissions";
+
+settings.change({
+  server: {
+    playground: {
+      settings: {
+        "request.credentials": "include",
+      },
+    },
+  },
+});
 
 use(
   auth({
@@ -17,6 +28,12 @@ use(
     features: {
       crud: true,
     },
+  })
+);
+
+use(
+  shield({
+    rules,
   })
 );
 
@@ -34,7 +51,27 @@ schema.objectType({
 schema.queryType({
   definition(t) {
     t.crud.users();
-    t.crud.blogPosts();
+    t.crud.blogPosts({ filtering: true, alias: "adminBlogPosts" });
+    t.crud.blogPosts({
+      filtering: true,
+      alias: "blogPostsPublic",
+      resolve(root, { where, ...args }, ctx, info, originalResolve) {
+        return originalResolve(
+          root,
+          {
+            where: {
+              ...where,
+              published: {
+                equals: true,
+              },
+            },
+            ...args,
+          },
+          ctx,
+          info
+        );
+      },
+    });
   },
 });
 

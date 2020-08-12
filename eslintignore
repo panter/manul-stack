@@ -1,0 +1,5 @@
+
+plopTemplates/**
+node_modules/**
+src/generated
+generated

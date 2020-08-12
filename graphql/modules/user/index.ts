@@ -75,6 +75,71 @@ schema.extendType({
         return context.db.user.findOne({ where: { id: userId } });
       },
     });
+
+    // export type FindManyUserArgs = {
+    //   /**
+    //    * Select specific fields to fetch from the User
+    //   **/
+    //   select?: UserSelect | null
+    //   /**
+    //    * Choose, which related nodes to fetch as well.
+    //   **/
+    //   include?: UserInclude | null
+    //   /**
+    //    * Filter, which Users to fetch.
+    //   **/
+    //   where?: UserWhereInput
+    //   /**
+    //    * Determine the order of the Users to fetch.
+    //   **/
+    //   orderBy?: Enumerable<UserOrderByInput>
+    //   /**
+    //    * Sets the position for listing Users.
+    //   **/
+    //   cursor?: UserWhereUniqueInput
+    //   /**
+    //    * The number of Users to fetch. If negative number, it will take Users before the `cursor`.
+    //   **/
+    //   take?: number
+    //   /**
+    //    * Skip the first `n` Users.
+    //   **/
+    //   skip?: number
+    // }
+
+    t.crud.user();
+        t.crud.users({
+          filtering: true,
+          pagination: true,
+          ordering: true,
+        });
+        t.int("usersCount", {
+          args: {
+            where: schema.arg({
+              type: `UserWhereInput`,
+              required: false,
+            }),
+            orderBy: schema.arg({
+              type: `UserOrderByInput`,
+              required: false,
+            }),
+            skip: schema.intArg({
+              required: false,
+            }),
+
+            cursor: schema.arg({
+              type: `UserWhereUniqueInput`,
+              required: false,
+            }),
+            take: schema.intArg({
+              required: false,
+            }),
+          },
+
+          resolve(root, args, { db }) {
+            return db.user.count(args);
+          },
+        });
   },
 });
 

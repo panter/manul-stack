@@ -14,7 +14,6 @@ import {
 
 const UserFilter = (props) => (
   <Filter {...props}>
-    <TextInput label="Phone" source="phoneNumber" alwaysOn />
     <TextInput label="Email" source="email" alwaysOn />
   </Filter>
 )

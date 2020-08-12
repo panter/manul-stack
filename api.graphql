@@ -28,8 +28,31 @@ input BlogPostCreateWithoutUserInput {
   title: String!
 }
 
+input BlogPostFilter {
+  every: BlogPostWhereInput
+  none: BlogPostWhereInput
+  some: BlogPostWhereInput
+}
+
+input BlogPostWhereInput {
+  AND: [BlogPostWhereInput!]
+  description: StringFilter
+  id: IntFilter
+  NOT: [BlogPostWhereInput!]
+  OR: [BlogPostWhereInput!]
+  published: BooleanFilter
+  title: StringFilter
+  user: UserWhereInput
+  userId: StringFilter
+}
+
 input BlogPostWhereUniqueInput {
   id: Int
+}
+
+input BooleanFilter {
+  equals: Boolean
+  not: Boolean
 }
 
 """
@@ -38,6 +61,17 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the
 8601 standard for representation of dates and times using the Gregorian calendar.
 """
 scalar DateTime
+
+input IntFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: Int
+  notIn: [Int!]
+}
 
 """
 The `JSON` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
@@ -59,11 +93,32 @@ type Mutation {
 type Query {
   blogPosts(after: BlogPostWhereUniqueInput, before: BlogPostWhereUniqueInput, first: Int, last: Int): [BlogPost!]!
   me: User
-  users(after: UserWhereUniqueInput, before: UserWhereUniqueInput, first: Int, last: Int): [User!]!
+  user(where: UserWhereUniqueInput!): User
+  users(after: UserWhereUniqueInput, before: UserWhereUniqueInput, first: Int, last: Int, orderBy: [UserOrderByInput!], where: UserWhereInput): [User!]!
+  usersCount(cursor: UserWhereUniqueInput, orderBy: UserOrderByInput, skip: Int, take: Int, where: UserWhereInput): Int
 }
 
 type SignupResult {
   user: User
+}
+
+enum SortOrder {
+  asc
+  desc
+}
+
+input StringFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  not: String
+  notIn: [String!]
+  startsWith: String
 }
 
 type User {
@@ -91,7 +146,39 @@ input UserCreateWithoutBlogPostsInput {
   password: String!
 }
 
+input UserOrderByInput {
+  email: SortOrder
+  id: SortOrder
+  password: SortOrder
+}
+
+input UserWhereInput {
+  AND: [UserWhereInput!]
+  blogPosts: BlogPostFilter
+  email: StringFilter
+  id: UUIDFilter
+  NOT: [UserWhereInput!]
+  OR: [UserWhereInput!]
+  password: StringFilter
+}
+
 input UserWhereUniqueInput {
   email: String
   id: String
+}
+
+scalar UUID
+
+input UUIDFilter {
+  contains: UUID
+  endsWith: UUID
+  equals: UUID
+  gt: UUID
+  gte: UUID
+  in: [UUID!]
+  lt: UUID
+  lte: UUID
+  not: UUID
+  notIn: [UUID!]
+  startsWith: UUID
 }

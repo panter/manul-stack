@@ -1,11 +1,23 @@
 import { schema, use, settings } from "nexus";
+
 import { prisma } from "nexus-plugin-prisma";
 import { shield } from "nexus-plugin-shield";
-import "./modules/user";
 import { auth } from "nexus-plugin-jwt-auth";
+import "./modules/user";
+import { nexusAddCrudResolvers } from "@ra-data-prisma/backend";
 import { APP_SECRET } from "./utils";
 import { rules } from "./permissions";
 
+nexusAddCrudResolvers(
+  schema,
+  {
+    User: {},
+    BlogPost: {},
+  },
+  {
+    aliasPrefix: "admin",
+  }
+);
 settings.change({
   server: {
     playground: {
@@ -25,6 +37,7 @@ use(
 );
 use(
   prisma({
+    paginationStrategy: "prisma",
     features: {
       crud: true,
     },
@@ -34,6 +47,9 @@ use(
 use(
   shield({
     rules,
+    options: {
+      allowExternalErrors: true,
+    },
   })
 );
 
@@ -42,19 +58,17 @@ schema.objectType({
   definition(t) {
     t.model.id();
     t.model.title();
-    t.model.description();
-    t.model.user();
+    t.model.content();
+    t.model.author();
     t.model.published();
   },
 });
 
 schema.queryType({
   definition(t) {
-    t.crud.users();
-    t.crud.blogPosts({ filtering: true, alias: "adminBlogPosts" });
     t.crud.blogPosts({
       filtering: true,
-      alias: "blogPostsPublic",
+
       resolve(root, { where, ...args }, ctx, info, originalResolve) {
         return originalResolve(
           root,
@@ -72,12 +86,5 @@ schema.queryType({
         );
       },
     });
-  },
-});
-
-schema.mutationType({
-  definition(t) {
-    t.crud.createOneUser();
-    t.crud.createOneBlogPost();
   },
 });

@@ -19,20 +19,20 @@ const isAdmin = rule({ cache: "contextual" })(
         roles: true,
       },
     });
+
     return user?.roles.some((r) => r.id === "admin") ?? false;
   }
 );
 
 const rules = {
   Query: {
-    "*": deny,
+    "*": isAdmin,
     me: allow,
 
-    blogPosts: isAdmin,
-    blogPostsPublic: allow,
+    blogPosts: allow,
   },
   Mutations: {
-    "*": isAdmin,
+    adminCreateOneBlogPost: isAdmin,
     login: allow,
     signup: allow,
   },

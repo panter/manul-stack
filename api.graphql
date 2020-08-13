@@ -2,28 +2,34 @@
 ### Do not make changes to this file directly
 
 
+type BatchPayload {
+  count: Int!
+}
+
 type BlogPost {
-  description: String!
-  id: Int!
+  author: User!
+  content: String!
+  id: String!
   published: Boolean!
   title: String!
-  user: User!
 }
 
 input BlogPostCreateInput {
-  description: String!
+  author: UserCreateOneWithoutBlogPostsInput!
+  content: String!
+  id: String
   published: Boolean
   title: String!
-  user: UserCreateOneWithoutBlogPostsInput!
 }
 
-input BlogPostCreateManyWithoutUserInput {
+input BlogPostCreateManyWithoutAuthorInput {
   connect: [BlogPostWhereUniqueInput!]
-  create: [BlogPostCreateWithoutUserInput!]
+  create: [BlogPostCreateWithoutAuthorInput!]
 }
 
-input BlogPostCreateWithoutUserInput {
-  description: String!
+input BlogPostCreateWithoutAuthorInput {
+  content: String!
+  id: String
   published: Boolean
   title: String!
 }
@@ -34,20 +40,96 @@ input BlogPostFilter {
   some: BlogPostWhereInput
 }
 
+input BlogPostOrderByInput {
+  authorId: SortOrder
+  content: SortOrder
+  id: SortOrder
+  published: SortOrder
+  title: SortOrder
+}
+
+input BlogPostScalarWhereInput {
+  AND: [BlogPostScalarWhereInput!]
+  authorId: StringFilter
+  content: StringFilter
+  id: UUIDFilter
+  NOT: [BlogPostScalarWhereInput!]
+  OR: [BlogPostScalarWhereInput!]
+  published: BooleanFilter
+  title: StringFilter
+}
+
+input BlogPostUpdateInput {
+  author: UserUpdateOneRequiredWithoutBlogPostsInput
+  content: String
+  id: String
+  published: Boolean
+  title: String
+}
+
+input BlogPostUpdateManyDataInput {
+  content: String
+  id: String
+  published: Boolean
+  title: String
+}
+
+input BlogPostUpdateManyMutationInput {
+  content: String
+  id: String
+  published: Boolean
+  title: String
+}
+
+input BlogPostUpdateManyWithoutAuthorInput {
+  connect: [BlogPostWhereUniqueInput!]
+  create: [BlogPostCreateWithoutAuthorInput!]
+  delete: [BlogPostWhereUniqueInput!]
+  deleteMany: [BlogPostScalarWhereInput!]
+  disconnect: [BlogPostWhereUniqueInput!]
+  set: [BlogPostWhereUniqueInput!]
+  update: [BlogPostUpdateWithWhereUniqueWithoutAuthorInput!]
+  updateMany: [BlogPostUpdateManyWithWhereNestedInput!]
+  upsert: [BlogPostUpsertWithWhereUniqueWithoutAuthorInput!]
+}
+
+input BlogPostUpdateManyWithWhereNestedInput {
+  data: BlogPostUpdateManyDataInput!
+  where: BlogPostScalarWhereInput!
+}
+
+input BlogPostUpdateWithoutAuthorDataInput {
+  content: String
+  id: String
+  published: Boolean
+  title: String
+}
+
+input BlogPostUpdateWithWhereUniqueWithoutAuthorInput {
+  data: BlogPostUpdateWithoutAuthorDataInput!
+  where: BlogPostWhereUniqueInput!
+}
+
+input BlogPostUpsertWithWhereUniqueWithoutAuthorInput {
+  create: BlogPostCreateWithoutAuthorInput!
+  update: BlogPostUpdateWithoutAuthorDataInput!
+  where: BlogPostWhereUniqueInput!
+}
+
 input BlogPostWhereInput {
   AND: [BlogPostWhereInput!]
-  description: StringFilter
-  id: IntFilter
+  author: UserWhereInput
+  authorId: StringFilter
+  content: StringFilter
+  id: UUIDFilter
   NOT: [BlogPostWhereInput!]
   OR: [BlogPostWhereInput!]
   published: BooleanFilter
   title: StringFilter
-  user: UserWhereInput
-  userId: StringFilter
 }
 
 input BlogPostWhereUniqueInput {
-  id: Int
+  id: String
 }
 
 input BooleanFilter {
@@ -62,17 +144,6 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the
 """
 scalar DateTime
 
-input IntFilter {
-  equals: Int
-  gt: Int
-  gte: Int
-  in: [Int!]
-  lt: Int
-  lte: Int
-  not: Int
-  notIn: [Int!]
-}
-
 """
 The `JSON` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -83,22 +154,41 @@ type LoginResult {
 }
 
 type Mutation {
-  createOneBlogPost(data: BlogPostCreateInput!): BlogPost!
-  createOneUser(data: UserCreateInput!): User!
+  adminCreateOneBlogPost(data: BlogPostCreateInput!): BlogPost!
+  adminCreateOneUser(data: UserCreateInput!): User!
+  adminDeleteManyBlogPost(where: BlogPostWhereInput): BatchPayload!
+  adminDeleteManyUser(where: UserWhereInput): BatchPayload!
+  adminDeleteOneBlogPost(where: BlogPostWhereUniqueInput!): BlogPost
+  adminDeleteOneUser(where: UserWhereUniqueInput!): User
+  adminUpdateManyBlogPost(data: BlogPostUpdateManyMutationInput!, where: BlogPostWhereInput): BatchPayload!
+  adminUpdateManyUser(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
+  adminUpdateOneBlogPost(data: BlogPostUpdateInput!, where: BlogPostWhereUniqueInput!): BlogPost
+  adminUpdateOneUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  adminUpsertOneBlogPost(create: BlogPostCreateInput!, update: BlogPostUpdateInput!, where: BlogPostWhereUniqueInput!): BlogPost!
+  adminUpsertOneUser(create: UserCreateInput!, update: UserUpdateInput!, where: UserWhereUniqueInput!): User!
   login(email: String!, password: String!): LoginResult
   logout: Boolean
   signup(email: String!, password: String!): SignupResult
 }
 
 type Query {
-  adminBlogPosts(after: BlogPostWhereUniqueInput, before: BlogPostWhereUniqueInput, first: Int, last: Int, where: BlogPostWhereInput): [BlogPost!]!
-  blogPostsPublic(after: BlogPostWhereUniqueInput, before: BlogPostWhereUniqueInput, first: Int, last: Int, where: BlogPostWhereInput): [BlogPost!]!
+  adminBlogPost(where: BlogPostWhereUniqueInput!): BlogPost
+  adminBlogPosts(cursor: BlogPostWhereUniqueInput, orderBy: [BlogPostOrderByInput!], skip: Int, take: Int, where: BlogPostWhereInput): [BlogPost!]!
+  adminBlogPostsCount(cursor: BlogPostWhereUniqueInput, orderBy: BlogPostOrderByInput, skip: Int, take: Int, where: BlogPostWhereInput): Int
+  adminUser(where: UserWhereUniqueInput!): User
+  adminUsers(cursor: UserWhereUniqueInput, orderBy: [UserOrderByInput!], skip: Int, take: Int, where: UserWhereInput): [User!]!
+  adminUsersCount(cursor: UserWhereUniqueInput, orderBy: UserOrderByInput, skip: Int, take: Int, where: UserWhereInput): Int
+  blogPosts(cursor: BlogPostWhereUniqueInput, skip: Int, take: Int, where: BlogPostWhereInput): [BlogPost!]!
   me: User
-  users(after: UserWhereUniqueInput, before: UserWhereUniqueInput, first: Int, last: Int): [User!]!
 }
 
 type SignupResult {
   user: User
+}
+
+enum SortOrder {
+  asc
+  desc
 }
 
 input StringFilter {
@@ -116,14 +206,14 @@ input StringFilter {
 }
 
 type User {
-  blogPosts(after: BlogPostWhereUniqueInput, before: BlogPostWhereUniqueInput, first: Int, last: Int): [BlogPost!]!
+  blogPosts(cursor: BlogPostWhereUniqueInput, skip: Int, take: Int): [BlogPost!]!
   email: String!
   id: String!
-  roles(after: UserRoleWhereUniqueInput, before: UserRoleWhereUniqueInput, first: Int, last: Int): [UserRole!]!
+  roles(cursor: UserRoleWhereUniqueInput, skip: Int, take: Int): [UserRole!]!
 }
 
 input UserCreateInput {
-  blogPosts: BlogPostCreateManyWithoutUserInput
+  blogPosts: BlogPostCreateManyWithoutAuthorInput
   email: String!
   id: String
   password: String!
@@ -148,6 +238,12 @@ input UserFilter {
   some: UserWhereInput
 }
 
+input UserOrderByInput {
+  email: SortOrder
+  id: SortOrder
+  password: SortOrder
+}
+
 type UserRole {
   id: String!
 }
@@ -167,6 +263,50 @@ input UserRoleFilter {
   some: UserRoleWhereInput
 }
 
+input UserRoleScalarWhereInput {
+  AND: [UserRoleScalarWhereInput!]
+  id: StringFilter
+  NOT: [UserRoleScalarWhereInput!]
+  OR: [UserRoleScalarWhereInput!]
+  users: UserFilter
+}
+
+input UserRoleUpdateManyDataInput {
+  id: String
+}
+
+input UserRoleUpdateManyWithoutUsersInput {
+  connect: [UserRoleWhereUniqueInput!]
+  create: [UserRoleCreateWithoutUsersInput!]
+  delete: [UserRoleWhereUniqueInput!]
+  deleteMany: [UserRoleScalarWhereInput!]
+  disconnect: [UserRoleWhereUniqueInput!]
+  set: [UserRoleWhereUniqueInput!]
+  update: [UserRoleUpdateWithWhereUniqueWithoutUsersInput!]
+  updateMany: [UserRoleUpdateManyWithWhereNestedInput!]
+  upsert: [UserRoleUpsertWithWhereUniqueWithoutUsersInput!]
+}
+
+input UserRoleUpdateManyWithWhereNestedInput {
+  data: UserRoleUpdateManyDataInput!
+  where: UserRoleScalarWhereInput!
+}
+
+input UserRoleUpdateWithoutUsersDataInput {
+  id: String
+}
+
+input UserRoleUpdateWithWhereUniqueWithoutUsersInput {
+  data: UserRoleUpdateWithoutUsersDataInput!
+  where: UserRoleWhereUniqueInput!
+}
+
+input UserRoleUpsertWithWhereUniqueWithoutUsersInput {
+  create: UserRoleCreateWithoutUsersInput!
+  update: UserRoleUpdateWithoutUsersDataInput!
+  where: UserRoleWhereUniqueInput!
+}
+
 input UserRoleWhereInput {
   AND: [UserRoleWhereInput!]
   id: StringFilter
@@ -177,6 +317,39 @@ input UserRoleWhereInput {
 
 input UserRoleWhereUniqueInput {
   id: String
+}
+
+input UserUpdateInput {
+  blogPosts: BlogPostUpdateManyWithoutAuthorInput
+  email: String
+  id: String
+  password: String
+  roles: UserRoleUpdateManyWithoutUsersInput
+}
+
+input UserUpdateManyMutationInput {
+  email: String
+  id: String
+  password: String
+}
+
+input UserUpdateOneRequiredWithoutBlogPostsInput {
+  connect: UserWhereUniqueInput
+  create: UserCreateWithoutBlogPostsInput
+  update: UserUpdateWithoutBlogPostsDataInput
+  upsert: UserUpsertWithoutBlogPostsInput
+}
+
+input UserUpdateWithoutBlogPostsDataInput {
+  email: String
+  id: String
+  password: String
+  roles: UserRoleUpdateManyWithoutUsersInput
+}
+
+input UserUpsertWithoutBlogPostsInput {
+  create: UserCreateWithoutBlogPostsInput!
+  update: UserUpdateWithoutBlogPostsDataInput!
 }
 
 input UserWhereInput {

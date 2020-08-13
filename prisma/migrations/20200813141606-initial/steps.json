@@ -12,7 +12,7 @@
         "source": "db"
       },
       "argument": "provider",
-      "value": "\"postgresql\""
+      "value": "\"sqlite\""
     },
     {
       "tag": "CreateArgument",
@@ -31,7 +31,7 @@
       "tag": "CreateField",
       "model": "BlogPost",
       "field": "id",
-      "type": "Int",
+      "type": "String",
       "arity": "Required"
     },
     {
@@ -57,7 +57,7 @@
         "directive": "default"
       },
       "argument": "",
-      "value": "autoincrement()"
+      "value": "uuid()"
     },
     {
       "tag": "CreateDirective",
@@ -80,14 +80,14 @@
     {
       "tag": "CreateField",
       "model": "BlogPost",
-      "field": "description",
+      "field": "content",
       "type": "String",
       "arity": "Required"
     },
     {
       "tag": "CreateField",
       "model": "BlogPost",
-      "field": "user",
+      "field": "author",
       "type": "User",
       "arity": "Required"
     },
@@ -97,7 +97,7 @@
         "path": {
           "tag": "Field",
           "model": "BlogPost",
-          "field": "user"
+          "field": "author"
         },
         "directive": "relation"
       }
@@ -109,12 +109,12 @@
         "path": {
           "tag": "Field",
           "model": "BlogPost",
-          "field": "user"
+          "field": "author"
         },
         "directive": "relation"
       },
       "argument": "fields",
-      "value": "[userId]"
+      "value": "[authorId]"
     },
     {
       "tag": "CreateArgument",
@@ -123,7 +123,7 @@
         "path": {
           "tag": "Field",
           "model": "BlogPost",
-          "field": "user"
+          "field": "author"
         },
         "directive": "relation"
       },
@@ -133,7 +133,7 @@
     {
       "tag": "CreateField",
       "model": "BlogPost",
-      "field": "userId",
+      "field": "authorId",
       "type": "String",
       "arity": "Required"
     },
@@ -168,6 +168,35 @@
       },
       "argument": "",
       "value": "false"
+    },
+    {
+      "tag": "CreateModel",
+      "model": "UserRole"
+    },
+    {
+      "tag": "CreateField",
+      "model": "UserRole",
+      "field": "id",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "UserRole",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateField",
+      "model": "UserRole",
+      "field": "users",
+      "type": "User",
+      "arity": "List"
     },
     {
       "tag": "CreateModel",
@@ -224,10 +253,35 @@
       "arity": "Required"
     },
     {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "email"
+        },
+        "directive": "unique"
+      }
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "password",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
       "tag": "CreateField",
       "model": "User",
       "field": "blogPosts",
       "type": "BlogPost",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "roles",
+      "type": "UserRole",
       "arity": "List"
     }
   ]

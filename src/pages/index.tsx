@@ -19,7 +19,7 @@ const Base = styled.div`
 export default function Home() {
   return (
     <Base>
-      <a target="_blank" href="https://www.panter.ch">
+      <a rel="noreferrer" target="_blank" href="https://www.panter.ch">
         <PanterLogo
           css={`
             width: 180px;

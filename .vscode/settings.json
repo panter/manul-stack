@@ -1,7 +1,24 @@
 {
-    "files.watcherExclude": {
-        "**/.git/objects/**": true,
-        "**/.git/subtree-cache/**": true,
-        "**/.hg/store/**": true
-    }
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/.hg/store/**": true
+},
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "editor.formatOnSave": true,
+  "[javascript]": {
+      "editor.formatOnSave": false,
+  },
+  "[javascriptreact]": {
+      "editor.formatOnSave": false,
+  },
+  "[typescript]": {
+      "editor.formatOnSave": false,
+  },
+  "[typescriptreact]": {
+      "editor.formatOnSave": false,
+  },
+  "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+  },
 }

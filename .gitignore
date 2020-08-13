@@ -36,3 +36,6 @@ yarn-error.log*
 
 # sqlite
 *.sqlite3
+# yalc
+.yalc
+yalc.lock

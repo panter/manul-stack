@@ -7,9 +7,9 @@
     "next:dev": "next dev",
     "build": "nexus build && next build",
     "start": "next start",
-    "test": "nexus build",
     "lint": "yarn eslint .",
     "lint:fix": "yarn lint --fix",
+    "test": "nexus build && jest",
     "nexus:reflection": "nexus dev --reflection --entrypoint src/pages/api/graphql.ts",
     "db:start": "docker run --detach --publish 5432:5432 -e POSTGRES_PASSWORD=postgres --name 'manul-stack' postgres:10.12",
     "prisma:migrate:save": "prisma migrate save --experimental",
@@ -61,6 +61,11 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.20.5",
     "prettier": "^2.0.5",
+    "babel-jest": "^26.3.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.3",
+    "jest": "^26.4.0",
+    "ts-jest": "^26.2.0",
     "typescript": "^3.9.7"
   }
 }

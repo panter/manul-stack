@@ -9,7 +9,7 @@ import { getDataFromTree } from "@apollo/client/react/ssr";
 const withApolloClient = withApollo(
   ({ initialState }) => {
     return new ApolloClient({
-      uri: `${!process.browser ? `${process.env.ROOT_URL}` : ""}/api/graphql`,
+      uri: `${!process.browser ? `${process.env.ROOT_URL}` : ""}/graphql`,
       ssrMode: !process.browser,
       cache: new InMemoryCache().restore(initialState || {}),
     }) as any;

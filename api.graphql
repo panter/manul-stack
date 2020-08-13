@@ -7,7 +7,6 @@ type BatchPayload {
 }
 
 type BlogPost {
-  description: String!
   id: String!
   published: Boolean!
   title: String!
@@ -15,7 +14,7 @@ type BlogPost {
 }
 
 input BlogPostCreateInput {
-  description: String!
+  content: String!
   id: String
   published: Boolean
   title: String!
@@ -28,7 +27,7 @@ input BlogPostCreateManyWithoutUserInput {
 }
 
 input BlogPostCreateWithoutUserInput {
-  description: String!
+  content: String!
   id: String
   published: Boolean
   title: String!
@@ -41,7 +40,7 @@ input BlogPostFilter {
 }
 
 input BlogPostOrderByInput {
-  description: SortOrder
+  content: SortOrder
   id: SortOrder
   published: SortOrder
   title: SortOrder
@@ -50,7 +49,7 @@ input BlogPostOrderByInput {
 
 input BlogPostScalarWhereInput {
   AND: [BlogPostScalarWhereInput!]
-  description: StringFilter
+  content: StringFilter
   id: UUIDFilter
   NOT: [BlogPostScalarWhereInput!]
   OR: [BlogPostScalarWhereInput!]
@@ -60,7 +59,7 @@ input BlogPostScalarWhereInput {
 }
 
 input BlogPostUpdateInput {
-  description: String
+  content: String
   id: String
   published: Boolean
   title: String
@@ -68,14 +67,14 @@ input BlogPostUpdateInput {
 }
 
 input BlogPostUpdateManyDataInput {
-  description: String
+  content: String
   id: String
   published: Boolean
   title: String
 }
 
 input BlogPostUpdateManyMutationInput {
-  description: String
+  content: String
   id: String
   published: Boolean
   title: String
@@ -99,7 +98,7 @@ input BlogPostUpdateManyWithWhereNestedInput {
 }
 
 input BlogPostUpdateWithoutUserDataInput {
-  description: String
+  content: String
   id: String
   published: Boolean
   title: String
@@ -118,7 +117,7 @@ input BlogPostUpsertWithWhereUniqueWithoutUserInput {
 
 input BlogPostWhereInput {
   AND: [BlogPostWhereInput!]
-  description: StringFilter
+  content: StringFilter
   id: UUIDFilter
   NOT: [BlogPostWhereInput!]
   OR: [BlogPostWhereInput!]
@@ -180,9 +179,6 @@ type Query {
   adminUsersCount(cursor: UserWhereUniqueInput, orderBy: UserOrderByInput, skip: Int, take: Int, where: UserWhereInput): Int
   blogPosts(cursor: BlogPostWhereUniqueInput, skip: Int, take: Int, where: BlogPostWhereInput): [BlogPost!]!
   me: User
-  user(where: UserWhereUniqueInput!): User
-  users(cursor: UserWhereUniqueInput, orderBy: [UserOrderByInput!], skip: Int, take: Int, where: UserWhereInput): [User!]!
-  usersCount(cursor: UserWhereUniqueInput, orderBy: UserOrderByInput, skip: Int, take: Int, where: UserWhereInput): Int
 }
 
 type SignupResult {

@@ -6,4 +6,5 @@ const AdminApp = dynamic({
   ssr: false,
 });
 
-export default () => <AdminApp />;
+const adminPage = () => <AdminApp />;
+export default adminPage;

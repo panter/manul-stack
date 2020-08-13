@@ -51,6 +51,6 @@ export const UserCreate = (props) => (
   </Create>
 );
 const userResource = () => (
-  <Resource name="User" list={UserList} edit={UserEdit} />
+  <Resource name="User" list={UserList} edit={UserEdit} create={UserCreate} />
 );
 export default userResource;

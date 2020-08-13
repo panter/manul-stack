@@ -3,9 +3,9 @@
     "**/.git/objects/**": true,
     "**/.git/subtree-cache/**": true,
     "**/.hg/store/**": true
-  },
+},
   "typescript.tsdk": "node_modules/typescript/lib",
-  "editor.formatOnSave": false,
+  "editor.formatOnSave": true,
   "[javascript]": {
       "editor.formatOnSave": false,
   },

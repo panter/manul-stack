@@ -8,12 +8,12 @@ generator prisma_client {
 }
 
 model BlogPost {
-    id          String  @default(uuid()) @id
-    title       String
-    description String
-    user        User    @relation(fields: [userId], references: [id])
-    userId      String
-    published   Boolean @default(false)
+    id        String  @default(uuid()) @id
+    title     String
+    content   String
+    user      User    @relation(fields: [userId], references: [id])
+    userId    String
+    published Boolean @default(false)
 }
 
 model UserRole {

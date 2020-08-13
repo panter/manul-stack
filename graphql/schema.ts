@@ -58,8 +58,8 @@ schema.objectType({
   definition(t) {
     t.model.id();
     t.model.title();
-    t.model.description();
-    t.model.user();
+    t.model.content();
+    t.model.author();
     t.model.published();
   },
 });

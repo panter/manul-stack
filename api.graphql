@@ -7,26 +7,27 @@ type BatchPayload {
 }
 
 type BlogPost {
+  author: User!
+  content: String!
   id: String!
   published: Boolean!
   title: String!
-  user: User!
 }
 
 input BlogPostCreateInput {
+  author: UserCreateOneWithoutBlogPostsInput!
   content: String!
   id: String
   published: Boolean
   title: String!
-  user: UserCreateOneWithoutBlogPostsInput!
 }
 
-input BlogPostCreateManyWithoutUserInput {
+input BlogPostCreateManyWithoutAuthorInput {
   connect: [BlogPostWhereUniqueInput!]
-  create: [BlogPostCreateWithoutUserInput!]
+  create: [BlogPostCreateWithoutAuthorInput!]
 }
 
-input BlogPostCreateWithoutUserInput {
+input BlogPostCreateWithoutAuthorInput {
   content: String!
   id: String
   published: Boolean
@@ -40,30 +41,30 @@ input BlogPostFilter {
 }
 
 input BlogPostOrderByInput {
+  authorId: SortOrder
   content: SortOrder
   id: SortOrder
   published: SortOrder
   title: SortOrder
-  userId: SortOrder
 }
 
 input BlogPostScalarWhereInput {
   AND: [BlogPostScalarWhereInput!]
+  authorId: StringFilter
   content: StringFilter
   id: UUIDFilter
   NOT: [BlogPostScalarWhereInput!]
   OR: [BlogPostScalarWhereInput!]
   published: BooleanFilter
   title: StringFilter
-  userId: StringFilter
 }
 
 input BlogPostUpdateInput {
+  author: UserUpdateOneRequiredWithoutBlogPostsInput
   content: String
   id: String
   published: Boolean
   title: String
-  user: UserUpdateOneRequiredWithoutBlogPostsInput
 }
 
 input BlogPostUpdateManyDataInput {
@@ -80,16 +81,16 @@ input BlogPostUpdateManyMutationInput {
   title: String
 }
 
-input BlogPostUpdateManyWithoutUserInput {
+input BlogPostUpdateManyWithoutAuthorInput {
   connect: [BlogPostWhereUniqueInput!]
-  create: [BlogPostCreateWithoutUserInput!]
+  create: [BlogPostCreateWithoutAuthorInput!]
   delete: [BlogPostWhereUniqueInput!]
   deleteMany: [BlogPostScalarWhereInput!]
   disconnect: [BlogPostWhereUniqueInput!]
   set: [BlogPostWhereUniqueInput!]
-  update: [BlogPostUpdateWithWhereUniqueWithoutUserInput!]
+  update: [BlogPostUpdateWithWhereUniqueWithoutAuthorInput!]
   updateMany: [BlogPostUpdateManyWithWhereNestedInput!]
-  upsert: [BlogPostUpsertWithWhereUniqueWithoutUserInput!]
+  upsert: [BlogPostUpsertWithWhereUniqueWithoutAuthorInput!]
 }
 
 input BlogPostUpdateManyWithWhereNestedInput {
@@ -97,34 +98,34 @@ input BlogPostUpdateManyWithWhereNestedInput {
   where: BlogPostScalarWhereInput!
 }
 
-input BlogPostUpdateWithoutUserDataInput {
+input BlogPostUpdateWithoutAuthorDataInput {
   content: String
   id: String
   published: Boolean
   title: String
 }
 
-input BlogPostUpdateWithWhereUniqueWithoutUserInput {
-  data: BlogPostUpdateWithoutUserDataInput!
+input BlogPostUpdateWithWhereUniqueWithoutAuthorInput {
+  data: BlogPostUpdateWithoutAuthorDataInput!
   where: BlogPostWhereUniqueInput!
 }
 
-input BlogPostUpsertWithWhereUniqueWithoutUserInput {
-  create: BlogPostCreateWithoutUserInput!
-  update: BlogPostUpdateWithoutUserDataInput!
+input BlogPostUpsertWithWhereUniqueWithoutAuthorInput {
+  create: BlogPostCreateWithoutAuthorInput!
+  update: BlogPostUpdateWithoutAuthorDataInput!
   where: BlogPostWhereUniqueInput!
 }
 
 input BlogPostWhereInput {
   AND: [BlogPostWhereInput!]
+  author: UserWhereInput
+  authorId: StringFilter
   content: StringFilter
   id: UUIDFilter
   NOT: [BlogPostWhereInput!]
   OR: [BlogPostWhereInput!]
   published: BooleanFilter
   title: StringFilter
-  user: UserWhereInput
-  userId: StringFilter
 }
 
 input BlogPostWhereUniqueInput {
@@ -212,7 +213,7 @@ type User {
 }
 
 input UserCreateInput {
-  blogPosts: BlogPostCreateManyWithoutUserInput
+  blogPosts: BlogPostCreateManyWithoutAuthorInput
   email: String!
   id: String
   password: String!
@@ -319,7 +320,7 @@ input UserRoleWhereUniqueInput {
 }
 
 input UserUpdateInput {
-  blogPosts: BlogPostUpdateManyWithoutUserInput
+  blogPosts: BlogPostUpdateManyWithoutAuthorInput
   email: String
   id: String
   password: String

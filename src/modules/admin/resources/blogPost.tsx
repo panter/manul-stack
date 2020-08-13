@@ -11,6 +11,10 @@ import {
   EditButton,
   Filter,
   Resource,
+  SelectInput,
+  ReferenceInput,
+  BooleanInput,
+  required,
 } from "react-admin";
 
 const BlogPostFilter = (props) => (
@@ -23,7 +27,7 @@ export const BlogPostList = (props) => (
   <List {...props} filters={<BlogPostFilter />} perPage={20}>
     <Datagrid>
       <TextField source="id" />
-      <TextField source="email" />
+      <TextField source="title" />
       <EditButton />
     </Datagrid>
   </List>
@@ -35,8 +39,13 @@ const BlogPostTitle = ({ record }: any) => {
 
 const renderForm = (isCreate = false) => (
   <>
-    <TextInput source="title" />
-    <TextInput source="content" />
+    <TextInput source="title" validate={required()} />
+    <TextInput source="content" validate={required()} />
+
+    <ReferenceInput source="author" reference="User" validate={required()}>
+      <SelectInput optionText="email" />
+    </ReferenceInput>
+    <BooleanInput source="published" />
   </>
 );
 

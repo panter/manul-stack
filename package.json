@@ -18,8 +18,8 @@
     "seed": "yarn job:seed"
   },
   "dependencies": {
-    "@types/bcryptjs": "^2.4.2",
-    "@types/styled-components": "^5.1.2",
+    "@ra-data-prisma/backend": "^3.0.0",
+    "@ra-data-prisma/dataprovider": "^3.0.0",
     "bcryptjs": "^2.4.3",
     "dayjs": "^1.8.33",
     "jsonwebtoken": "^8.5.1",
@@ -41,6 +41,8 @@
     "@types/jsonwebtoken": "^8.5.0",
     "@types/node": "^14.0.27",
     "@types/react": "^16.9.46",
+    "@types/bcryptjs": "^2.4.2",
+    "@types/styled-components": "^5.1.2",
     "babel-plugin-styled-components": "^1.11.1",
     "concurrently": "^5.3.0",
     "typescript": "^3.9.7"

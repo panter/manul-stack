@@ -1,18 +1,37 @@
-## Seed
+# Manul Stack 
 
-`yarn seed --admin_email=admin@example.com --admin_password=test1234`
-
-### ORiginal nxtjs
-
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+A template and demo project of the Manul stack.
 
 ## Getting Started
 
-First, run the development server:
+Install dependencies
 
 ```bash
-npm run dev
-# or
+yarn
+```
+
+Set the environment variable for the sqlite database file. We recommend to use [direnv](https://direnv.net/) to automatically load environment variables. 
+Be aware that the path is relative to the `prisma` directory.
+
+```bash
+export DATABASE_URL=file:./dev.sqlite3
+```
+
+Create db and run initial migrations
+
+```bash
+yarn prisma:migrate:up
+```
+
+Seed an admin user and password 
+
+```bash
+yarn seed --admin_email=admin@example.com --admin_password=test1234
+```
+
+Run the development server locally
+
+```bash
 yarn dev
 ```
 

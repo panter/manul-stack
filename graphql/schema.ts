@@ -4,6 +4,7 @@ import { prisma } from "nexus-plugin-prisma";
 import { shield } from "nexus-plugin-shield";
 import { auth } from "nexus-plugin-jwt-auth";
 import "./modules/user";
+import "./modules/files";
 import { nexusAddCrudResolvers } from "@ra-data-prisma/backend";
 import { APP_SECRET } from "./utils";
 import { rules } from "./permissions";
@@ -58,9 +59,12 @@ schema.objectType({
   definition(t) {
     t.model.id();
     t.model.title();
-    t.model.content();
     t.model.author();
     t.model.published();
+    t.field("content", {
+      type: "Json",
+      resolve: (c) => (c.content ? JSON.parse(c.content) : null), // unfortunatly, sqlite has no json support
+    });
   },
 });
 

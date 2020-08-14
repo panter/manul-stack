@@ -16,6 +16,7 @@ import {
   BooleanInput,
   required,
 } from "react-admin";
+import ContentEditorInput from "../inputs/contentEditor/ContentEditorInput";
 
 const BlogPostFilter = (props) => (
   <Filter {...props}>
@@ -40,7 +41,7 @@ const BlogPostTitle = ({ record }: any) => {
 const renderForm = (isCreate = false) => (
   <>
     <TextInput source="title" validate={required()} />
-    <TextInput source="content" validate={required()} />
+    {!isCreate ? <ContentEditorInput source="content" /> : null}
 
     <ReferenceInput source="author" reference="User" validate={required()}>
       <SelectInput optionText="email" />

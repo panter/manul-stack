@@ -1,15 +1,41 @@
 // import App from "next/app";
 import type { AppProps /*, AppContext */ } from "next/app";
 import { Reset } from "styled-reset";
+import "@react-page/core/lib/index.css"; // we also want to load the stylesheets
+// Require editor ui stylesheet
+import "@react-page/ui/lib/index.css";
+import "@react-page/plugins-slate/lib/index.css";
 import React from "react";
 import withApollo from "next-with-apollo";
-import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  from,
+} from "@apollo/client";
 import { getDataFromTree } from "@apollo/client/react/ssr";
+import { ThemeProvider } from "styled-components";
+import theme from "../config/theme";
+import { setContext } from "@apollo/client/link/context";
+import { createUploadLink } from "apollo-upload-client";
+import { appWithTranslation, i18n } from "../config/i18n";
 
 const withApolloClient = withApollo(
   ({ initialState }) => {
     return new ApolloClient({
-      uri: `${!process.browser ? `${process.env.ROOT_URL}` : ""}/graphql`,
+      link: from([
+        setContext((a, b) => {
+          return {
+            headers: {
+              ["accept-language"]: i18n.language,
+            },
+          };
+        }) as any,
+
+        createUploadLink({
+          uri: `${!process.browser ? `${process.env.ROOT_URL}` : ""}/graphql`,
+        }),
+      ]),
       ssrMode: !process.browser,
       cache: new InMemoryCache().restore(initialState || {}),
     }) as any;
@@ -19,23 +45,26 @@ const withApolloClient = withApollo(
 
 function MyApp({ Component, pageProps, apollo }: any) {
   return (
-    <ApolloProvider client={apollo}>
-      <Reset />
-      <Component {...pageProps} />
-    </ApolloProvider>
+    <ThemeProvider theme={theme}>
+      <ApolloProvider client={apollo}>
+        <Reset />
+        <Component {...pageProps} />
+      </ApolloProvider>
+    </ThemeProvider>
   );
 }
 
-// Only uncomment this method if you have blocking data requirements for
-// every single page in your application. This disables the ability to
-// perform automatic static optimization, causing every page in your app to
-// be server-side rendered.
-//
-// MyApp.getInitialProps = async (appContext: AppContext) => {
-//   // calls page's `getInitialProps` and fills `appProps.pageProps`
-//   const appProps = await App.getInitialProps(appContext);
+MyApp.getInitialProps = async ({ Component, ctx, ...rest }: any) => {
+  let pageProps: any = {};
+  if (Component.getInitialProps) {
+    pageProps = await Component.getInitialProps(ctx);
+  }
+  return {
+    pageProps: {
+      namespacesRequired: ["common"],
+      ...pageProps,
+    },
+  };
+};
 
-//   return { ...appProps }
-// }
-
-export default withApolloClient(MyApp);
+export default appWithTranslation(withApolloClient(MyApp));

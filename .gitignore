@@ -14,6 +14,7 @@
 
 # production
 /build
+.tmp_build
 
 # misc
 .DS_Store

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import PanterLogo from "../modules/example/components/PanterLogo";
-import Heading from "../modules/example/components/Heading";
+import Heading from "../modules/layout/components/Heading";
 
 const ManulStackImg = styled.img.attrs({
   src: "https://i.imgur.com/kwp7cRt.jpg",

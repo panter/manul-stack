@@ -1,3 +1,4 @@
 # Prisma Migrate lockfile v1
 
 20200813141606-initial
+20200813145412-make-blog-post-content-optional

@@ -8,7 +8,7 @@ type BatchPayload {
 
 type BlogPost {
   author: User!
-  content: String!
+  content: Json
   id: String!
   published: Boolean!
   title: String!
@@ -16,7 +16,7 @@ type BlogPost {
 
 input BlogPostCreateInput {
   author: UserCreateOneWithoutBlogPostsInput!
-  content: String!
+  content: String
   id: String
   published: Boolean
   title: String!
@@ -28,7 +28,7 @@ input BlogPostCreateManyWithoutAuthorInput {
 }
 
 input BlogPostCreateWithoutAuthorInput {
-  content: String!
+  content: String
   id: String
   published: Boolean
   title: String!
@@ -51,7 +51,7 @@ input BlogPostOrderByInput {
 input BlogPostScalarWhereInput {
   AND: [BlogPostScalarWhereInput!]
   authorId: StringFilter
-  content: StringFilter
+  content: NullableStringFilter
   id: UUIDFilter
   NOT: [BlogPostScalarWhereInput!]
   OR: [BlogPostScalarWhereInput!]
@@ -120,7 +120,7 @@ input BlogPostWhereInput {
   AND: [BlogPostWhereInput!]
   author: UserWhereInput
   authorId: StringFilter
-  content: StringFilter
+  content: NullableStringFilter
   id: UUIDFilter
   NOT: [BlogPostWhereInput!]
   OR: [BlogPostWhereInput!]
@@ -169,6 +169,21 @@ type Mutation {
   login(email: String!, password: String!): LoginResult
   logout: Boolean
   signup(email: String!, password: String!): SignupResult
+  uploadFile(file: Upload, fileName: String): String
+}
+
+input NullableStringFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  not: String
+  notIn: [String!]
+  startsWith: String
 }
 
 type Query {
@@ -204,6 +219,9 @@ input StringFilter {
   notIn: [String!]
   startsWith: String
 }
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
 
 type User {
   blogPosts(cursor: BlogPostWhereUniqueInput, skip: Int, take: Int): [BlogPost!]!

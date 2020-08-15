@@ -28,3 +28,33 @@ model User {
     blogPosts BlogPost[]
     roles     UserRole[]
 }
+
+model Page {
+    id                 String   @default(uuid()) @id
+    published          Boolean? @default(false)
+    createdAt          DateTime @default(now())
+    path               String?  @unique
+    slug               String
+    sortKey            Int?     @default(100)
+    parentPageId       String?
+    parentPage         Page?    @relation("parentChild", fields: [parentPageId], references: [id])
+    childPages         Page[]   @relation("parentChild")
+    navigationTitle_en String
+    navigationTitle_de String?
+
+    htmlTitle_en String
+    htmlTitle_de String?
+
+    content             String? // is multilang already
+    meta_description_en String?
+    meta_description_de String?
+
+    social_description_en String?
+    social_description_de String?
+
+    social_title_en String?
+    social_title_de String?
+
+
+    @@unique([parentPageId, slug])
+}

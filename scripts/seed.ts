@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { getHashedPassword } from "../graphql/utils";
+import { getHashedPassword } from "../graphql/utils/user";
 
 const prisma = new PrismaClient();
 

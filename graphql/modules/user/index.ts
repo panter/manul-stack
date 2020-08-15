@@ -6,7 +6,7 @@ import {
   getUserId,
   ROOT_URL,
   getHashedPassword,
-} from "../../utils";
+} from "../../utils/user";
 import { User } from "@prisma/client";
 import { booleanArg, objectType } from "nexus/components/schema";
 import dayjs from "dayjs";

@@ -1,0 +1,60 @@
+{
+  "name": "nexus-plugin-prisma",
+  "version": "0.0.0-see-git-tags-07627fd7",
+  "main": "dist/framework-entrypoint.js",
+  "types": "dist/framework-entrypoint.d.ts",
+  "license": "MIT",
+  "author": "Flavian Desverne <desverne@prisma.io>",
+  "files": [
+    "dist",
+    "src",
+    "scripts",
+    "typegen.js",
+    "typegen.d.ts",
+    "schema.js",
+    "schema.d.ts",
+    "client.js",
+    "client.d.ts"
+  ],
+  "scripts": {
+    "release:preview": "dripip preview",
+    "release:stable": "dripip stable",
+    "release:pr": "dripip pr",
+    "clean": "rm -rf dist",
+    "build": "yarn clean && yarn build:deps-sync && yarn build:module-facades && tsc && ts-node scripts/post-build",
+    "build:deps-sync": "node scripts/ensure-deps-sync",
+    "build:module-facades": "node scripts/build-module-facades",
+    "build:ci": "tsc",
+    "dev": "yarn -s build:module-facades && tsc --watch",
+    "prepublishOnly": "yarn -s build",
+    "format": "prettier --write 'src/**/*.ts' 'tests/**/*.ts' 'examples/**/*.ts'",
+    "postinstall": "node ./scripts/postinstall.js",
+    "test": "ts-node tests/__ensure-engine && jest --forceExit",
+    "test:dev": "ts-node tests/__ensure-engine && jest src tests/schema --watch",
+    "test:unit": "jest src --testTimeout=15000 --forceExit",
+    "test:schema": "yarn test --testTimeout=15000 tests/schema",
+    "test:fw:e2e:mysql": "yarn test --testTimeout=400000 tests/framework/e2e/mysql.test.ts",
+    "test:fw:e2e:postgres": "yarn test --testTimeout=400000 tests/framework/e2e/postgres.test.ts",
+    "test:fw:e2e:sqlite": "yarn test --testTimeout=400000 tests/framework/e2e/sqlite.test.ts",
+    "test:db:setup": "docker-compose down && rm -rf .mysql-data && rm -rf .postgres-data && docker-compose up -d"
+  },
+  "dependencies": {
+    "@prisma/cli": "^2.4.0",
+    "@prisma/client": "^2.4.0",
+    "@prisma/sdk": "^2.4.0",
+    "camelcase": "^6.0.0",
+    "chalk": "^4.0.0",
+    "common-tags": "^1.8.0",
+    "dotenv": "^8.2.0",
+    "fs-jetpack": "^2.4.0",
+    "lodash": "^4.17.19",
+    "outdent": "^0.7.1",
+    "pluralize": "^8.0.0",
+    "prismjs": "^1.20.0",
+    "stacktrace-parser": "^0.1.10"
+  },
+  "prisma": {
+    "version": "de2bc1cbdb5561ad73d2f08463fa2eec48993f56"
+  },
+  "prettier": "@prisma-labs/prettier-config"
+}

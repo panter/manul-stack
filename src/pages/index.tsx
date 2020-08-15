@@ -1,11 +1,13 @@
 import styled from "styled-components";
 import PanterLogo from "../modules/example/components/PanterLogo";
 import Heading from "../modules/layout/components/Heading";
+import { Link } from "../config/i18n";
+import StyledLink from "../modules/layout/components/StyledLink";
 
 const ManulStackImg = styled.img.attrs({
   src: "https://i.imgur.com/kwp7cRt.jpg",
 })`
-  width: 180px;
+  max-width: 320px;
 `;
 
 const Base = styled.div`
@@ -28,6 +30,9 @@ export default function Home() {
       </a>
       <Heading>Manul stack</Heading>
       <ManulStackImg />
+      <Link href="/admin" passHref>
+        <StyledLink>Admin Area</StyledLink>
+      </Link>
     </Base>
   );
 }

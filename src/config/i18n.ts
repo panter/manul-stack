@@ -9,12 +9,8 @@ import path from "path";
 const { localeSubpaths = {}, isDevelopment } =
   getConfig()?.publicRuntimeConfig ?? {};
 
-export enum LANGUAGE {
-  en = "en",
-  de = "de",
-}
-
-export const FALLBACK_LANGUAGE = LANGUAGE.en;
+export const SUPPORTED_LANGS = ["en", "de"];
+export const DEFAULT_LANG = SUPPORTED_LANGS[0];
 
 /*
 
@@ -42,8 +38,8 @@ const missingKeyHandler = ([lng], ns, key) => {
 */
 
 const nextI18Next = new NextI18Next({
-  defaultLanguage: "en",
-  otherLanguages: ["de"],
+  defaultLanguage: DEFAULT_LANG,
+  otherLanguages: SUPPORTED_LANGS.filter((l) => l !== DEFAULT_LANG),
   localePath: path.resolve("./public/locales"),
   localeSubpaths,
   //saveMissing: isDevelopment,
@@ -66,7 +62,7 @@ const {
 moment.locale(["de"]);
 
 nextI18Next.i18n.on("languageChanged", (locale) => {
-  moment.locale([locale, FALLBACK_LANGUAGE]);
+  moment.locale([locale, DEFAULT_LANG]);
 });
 */
 

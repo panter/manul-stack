@@ -1,0 +1,1 @@
+{"version":3,"file":"utils.d.ts","sourceRoot":"","sources":["../../../src/framework/worktime/utils.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,MAAM,MAAM,aAAa,CAAA;AAErC,OAAO,EAAE,YAAY,EAAE,MAAM,cAAc,CAAA;AAI3C;;GAEG;AACH,eAAO,MAAM,2BAA2B,EAAE,MAA2D,CAAA;AAErG;;;;;GAKG;AACH,wBAAsB,aAAa,CAAC,KAAK,EAAE,YAAY,EAAE,UAAU,EAAE,MAAM,GAAG,OAAO,CAAC,MAAM,CAAC,SAAS,EAAE,CAAC,CAiCxG"}

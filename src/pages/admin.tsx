@@ -7,4 +7,5 @@ const AdminApp = dynamic({
 });
 
 const adminPage = () => <AdminApp />;
+adminPage.getLayout = (el: any) => el;
 export default adminPage;

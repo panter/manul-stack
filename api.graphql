@@ -222,24 +222,24 @@ input NullableStringFilter {
 type Page {
   childPages(cursor: PageWhereUniqueInput, orderBy: [PageOrderByInput!], skip: Int, take: Int): [Page!]!
   content: Json
-  htmlTitle: String
+  htmlTitle: String!
   htmlTitle_de: String
   htmlTitle_en: String
   id: String!
-  meta_description: String
+  meta_description: String!
   meta_description_de: String
   meta_description_en: String
-  navigationTitle: String
+  navigationTitle: String!
   navigationTitle_de: String
   navigationTitle_en: String
   parentPage: Page
   path: String
   published: Boolean
   slug: String!
-  social_description: String
+  social_description: String!
   social_description_de: String
   social_description_en: String
-  social_title: String
+  social_title: String!
   social_title_de: String
   social_title_en: String
   sortKey: Int
@@ -250,7 +250,7 @@ input PageCreateInput {
   content: String
   createdAt: DateTime
   htmlTitle_de: String
-  htmlTitle_en: String!
+  htmlTitle_en: String
   id: String
   meta_description_de: String
   meta_description_en: String
@@ -280,7 +280,7 @@ input PageCreateWithoutChildPagesInput {
   content: String
   createdAt: DateTime
   htmlTitle_de: String
-  htmlTitle_en: String!
+  htmlTitle_en: String
   id: String
   meta_description_de: String
   meta_description_en: String
@@ -302,7 +302,7 @@ input PageCreateWithoutParentPageInput {
   content: String
   createdAt: DateTime
   htmlTitle_de: String
-  htmlTitle_en: String!
+  htmlTitle_en: String
   id: String
   meta_description_de: String
   meta_description_en: String
@@ -351,7 +351,7 @@ input PageScalarWhereInput {
   content: NullableStringFilter
   createdAt: DateTimeFilter
   htmlTitle_de: NullableStringFilter
-  htmlTitle_en: StringFilter
+  htmlTitle_en: NullableStringFilter
   id: UUIDFilter
   meta_description_de: NullableStringFilter
   meta_description_en: NullableStringFilter
@@ -521,7 +521,7 @@ input PageWhereInput {
   content: NullableStringFilter
   createdAt: DateTimeFilter
   htmlTitle_de: NullableStringFilter
-  htmlTitle_en: StringFilter
+  htmlTitle_en: NullableStringFilter
   id: UUIDFilter
   meta_description_de: NullableStringFilter
   meta_description_en: NullableStringFilter
@@ -564,6 +564,8 @@ type Query {
   adminUsersCount(cursor: UserWhereUniqueInput, orderBy: UserOrderByInput, skip: Int, take: Int, where: UserWhereInput): Int
   blogPosts(cursor: BlogPostWhereUniqueInput, skip: Int, take: Int, where: BlogPostWhereInput): [BlogPost!]!
   me: User
+  page(pageId: String, path: String): Page
+  pages(parentPageId: String, parentPath: String): [Page!]
 }
 
 type SignupResult {

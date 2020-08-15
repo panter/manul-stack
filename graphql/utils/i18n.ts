@@ -15,12 +15,23 @@ export const getRequestLang = (req: Request) => {
     DEFAULT_LANG
   );
 };
-export const i18nField = (t: any, name: string, type: "String" = "String") => {
+type Options = {
+  type?: string;
+  nullable?: boolean;
+};
+
+export const i18nField = (t: any, name: string, options?: Options) => {
+  const type = options?.type ?? "String";
+  const nullable = options?.nullable ?? false;
   t.field(name, {
     type,
-    nullable: true,
+    nullable,
     resolve(c: any, args: unknown, { lang }: any) {
-      return c[`${name}_${lang}`] ?? c[`${name}_${DEFAULT_LANG}`];
+      return (
+        c[`${name}_${lang}`] ??
+        c[`${name}_${DEFAULT_LANG}`] ??
+        (nullable ? null : "")
+      );
     },
   });
   // additionally add fields raw for admins

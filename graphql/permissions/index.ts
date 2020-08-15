@@ -28,7 +28,8 @@ const rules = {
   Query: {
     "*": isAdmin,
     me: allow,
-
+    page: allow,
+    pages: allow,
     blogPosts: allow,
   },
   Mutations: {

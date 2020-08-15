@@ -1,1 +1,0 @@
-{"version":3,"file":"relay.d.ts","sourceRoot":"","sources":["../../../src/schema/pagination/relay.ts"],"names":[],"mappings":"AAEA,OAAO,EAAE,kBAAkB,EAAE,MAAM,GAAG,CAAA;AAEtC,UAAU,mBAAmB;IAC3B,KAAK,CAAC,EAAE,MAAM,CAAA;IACd,IAAI,CAAC,EAAE,MAAM,CAAA;IACb,MAAM,CAAC,EAAE,MAAM,CAAA;IACf,KAAK,CAAC,EAAE,MAAM,CAAA;CACf;AAgDD,eAAO,MAAM,aAAa,EAAE,kBAAkB,CAAC,mBAAmB,CA+EjE,CAAA"}

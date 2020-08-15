@@ -79,7 +79,6 @@ const PageCreate = (props: any) => (
       <BooleanInput source="published" />
       <TextInput source="slug" />
       <I18nTextInput source="navigationTitle" />
-      <I18nTextInput source="htmlTitle" />
       <PageSelectInput label="Parent page" source="parentPage" />
       <NumberInput source="sortKey" />
     </SimpleForm>

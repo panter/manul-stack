@@ -8,7 +8,7 @@ type BatchPayload {
 
 type BlogPost {
   author: User!
-  content: String!
+  content: Json
   id: String!
   published: Boolean!
   title: String!
@@ -16,7 +16,7 @@ type BlogPost {
 
 input BlogPostCreateInput {
   author: UserCreateOneWithoutBlogPostsInput!
-  content: String!
+  content: String
   id: String
   published: Boolean
   title: String!
@@ -24,11 +24,17 @@ input BlogPostCreateInput {
 
 input BlogPostCreateManyWithoutAuthorInput {
   connect: [BlogPostWhereUniqueInput!]
+  connectOrCreate: [BlogPostCreateOrConnectWithoutUserInput!]
   create: [BlogPostCreateWithoutAuthorInput!]
 }
 
+input BlogPostCreateOrConnectWithoutUserInput {
+  create: BlogPostCreateWithoutAuthorInput!
+  where: BlogPostWhereUniqueInput!
+}
+
 input BlogPostCreateWithoutAuthorInput {
-  content: String!
+  content: String
   id: String
   published: Boolean
   title: String!
@@ -51,7 +57,7 @@ input BlogPostOrderByInput {
 input BlogPostScalarWhereInput {
   AND: [BlogPostScalarWhereInput!]
   authorId: StringFilter
-  content: StringFilter
+  content: NullableStringFilter
   id: UUIDFilter
   NOT: [BlogPostScalarWhereInput!]
   OR: [BlogPostScalarWhereInput!]
@@ -83,6 +89,7 @@ input BlogPostUpdateManyMutationInput {
 
 input BlogPostUpdateManyWithoutAuthorInput {
   connect: [BlogPostWhereUniqueInput!]
+  connectOrCreate: [BlogPostCreateOrConnectWithoutUserInput!]
   create: [BlogPostCreateWithoutAuthorInput!]
   delete: [BlogPostWhereUniqueInput!]
   deleteMany: [BlogPostScalarWhereInput!]
@@ -120,7 +127,7 @@ input BlogPostWhereInput {
   AND: [BlogPostWhereInput!]
   author: UserWhereInput
   authorId: StringFilter
-  content: StringFilter
+  content: NullableStringFilter
   id: UUIDFilter
   NOT: [BlogPostWhereInput!]
   OR: [BlogPostWhereInput!]
@@ -135,6 +142,247 @@ input BlogPostWhereUniqueInput {
 input BooleanFilter {
   equals: Boolean
   not: Boolean
+}
+
+type Cart {
+  cartItems(cursor: CartItemWhereUniqueInput, skip: Int, take: Int): [CartItem!]!
+  created: DateTime!
+  id: String!
+}
+
+input CartCreateOneWithoutCartItemsInput {
+  connect: CartWhereUniqueInput
+  connectOrCreate: CartCreateOrConnectWithoutCartItemInput
+  create: CartCreateWithoutCartItemsInput
+}
+
+input CartCreateOneWithoutUserInput {
+  connect: CartWhereUniqueInput
+  connectOrCreate: CartCreateOrConnectWithoutUserInput
+  create: CartCreateWithoutUserInput
+}
+
+input CartCreateOrConnectWithoutCartItemInput {
+  create: CartCreateWithoutCartItemsInput!
+  where: CartWhereUniqueInput!
+}
+
+input CartCreateOrConnectWithoutUserInput {
+  create: CartCreateWithoutUserInput!
+  where: CartWhereUniqueInput!
+}
+
+input CartCreateWithoutCartItemsInput {
+  created: DateTime
+  id: String
+  user: UserCreateOneWithoutCartInput
+}
+
+input CartCreateWithoutUserInput {
+  cartItems: CartItemCreateManyWithoutCartInput
+  created: DateTime
+  id: String
+}
+
+type CartItem {
+  cart: Cart
+  id: String!
+  product: Product!
+  quantity: Int!
+}
+
+input CartItemCreateManyWithoutCartInput {
+  connect: [CartItemWhereUniqueInput!]
+  connectOrCreate: [CartItemCreateOrConnectWithoutCartInput!]
+  create: [CartItemCreateWithoutCartInput!]
+}
+
+input CartItemCreateManyWithoutProductInput {
+  connect: [CartItemWhereUniqueInput!]
+  connectOrCreate: [CartItemCreateOrConnectWithoutProductInput!]
+  create: [CartItemCreateWithoutProductInput!]
+}
+
+input CartItemCreateOrConnectWithoutCartInput {
+  create: CartItemCreateWithoutCartInput!
+  where: CartItemWhereUniqueInput!
+}
+
+input CartItemCreateOrConnectWithoutProductInput {
+  create: CartItemCreateWithoutProductInput!
+  where: CartItemWhereUniqueInput!
+}
+
+input CartItemCreateWithoutCartInput {
+  id: String
+  product: ProductCreateOneWithoutCartItemsInput!
+  quantity: Int
+}
+
+input CartItemCreateWithoutProductInput {
+  cart: CartCreateOneWithoutCartItemsInput
+  id: String
+  quantity: Int
+}
+
+input CartItemFilter {
+  every: CartItemWhereInput
+  none: CartItemWhereInput
+  some: CartItemWhereInput
+}
+
+input CartItemScalarWhereInput {
+  AND: [CartItemScalarWhereInput!]
+  cartId: NullableStringFilter
+  id: UUIDFilter
+  NOT: [CartItemScalarWhereInput!]
+  OR: [CartItemScalarWhereInput!]
+  productId: StringFilter
+  quantity: IntFilter
+}
+
+input CartItemUpdateManyDataInput {
+  id: String
+  quantity: Int
+}
+
+input CartItemUpdateManyWithoutCartInput {
+  connect: [CartItemWhereUniqueInput!]
+  connectOrCreate: [CartItemCreateOrConnectWithoutCartInput!]
+  create: [CartItemCreateWithoutCartInput!]
+  delete: [CartItemWhereUniqueInput!]
+  deleteMany: [CartItemScalarWhereInput!]
+  disconnect: [CartItemWhereUniqueInput!]
+  set: [CartItemWhereUniqueInput!]
+  update: [CartItemUpdateWithWhereUniqueWithoutCartInput!]
+  updateMany: [CartItemUpdateManyWithWhereNestedInput!]
+  upsert: [CartItemUpsertWithWhereUniqueWithoutCartInput!]
+}
+
+input CartItemUpdateManyWithoutProductInput {
+  connect: [CartItemWhereUniqueInput!]
+  connectOrCreate: [CartItemCreateOrConnectWithoutProductInput!]
+  create: [CartItemCreateWithoutProductInput!]
+  delete: [CartItemWhereUniqueInput!]
+  deleteMany: [CartItemScalarWhereInput!]
+  disconnect: [CartItemWhereUniqueInput!]
+  set: [CartItemWhereUniqueInput!]
+  update: [CartItemUpdateWithWhereUniqueWithoutProductInput!]
+  updateMany: [CartItemUpdateManyWithWhereNestedInput!]
+  upsert: [CartItemUpsertWithWhereUniqueWithoutProductInput!]
+}
+
+input CartItemUpdateManyWithWhereNestedInput {
+  data: CartItemUpdateManyDataInput!
+  where: CartItemScalarWhereInput!
+}
+
+input CartItemUpdateWithoutCartDataInput {
+  id: String
+  product: ProductUpdateOneRequiredWithoutCartItemsInput
+  quantity: Int
+}
+
+input CartItemUpdateWithoutProductDataInput {
+  cart: CartUpdateOneWithoutCartItemsInput
+  id: String
+  quantity: Int
+}
+
+input CartItemUpdateWithWhereUniqueWithoutCartInput {
+  data: CartItemUpdateWithoutCartDataInput!
+  where: CartItemWhereUniqueInput!
+}
+
+input CartItemUpdateWithWhereUniqueWithoutProductInput {
+  data: CartItemUpdateWithoutProductDataInput!
+  where: CartItemWhereUniqueInput!
+}
+
+input CartItemUpsertWithWhereUniqueWithoutCartInput {
+  create: CartItemCreateWithoutCartInput!
+  update: CartItemUpdateWithoutCartDataInput!
+  where: CartItemWhereUniqueInput!
+}
+
+input CartItemUpsertWithWhereUniqueWithoutProductInput {
+  create: CartItemCreateWithoutProductInput!
+  update: CartItemUpdateWithoutProductDataInput!
+  where: CartItemWhereUniqueInput!
+}
+
+input CartItemWhereInput {
+  AND: [CartItemWhereInput!]
+  cart: CartWhereInput
+  cartId: NullableStringFilter
+  id: UUIDFilter
+  NOT: [CartItemWhereInput!]
+  OR: [CartItemWhereInput!]
+  product: ProductWhereInput
+  productId: StringFilter
+  quantity: IntFilter
+}
+
+input CartItemWhereUniqueInput {
+  id: String
+}
+
+input CartUpdateOneWithoutCartItemsInput {
+  connect: CartWhereUniqueInput
+  connectOrCreate: CartCreateOrConnectWithoutCartItemInput
+  create: CartCreateWithoutCartItemsInput
+  delete: Boolean
+  disconnect: Boolean
+  update: CartUpdateWithoutCartItemsDataInput
+  upsert: CartUpsertWithoutCartItemsInput
+}
+
+input CartUpdateOneWithoutUserInput {
+  connect: CartWhereUniqueInput
+  connectOrCreate: CartCreateOrConnectWithoutUserInput
+  create: CartCreateWithoutUserInput
+  delete: Boolean
+  disconnect: Boolean
+  update: CartUpdateWithoutUserDataInput
+  upsert: CartUpsertWithoutUserInput
+}
+
+input CartUpdateWithoutCartItemsDataInput {
+  created: DateTime
+  id: String
+  user: UserUpdateOneWithoutCartInput
+}
+
+input CartUpdateWithoutUserDataInput {
+  cartItems: CartItemUpdateManyWithoutCartInput
+  created: DateTime
+  id: String
+}
+
+input CartUpsertWithoutCartItemsInput {
+  create: CartCreateWithoutCartItemsInput!
+  update: CartUpdateWithoutCartItemsDataInput!
+}
+
+input CartUpsertWithoutUserInput {
+  create: CartCreateWithoutUserInput!
+  update: CartUpdateWithoutUserDataInput!
+}
+
+input CartWhereInput {
+  AND: [CartWhereInput!]
+  cartItems: CartItemFilter
+  created: DateTimeFilter
+  id: UUIDFilter
+  NOT: [CartWhereInput!]
+  OR: [CartWhereInput!]
+  user: UserWhereInput
+  userId: NullableStringFilter
+}
+
+input CartWhereUniqueInput {
+  id: String
+  userId: String
 }
 
 """
@@ -155,6 +403,17 @@ input DateTimeFilter {
   notIn: [DateTime!]
 }
 
+input IntFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: Int
+  notIn: [Int!]
+}
+
 """
 The `JSON` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -165,46 +424,108 @@ type LoginResult {
 }
 
 type Mutation {
+  addToCart(product: ProductWhereUniqueInput, quantity: Int): Cart
   adminCreateOneBlogPost(data: BlogPostCreateInput!): BlogPost!
+  adminCreateOnePage(data: PageCreateInput!): Page!
   adminCreateOneProduct(data: ProductCreateInput!): Product!
   adminCreateOneUser(data: UserCreateInput!): User!
   adminDeleteManyBlogPost(where: BlogPostWhereInput): BatchPayload!
+  adminDeleteManyPage(where: PageWhereInput): BatchPayload!
   adminDeleteManyProduct(where: ProductWhereInput): BatchPayload!
   adminDeleteManyUser(where: UserWhereInput): BatchPayload!
   adminDeleteOneBlogPost(where: BlogPostWhereUniqueInput!): BlogPost
+  adminDeleteOnePage(where: PageWhereUniqueInput!): Page
   adminDeleteOneProduct(where: ProductWhereUniqueInput!): Product
   adminDeleteOneUser(where: UserWhereUniqueInput!): User
   adminUpdateManyBlogPost(data: BlogPostUpdateManyMutationInput!, where: BlogPostWhereInput): BatchPayload!
+  adminUpdateManyPage(data: PageUpdateManyMutationInput!, where: PageWhereInput): BatchPayload!
   adminUpdateManyProduct(data: ProductUpdateManyMutationInput!, where: ProductWhereInput): BatchPayload!
   adminUpdateManyUser(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
   adminUpdateOneBlogPost(data: BlogPostUpdateInput!, where: BlogPostWhereUniqueInput!): BlogPost
+  adminUpdateOnePage(data: PageUpdateInput!, where: PageWhereUniqueInput!): Page
   adminUpdateOneProduct(data: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product
   adminUpdateOneUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  adminUploadFile(file: Upload, fileName: String, folderName: String): String
   adminUpsertOneBlogPost(create: BlogPostCreateInput!, update: BlogPostUpdateInput!, where: BlogPostWhereUniqueInput!): BlogPost!
+  adminUpsertOnePage(create: PageCreateInput!, update: PageUpdateInput!, where: PageWhereUniqueInput!): Page!
   adminUpsertOneProduct(create: ProductCreateInput!, update: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product!
   adminUpsertOneUser(create: UserCreateInput!, update: UserUpdateInput!, where: UserWhereUniqueInput!): User!
   login(email: String!, password: String!): LoginResult
   logout: Boolean
   signup(email: String!, password: String!): SignupResult
-  upsertCart: Order
+}
+
+input NullableBooleanFilter {
+  equals: Boolean
+  not: Boolean
+}
+
+input NullableIntFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: Int
+  notIn: [Int!]
+}
+
+input NullableStringFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  not: String
+  notIn: [String!]
+  startsWith: String
 }
 
 type Order {
   created: DateTime!
   id: String!
-  products(cursor: ProductWhereUniqueInput, skip: Int, take: Int): [Product!]!
-  type: String!
+  orderItems(cursor: OrderItemWhereUniqueInput, skip: Int, take: Int): [OrderItem!]!
+  status: String!
 }
 
-input OrderCreateManyWithoutProductsInput {
+input OrderCreateManyWithoutUserInput {
   connect: [OrderWhereUniqueInput!]
-  create: [OrderCreateWithoutProductsInput!]
+  connectOrCreate: [OrderCreateOrConnectWithoutUserInput!]
+  create: [OrderCreateWithoutUserInput!]
 }
 
-input OrderCreateWithoutProductsInput {
-  created: DateTime!
+input OrderCreateOneWithoutOrderItemsInput {
+  connect: OrderWhereUniqueInput
+  connectOrCreate: OrderCreateOrConnectWithoutOrderItemInput
+  create: OrderCreateWithoutOrderItemsInput
+}
+
+input OrderCreateOrConnectWithoutOrderItemInput {
+  create: OrderCreateWithoutOrderItemsInput!
+  where: OrderWhereUniqueInput!
+}
+
+input OrderCreateOrConnectWithoutUserInput {
+  create: OrderCreateWithoutUserInput!
+  where: OrderWhereUniqueInput!
+}
+
+input OrderCreateWithoutOrderItemsInput {
+  created: DateTime
   id: String
-  type: String!
+  status: String!
+  user: UserCreateOneWithoutOrdersInput!
+}
+
+input OrderCreateWithoutUserInput {
+  created: DateTime
+  id: String
+  orderItems: OrderItemCreateManyWithoutOrderInput
+  status: String!
 }
 
 input OrderFilter {
@@ -213,32 +534,177 @@ input OrderFilter {
   some: OrderWhereInput
 }
 
+type OrderItem {
+  id: String!
+  order: Order!
+  product: Product!
+  quantity: Int!
+}
+
+input OrderItemCreateManyWithoutOrderInput {
+  connect: [OrderItemWhereUniqueInput!]
+  connectOrCreate: [OrderItemCreateOrConnectWithoutOrderInput!]
+  create: [OrderItemCreateWithoutOrderInput!]
+}
+
+input OrderItemCreateManyWithoutProductInput {
+  connect: [OrderItemWhereUniqueInput!]
+  connectOrCreate: [OrderItemCreateOrConnectWithoutProductInput!]
+  create: [OrderItemCreateWithoutProductInput!]
+}
+
+input OrderItemCreateOrConnectWithoutOrderInput {
+  create: OrderItemCreateWithoutOrderInput!
+  where: OrderItemWhereUniqueInput!
+}
+
+input OrderItemCreateOrConnectWithoutProductInput {
+  create: OrderItemCreateWithoutProductInput!
+  where: OrderItemWhereUniqueInput!
+}
+
+input OrderItemCreateWithoutOrderInput {
+  id: String
+  product: ProductCreateOneWithoutOrderItemsInput!
+  quantity: Int
+}
+
+input OrderItemCreateWithoutProductInput {
+  id: String
+  order: OrderCreateOneWithoutOrderItemsInput!
+  quantity: Int
+}
+
+input OrderItemFilter {
+  every: OrderItemWhereInput
+  none: OrderItemWhereInput
+  some: OrderItemWhereInput
+}
+
+input OrderItemScalarWhereInput {
+  AND: [OrderItemScalarWhereInput!]
+  id: UUIDFilter
+  NOT: [OrderItemScalarWhereInput!]
+  OR: [OrderItemScalarWhereInput!]
+  orderId: StringFilter
+  productId: StringFilter
+  quantity: IntFilter
+}
+
+input OrderItemUpdateManyDataInput {
+  id: String
+  quantity: Int
+}
+
+input OrderItemUpdateManyWithoutOrderInput {
+  connect: [OrderItemWhereUniqueInput!]
+  connectOrCreate: [OrderItemCreateOrConnectWithoutOrderInput!]
+  create: [OrderItemCreateWithoutOrderInput!]
+  delete: [OrderItemWhereUniqueInput!]
+  deleteMany: [OrderItemScalarWhereInput!]
+  disconnect: [OrderItemWhereUniqueInput!]
+  set: [OrderItemWhereUniqueInput!]
+  update: [OrderItemUpdateWithWhereUniqueWithoutOrderInput!]
+  updateMany: [OrderItemUpdateManyWithWhereNestedInput!]
+  upsert: [OrderItemUpsertWithWhereUniqueWithoutOrderInput!]
+}
+
+input OrderItemUpdateManyWithoutProductInput {
+  connect: [OrderItemWhereUniqueInput!]
+  connectOrCreate: [OrderItemCreateOrConnectWithoutProductInput!]
+  create: [OrderItemCreateWithoutProductInput!]
+  delete: [OrderItemWhereUniqueInput!]
+  deleteMany: [OrderItemScalarWhereInput!]
+  disconnect: [OrderItemWhereUniqueInput!]
+  set: [OrderItemWhereUniqueInput!]
+  update: [OrderItemUpdateWithWhereUniqueWithoutProductInput!]
+  updateMany: [OrderItemUpdateManyWithWhereNestedInput!]
+  upsert: [OrderItemUpsertWithWhereUniqueWithoutProductInput!]
+}
+
+input OrderItemUpdateManyWithWhereNestedInput {
+  data: OrderItemUpdateManyDataInput!
+  where: OrderItemScalarWhereInput!
+}
+
+input OrderItemUpdateWithoutOrderDataInput {
+  id: String
+  product: ProductUpdateOneRequiredWithoutOrderItemsInput
+  quantity: Int
+}
+
+input OrderItemUpdateWithoutProductDataInput {
+  id: String
+  order: OrderUpdateOneRequiredWithoutOrderItemsInput
+  quantity: Int
+}
+
+input OrderItemUpdateWithWhereUniqueWithoutOrderInput {
+  data: OrderItemUpdateWithoutOrderDataInput!
+  where: OrderItemWhereUniqueInput!
+}
+
+input OrderItemUpdateWithWhereUniqueWithoutProductInput {
+  data: OrderItemUpdateWithoutProductDataInput!
+  where: OrderItemWhereUniqueInput!
+}
+
+input OrderItemUpsertWithWhereUniqueWithoutOrderInput {
+  create: OrderItemCreateWithoutOrderInput!
+  update: OrderItemUpdateWithoutOrderDataInput!
+  where: OrderItemWhereUniqueInput!
+}
+
+input OrderItemUpsertWithWhereUniqueWithoutProductInput {
+  create: OrderItemCreateWithoutProductInput!
+  update: OrderItemUpdateWithoutProductDataInput!
+  where: OrderItemWhereUniqueInput!
+}
+
+input OrderItemWhereInput {
+  AND: [OrderItemWhereInput!]
+  id: UUIDFilter
+  NOT: [OrderItemWhereInput!]
+  OR: [OrderItemWhereInput!]
+  order: OrderWhereInput
+  orderId: StringFilter
+  product: ProductWhereInput
+  productId: StringFilter
+  quantity: IntFilter
+}
+
+input OrderItemWhereUniqueInput {
+  id: String
+}
+
 input OrderScalarWhereInput {
   AND: [OrderScalarWhereInput!]
   created: DateTimeFilter
   id: UUIDFilter
   NOT: [OrderScalarWhereInput!]
   OR: [OrderScalarWhereInput!]
-  products: ProductFilter
-  type: StringFilter
+  orderItems: OrderItemFilter
+  status: StringFilter
+  userId: StringFilter
 }
 
 input OrderUpdateManyDataInput {
   created: DateTime
   id: String
-  type: String
+  status: String
 }
 
-input OrderUpdateManyWithoutProductsInput {
+input OrderUpdateManyWithoutUserInput {
   connect: [OrderWhereUniqueInput!]
-  create: [OrderCreateWithoutProductsInput!]
+  connectOrCreate: [OrderCreateOrConnectWithoutUserInput!]
+  create: [OrderCreateWithoutUserInput!]
   delete: [OrderWhereUniqueInput!]
   deleteMany: [OrderScalarWhereInput!]
   disconnect: [OrderWhereUniqueInput!]
   set: [OrderWhereUniqueInput!]
-  update: [OrderUpdateWithWhereUniqueWithoutProductsInput!]
+  update: [OrderUpdateWithWhereUniqueWithoutUserInput!]
   updateMany: [OrderUpdateManyWithWhereNestedInput!]
-  upsert: [OrderUpsertWithWhereUniqueWithoutProductsInput!]
+  upsert: [OrderUpsertWithWhereUniqueWithoutUserInput!]
 }
 
 input OrderUpdateManyWithWhereNestedInput {
@@ -246,20 +712,41 @@ input OrderUpdateManyWithWhereNestedInput {
   where: OrderScalarWhereInput!
 }
 
-input OrderUpdateWithoutProductsDataInput {
-  created: DateTime
-  id: String
-  type: String
+input OrderUpdateOneRequiredWithoutOrderItemsInput {
+  connect: OrderWhereUniqueInput
+  connectOrCreate: OrderCreateOrConnectWithoutOrderItemInput
+  create: OrderCreateWithoutOrderItemsInput
+  update: OrderUpdateWithoutOrderItemsDataInput
+  upsert: OrderUpsertWithoutOrderItemsInput
 }
 
-input OrderUpdateWithWhereUniqueWithoutProductsInput {
-  data: OrderUpdateWithoutProductsDataInput!
+input OrderUpdateWithoutOrderItemsDataInput {
+  created: DateTime
+  id: String
+  status: String
+  user: UserUpdateOneRequiredWithoutOrdersInput
+}
+
+input OrderUpdateWithoutUserDataInput {
+  created: DateTime
+  id: String
+  orderItems: OrderItemUpdateManyWithoutOrderInput
+  status: String
+}
+
+input OrderUpdateWithWhereUniqueWithoutUserInput {
+  data: OrderUpdateWithoutUserDataInput!
   where: OrderWhereUniqueInput!
 }
 
-input OrderUpsertWithWhereUniqueWithoutProductsInput {
-  create: OrderCreateWithoutProductsInput!
-  update: OrderUpdateWithoutProductsDataInput!
+input OrderUpsertWithoutOrderItemsInput {
+  create: OrderCreateWithoutOrderItemsInput!
+  update: OrderUpdateWithoutOrderItemsDataInput!
+}
+
+input OrderUpsertWithWhereUniqueWithoutUserInput {
+  create: OrderCreateWithoutUserInput!
+  update: OrderUpdateWithoutUserDataInput!
   where: OrderWhereUniqueInput!
 }
 
@@ -269,12 +756,356 @@ input OrderWhereInput {
   id: UUIDFilter
   NOT: [OrderWhereInput!]
   OR: [OrderWhereInput!]
-  products: ProductFilter
-  type: StringFilter
+  orderItems: OrderItemFilter
+  status: StringFilter
+  user: UserWhereInput
+  userId: StringFilter
 }
 
 input OrderWhereUniqueInput {
   id: String
+}
+
+type Page {
+  childPages(cursor: PageWhereUniqueInput, orderBy: [PageOrderByInput!], skip: Int, take: Int): [Page!]!
+  content: Json
+  htmlTitle: String!
+  htmlTitle_de: String
+  htmlTitle_en: String
+  id: String!
+  meta_description: String!
+  meta_description_de: String
+  meta_description_en: String
+  navigationTitle: String!
+  navigationTitle_de: String
+  navigationTitle_en: String
+  parentPage: Page
+  path: String
+  published: Boolean
+  slug: String!
+  social_description: String!
+  social_description_de: String
+  social_description_en: String
+  social_title: String!
+  social_title_de: String
+  social_title_en: String
+  sortKey: Int
+}
+
+input PageCreateInput {
+  childPages: PageCreateManyWithoutParentPageInput
+  content: String
+  createdAt: DateTime
+  htmlTitle_de: String
+  htmlTitle_en: String
+  id: String
+  meta_description_de: String
+  meta_description_en: String
+  navigationTitle_de: String
+  navigationTitle_en: String!
+  parentPage: PageCreateOneWithoutChildPagesInput
+  published: Boolean
+  slug: String!
+  social_description_de: String
+  social_description_en: String
+  social_title_de: String
+  social_title_en: String
+  sortKey: Int
+}
+
+input PageCreateManyWithoutParentPageInput {
+  connect: [PageWhereUniqueInput!]
+  connectOrCreate: [PageCreateOrConnectWithoutPageInput!]
+  create: [PageCreateWithoutParentPageInput!]
+}
+
+input PageCreateOneWithoutChildPagesInput {
+  connect: PageWhereUniqueInput
+  connectOrCreate: PageCreateOrConnectWithoutPageInput
+  create: PageCreateWithoutChildPagesInput
+}
+
+input PageCreateOrConnectWithoutPageInput {
+  create: PageCreateWithoutChildPagesInput!
+  where: PageWhereUniqueInput!
+}
+
+input PageCreateWithoutChildPagesInput {
+  content: String
+  createdAt: DateTime
+  htmlTitle_de: String
+  htmlTitle_en: String
+  id: String
+  meta_description_de: String
+  meta_description_en: String
+  navigationTitle_de: String
+  navigationTitle_en: String!
+  parentPage: PageCreateOneWithoutChildPagesInput
+  path: String
+  published: Boolean
+  slug: String!
+  social_description_de: String
+  social_description_en: String
+  social_title_de: String
+  social_title_en: String
+  sortKey: Int
+}
+
+input PageCreateWithoutParentPageInput {
+  childPages: PageCreateManyWithoutParentPageInput
+  content: String
+  createdAt: DateTime
+  htmlTitle_de: String
+  htmlTitle_en: String
+  id: String
+  meta_description_de: String
+  meta_description_en: String
+  navigationTitle_de: String
+  navigationTitle_en: String!
+  path: String
+  published: Boolean
+  slug: String!
+  social_description_de: String
+  social_description_en: String
+  social_title_de: String
+  social_title_en: String
+  sortKey: Int
+}
+
+input PageFilter {
+  every: PageWhereInput
+  none: PageWhereInput
+  some: PageWhereInput
+}
+
+input PageOrderByInput {
+  content: SortOrder
+  createdAt: SortOrder
+  htmlTitle_de: SortOrder
+  htmlTitle_en: SortOrder
+  id: SortOrder
+  meta_description_de: SortOrder
+  meta_description_en: SortOrder
+  navigationTitle_de: SortOrder
+  navigationTitle_en: SortOrder
+  parentPageId: SortOrder
+  path: SortOrder
+  published: SortOrder
+  slug: SortOrder
+  social_description_de: SortOrder
+  social_description_en: SortOrder
+  social_title_de: SortOrder
+  social_title_en: SortOrder
+  sortKey: SortOrder
+}
+
+input PageScalarWhereInput {
+  AND: [PageScalarWhereInput!]
+  childPages: PageFilter
+  content: NullableStringFilter
+  createdAt: DateTimeFilter
+  htmlTitle_de: NullableStringFilter
+  htmlTitle_en: NullableStringFilter
+  id: UUIDFilter
+  meta_description_de: NullableStringFilter
+  meta_description_en: NullableStringFilter
+  navigationTitle_de: NullableStringFilter
+  navigationTitle_en: StringFilter
+  NOT: [PageScalarWhereInput!]
+  OR: [PageScalarWhereInput!]
+  parentPageId: NullableStringFilter
+  path: NullableStringFilter
+  published: NullableBooleanFilter
+  slug: StringFilter
+  social_description_de: NullableStringFilter
+  social_description_en: NullableStringFilter
+  social_title_de: NullableStringFilter
+  social_title_en: NullableStringFilter
+  sortKey: NullableIntFilter
+}
+
+input PageUpdateInput {
+  childPages: PageUpdateManyWithoutParentPageInput
+  content: String
+  createdAt: DateTime
+  htmlTitle_de: String
+  htmlTitle_en: String
+  id: String
+  meta_description_de: String
+  meta_description_en: String
+  navigationTitle_de: String
+  navigationTitle_en: String
+  parentPage: PageUpdateOneWithoutChildPagesInput
+  published: Boolean
+  slug: String
+  social_description_de: String
+  social_description_en: String
+  social_title_de: String
+  social_title_en: String
+  sortKey: Int
+}
+
+input PageUpdateManyDataInput {
+  content: String
+  createdAt: DateTime
+  htmlTitle_de: String
+  htmlTitle_en: String
+  id: String
+  meta_description_de: String
+  meta_description_en: String
+  navigationTitle_de: String
+  navigationTitle_en: String
+  path: String
+  published: Boolean
+  slug: String
+  social_description_de: String
+  social_description_en: String
+  social_title_de: String
+  social_title_en: String
+  sortKey: Int
+}
+
+input PageUpdateManyMutationInput {
+  content: String
+  createdAt: DateTime
+  htmlTitle_de: String
+  htmlTitle_en: String
+  id: String
+  meta_description_de: String
+  meta_description_en: String
+  navigationTitle_de: String
+  navigationTitle_en: String
+  path: String
+  published: Boolean
+  slug: String
+  social_description_de: String
+  social_description_en: String
+  social_title_de: String
+  social_title_en: String
+  sortKey: Int
+}
+
+input PageUpdateManyWithoutParentPageInput {
+  connect: [PageWhereUniqueInput!]
+  connectOrCreate: [PageCreateOrConnectWithoutPageInput!]
+  create: [PageCreateWithoutParentPageInput!]
+  delete: [PageWhereUniqueInput!]
+  deleteMany: [PageScalarWhereInput!]
+  disconnect: [PageWhereUniqueInput!]
+  set: [PageWhereUniqueInput!]
+  update: [PageUpdateWithWhereUniqueWithoutParentPageInput!]
+  updateMany: [PageUpdateManyWithWhereNestedInput!]
+  upsert: [PageUpsertWithWhereUniqueWithoutParentPageInput!]
+}
+
+input PageUpdateManyWithWhereNestedInput {
+  data: PageUpdateManyDataInput!
+  where: PageScalarWhereInput!
+}
+
+input PageUpdateOneWithoutChildPagesInput {
+  connect: PageWhereUniqueInput
+  connectOrCreate: PageCreateOrConnectWithoutPageInput
+  create: PageCreateWithoutChildPagesInput
+  delete: Boolean
+  disconnect: Boolean
+  update: PageUpdateWithoutChildPagesDataInput
+  upsert: PageUpsertWithoutChildPagesInput
+}
+
+input PageUpdateWithoutChildPagesDataInput {
+  content: String
+  createdAt: DateTime
+  htmlTitle_de: String
+  htmlTitle_en: String
+  id: String
+  meta_description_de: String
+  meta_description_en: String
+  navigationTitle_de: String
+  navigationTitle_en: String
+  parentPage: PageUpdateOneWithoutChildPagesInput
+  path: String
+  published: Boolean
+  slug: String
+  social_description_de: String
+  social_description_en: String
+  social_title_de: String
+  social_title_en: String
+  sortKey: Int
+}
+
+input PageUpdateWithoutParentPageDataInput {
+  childPages: PageUpdateManyWithoutParentPageInput
+  content: String
+  createdAt: DateTime
+  htmlTitle_de: String
+  htmlTitle_en: String
+  id: String
+  meta_description_de: String
+  meta_description_en: String
+  navigationTitle_de: String
+  navigationTitle_en: String
+  path: String
+  published: Boolean
+  slug: String
+  social_description_de: String
+  social_description_en: String
+  social_title_de: String
+  social_title_en: String
+  sortKey: Int
+}
+
+input PageUpdateWithWhereUniqueWithoutParentPageInput {
+  data: PageUpdateWithoutParentPageDataInput!
+  where: PageWhereUniqueInput!
+}
+
+input PageUpsertWithoutChildPagesInput {
+  create: PageCreateWithoutChildPagesInput!
+  update: PageUpdateWithoutChildPagesDataInput!
+}
+
+input PageUpsertWithWhereUniqueWithoutParentPageInput {
+  create: PageCreateWithoutParentPageInput!
+  update: PageUpdateWithoutParentPageDataInput!
+  where: PageWhereUniqueInput!
+}
+
+input PageWhereInput {
+  AND: [PageWhereInput!]
+  childPages: PageFilter
+  content: NullableStringFilter
+  createdAt: DateTimeFilter
+  htmlTitle_de: NullableStringFilter
+  htmlTitle_en: NullableStringFilter
+  id: UUIDFilter
+  meta_description_de: NullableStringFilter
+  meta_description_en: NullableStringFilter
+  navigationTitle_de: NullableStringFilter
+  navigationTitle_en: StringFilter
+  NOT: [PageWhereInput!]
+  OR: [PageWhereInput!]
+  parentPage: PageWhereInput
+  parentPageId: NullableStringFilter
+  path: NullableStringFilter
+  published: NullableBooleanFilter
+  slug: StringFilter
+  social_description_de: NullableStringFilter
+  social_description_en: NullableStringFilter
+  social_title_de: NullableStringFilter
+  social_title_en: NullableStringFilter
+  sortKey: NullableIntFilter
+}
+
+input PageWhereUniqueInput {
+  id: String
+  parentPageId_slug: ParentPageIdSlugCompoundUniqueInput
+  path: String
+}
+
+input ParentPageIdSlugCompoundUniqueInput {
+  parentPageId: String!
+  slug: String!
 }
 
 type Product {
@@ -285,17 +1116,50 @@ type Product {
 }
 
 input ProductCreateInput {
+  cartItems: CartItemCreateManyWithoutProductInput
   description: String!
   id: String
-  orders: OrderCreateManyWithoutProductsInput
+  orderItems: OrderItemCreateManyWithoutProductInput
   slug: String!
   title: String!
 }
 
-input ProductFilter {
-  every: ProductWhereInput
-  none: ProductWhereInput
-  some: ProductWhereInput
+input ProductCreateOneWithoutCartItemsInput {
+  connect: ProductWhereUniqueInput
+  connectOrCreate: ProductCreateOrConnectWithoutCartItemInput
+  create: ProductCreateWithoutCartItemsInput
+}
+
+input ProductCreateOneWithoutOrderItemsInput {
+  connect: ProductWhereUniqueInput
+  connectOrCreate: ProductCreateOrConnectWithoutOrderItemInput
+  create: ProductCreateWithoutOrderItemsInput
+}
+
+input ProductCreateOrConnectWithoutCartItemInput {
+  create: ProductCreateWithoutCartItemsInput!
+  where: ProductWhereUniqueInput!
+}
+
+input ProductCreateOrConnectWithoutOrderItemInput {
+  create: ProductCreateWithoutOrderItemsInput!
+  where: ProductWhereUniqueInput!
+}
+
+input ProductCreateWithoutCartItemsInput {
+  description: String!
+  id: String
+  orderItems: OrderItemCreateManyWithoutProductInput
+  slug: String!
+  title: String!
+}
+
+input ProductCreateWithoutOrderItemsInput {
+  cartItems: CartItemCreateManyWithoutProductInput
+  description: String!
+  id: String
+  slug: String!
+  title: String!
 }
 
 input ProductOrderByInput {
@@ -306,9 +1170,10 @@ input ProductOrderByInput {
 }
 
 input ProductUpdateInput {
+  cartItems: CartItemUpdateManyWithoutProductInput
   description: String
   id: String
-  orders: OrderUpdateManyWithoutProductsInput
+  orderItems: OrderItemUpdateManyWithoutProductInput
   slug: String
   title: String
 }
@@ -320,13 +1185,56 @@ input ProductUpdateManyMutationInput {
   title: String
 }
 
+input ProductUpdateOneRequiredWithoutCartItemsInput {
+  connect: ProductWhereUniqueInput
+  connectOrCreate: ProductCreateOrConnectWithoutCartItemInput
+  create: ProductCreateWithoutCartItemsInput
+  update: ProductUpdateWithoutCartItemsDataInput
+  upsert: ProductUpsertWithoutCartItemsInput
+}
+
+input ProductUpdateOneRequiredWithoutOrderItemsInput {
+  connect: ProductWhereUniqueInput
+  connectOrCreate: ProductCreateOrConnectWithoutOrderItemInput
+  create: ProductCreateWithoutOrderItemsInput
+  update: ProductUpdateWithoutOrderItemsDataInput
+  upsert: ProductUpsertWithoutOrderItemsInput
+}
+
+input ProductUpdateWithoutCartItemsDataInput {
+  description: String
+  id: String
+  orderItems: OrderItemUpdateManyWithoutProductInput
+  slug: String
+  title: String
+}
+
+input ProductUpdateWithoutOrderItemsDataInput {
+  cartItems: CartItemUpdateManyWithoutProductInput
+  description: String
+  id: String
+  slug: String
+  title: String
+}
+
+input ProductUpsertWithoutCartItemsInput {
+  create: ProductCreateWithoutCartItemsInput!
+  update: ProductUpdateWithoutCartItemsDataInput!
+}
+
+input ProductUpsertWithoutOrderItemsInput {
+  create: ProductCreateWithoutOrderItemsInput!
+  update: ProductUpdateWithoutOrderItemsDataInput!
+}
+
 input ProductWhereInput {
   AND: [ProductWhereInput!]
+  cartItems: CartItemFilter
   description: StringFilter
   id: UUIDFilter
   NOT: [ProductWhereInput!]
   OR: [ProductWhereInput!]
-  orders: OrderFilter
+  orderItems: OrderItemFilter
   slug: StringFilter
   title: StringFilter
 }
@@ -340,6 +1248,9 @@ type Query {
   adminBlogPost(where: BlogPostWhereUniqueInput!): BlogPost
   adminBlogPosts(cursor: BlogPostWhereUniqueInput, orderBy: [BlogPostOrderByInput!], skip: Int, take: Int, where: BlogPostWhereInput): [BlogPost!]!
   adminBlogPostsCount(cursor: BlogPostWhereUniqueInput, orderBy: BlogPostOrderByInput, skip: Int, take: Int, where: BlogPostWhereInput): Int
+  adminPage(where: PageWhereUniqueInput!): Page
+  adminPages(cursor: PageWhereUniqueInput, orderBy: [PageOrderByInput!], skip: Int, take: Int, where: PageWhereInput): [Page!]!
+  adminPagesCount(cursor: PageWhereUniqueInput, orderBy: PageOrderByInput, skip: Int, take: Int, where: PageWhereInput): Int
   adminProduct(where: ProductWhereUniqueInput!): Product
   adminProducts(cursor: ProductWhereUniqueInput, orderBy: [ProductOrderByInput!], skip: Int, take: Int, where: ProductWhereInput): [Product!]!
   adminProductsCount(cursor: ProductWhereUniqueInput, orderBy: ProductOrderByInput, skip: Int, take: Int, where: ProductWhereInput): Int
@@ -348,6 +1259,8 @@ type Query {
   adminUsersCount(cursor: UserWhereUniqueInput, orderBy: UserOrderByInput, skip: Int, take: Int, where: UserWhereInput): Int
   blogPosts(cursor: BlogPostWhereUniqueInput, skip: Int, take: Int, where: BlogPostWhereInput): [BlogPost!]!
   me: User
+  page(pageId: String, path: String): Page
+  pages(parentPageId: String, parentPath: String): [Page!]
   products(cursor: ProductWhereUniqueInput, skip: Int, take: Int, where: ProductWhereInput): [Product!]!
 }
 
@@ -374,17 +1287,12 @@ input StringFilter {
   startsWith: String
 }
 
-input UpsertCartInput {
-  products: [UpsertCartProductsInput!]
-}
-
-input UpsertCartProductsInput {
-  productId: String
-  quantity: Int
-}
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
 
 type User {
   blogPosts(cursor: BlogPostWhereUniqueInput, skip: Int, take: Int): [BlogPost!]!
+  cart: Cart
   email: String!
   id: String!
   roles(cursor: UserRoleWhereUniqueInput, skip: Int, take: Int): [UserRole!]!
@@ -392,18 +1300,68 @@ type User {
 
 input UserCreateInput {
   blogPosts: BlogPostCreateManyWithoutAuthorInput
+  cart: CartCreateOneWithoutUserInput
   email: String!
   id: String
+  orders: OrderCreateManyWithoutUserInput
   password: String!
   roles: UserRoleCreateManyWithoutUsersInput
 }
 
 input UserCreateOneWithoutBlogPostsInput {
   connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutBlogPostInput
   create: UserCreateWithoutBlogPostsInput
 }
 
+input UserCreateOneWithoutCartInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutCartInput
+  create: UserCreateWithoutCartInput
+}
+
+input UserCreateOneWithoutOrdersInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutOrderInput
+  create: UserCreateWithoutOrdersInput
+}
+
+input UserCreateOrConnectWithoutBlogPostInput {
+  create: UserCreateWithoutBlogPostsInput!
+  where: UserWhereUniqueInput!
+}
+
+input UserCreateOrConnectWithoutCartInput {
+  create: UserCreateWithoutCartInput!
+  where: UserWhereUniqueInput!
+}
+
+input UserCreateOrConnectWithoutOrderInput {
+  create: UserCreateWithoutOrdersInput!
+  where: UserWhereUniqueInput!
+}
+
 input UserCreateWithoutBlogPostsInput {
+  cart: CartCreateOneWithoutUserInput
+  email: String!
+  id: String
+  orders: OrderCreateManyWithoutUserInput
+  password: String!
+  roles: UserRoleCreateManyWithoutUsersInput
+}
+
+input UserCreateWithoutCartInput {
+  blogPosts: BlogPostCreateManyWithoutAuthorInput
+  email: String!
+  id: String
+  orders: OrderCreateManyWithoutUserInput
+  password: String!
+  roles: UserRoleCreateManyWithoutUsersInput
+}
+
+input UserCreateWithoutOrdersInput {
+  blogPosts: BlogPostCreateManyWithoutAuthorInput
+  cart: CartCreateOneWithoutUserInput
   email: String!
   id: String
   password: String!
@@ -428,7 +1386,13 @@ type UserRole {
 
 input UserRoleCreateManyWithoutUsersInput {
   connect: [UserRoleWhereUniqueInput!]
+  connectOrCreate: [UserRoleCreateOrConnectWithoutUserInput!]
   create: [UserRoleCreateWithoutUsersInput!]
+}
+
+input UserRoleCreateOrConnectWithoutUserInput {
+  create: UserRoleCreateWithoutUsersInput!
+  where: UserRoleWhereUniqueInput!
 }
 
 input UserRoleCreateWithoutUsersInput {
@@ -455,6 +1419,7 @@ input UserRoleUpdateManyDataInput {
 
 input UserRoleUpdateManyWithoutUsersInput {
   connect: [UserRoleWhereUniqueInput!]
+  connectOrCreate: [UserRoleCreateOrConnectWithoutUserInput!]
   create: [UserRoleCreateWithoutUsersInput!]
   delete: [UserRoleWhereUniqueInput!]
   deleteMany: [UserRoleScalarWhereInput!]
@@ -499,8 +1464,10 @@ input UserRoleWhereUniqueInput {
 
 input UserUpdateInput {
   blogPosts: BlogPostUpdateManyWithoutAuthorInput
+  cart: CartUpdateOneWithoutUserInput
   email: String
   id: String
+  orders: OrderUpdateManyWithoutUserInput
   password: String
   roles: UserRoleUpdateManyWithoutUsersInput
 }
@@ -513,12 +1480,51 @@ input UserUpdateManyMutationInput {
 
 input UserUpdateOneRequiredWithoutBlogPostsInput {
   connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutBlogPostInput
   create: UserCreateWithoutBlogPostsInput
   update: UserUpdateWithoutBlogPostsDataInput
   upsert: UserUpsertWithoutBlogPostsInput
 }
 
+input UserUpdateOneRequiredWithoutOrdersInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutOrderInput
+  create: UserCreateWithoutOrdersInput
+  update: UserUpdateWithoutOrdersDataInput
+  upsert: UserUpsertWithoutOrdersInput
+}
+
+input UserUpdateOneWithoutCartInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutCartInput
+  create: UserCreateWithoutCartInput
+  delete: Boolean
+  disconnect: Boolean
+  update: UserUpdateWithoutCartDataInput
+  upsert: UserUpsertWithoutCartInput
+}
+
 input UserUpdateWithoutBlogPostsDataInput {
+  cart: CartUpdateOneWithoutUserInput
+  email: String
+  id: String
+  orders: OrderUpdateManyWithoutUserInput
+  password: String
+  roles: UserRoleUpdateManyWithoutUsersInput
+}
+
+input UserUpdateWithoutCartDataInput {
+  blogPosts: BlogPostUpdateManyWithoutAuthorInput
+  email: String
+  id: String
+  orders: OrderUpdateManyWithoutUserInput
+  password: String
+  roles: UserRoleUpdateManyWithoutUsersInput
+}
+
+input UserUpdateWithoutOrdersDataInput {
+  blogPosts: BlogPostUpdateManyWithoutAuthorInput
+  cart: CartUpdateOneWithoutUserInput
   email: String
   id: String
   password: String
@@ -530,13 +1536,25 @@ input UserUpsertWithoutBlogPostsInput {
   update: UserUpdateWithoutBlogPostsDataInput!
 }
 
+input UserUpsertWithoutCartInput {
+  create: UserCreateWithoutCartInput!
+  update: UserUpdateWithoutCartDataInput!
+}
+
+input UserUpsertWithoutOrdersInput {
+  create: UserCreateWithoutOrdersInput!
+  update: UserUpdateWithoutOrdersDataInput!
+}
+
 input UserWhereInput {
   AND: [UserWhereInput!]
   blogPosts: BlogPostFilter
+  cart: CartWhereInput
   email: StringFilter
   id: UUIDFilter
   NOT: [UserWhereInput!]
   OR: [UserWhereInput!]
+  orders: OrderFilter
   password: StringFilter
   roles: UserRoleFilter
 }

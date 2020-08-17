@@ -1,44 +1,87 @@
 import { schema } from "nexus";
 import { textChangeRangeIsUnchanged } from "typescript";
+import { getUserId } from "../../utils/user";
 
 schema.objectType({
   name: "Order",
   definition(t) {
     t.model.id();
-    t.model.type();
-    t.model.products();
+    t.model.status();
+    t.model.orderItems(null);
     t.model.created();
   },
 });
 
-schema.inputObjectType({
-  name: "UpsertCartProductsInput",
+schema.objectType({
+  name: "OrderItem",
   definition(t) {
-    t.int("quantity");
-    t.string("productId");
+    t.model.id();
+    t.model.product();
+    t.model.order();
+    t.model.quantity();
   },
 });
 
-schema.inputObjectType({
-  name: "UpsertCartInput",
+schema.objectType({
+  name: "Cart",
   definition(t) {
-    t.field("products", { type: "UpsertCartProductsInput", list: true });
+    t.model.id();
+    t.model.cartItems(null);
+    t.model.created();
   },
 });
+
+schema.objectType({
+  name: "CartItem",
+  definition(t) {
+    t.model.id();
+    t.model.product();
+    t.model.cart();
+    t.model.quantity();
+  },
+});
+
+// schema.inputObjectType({
+//   name: "UpsertCartProductsInput",
+//   definition(t) {
+//     t.int("quantity");
+//     t.string("productId");
+//   },
+// });
+
+// schema.inputObjectType({
+//   name: "AddToCart",
+//   definition(t) {
+//     t.field("products", { type: "UpsertCartProductsInput", list: true });
+//   },
+// });
 
 schema.extendType({
   type: "Mutation",
   definition(t) {
-    t.field("upsertCart", {
-      type: "Order",
-      async resolve(root, args, ctx) {
-        return await ctx.db.order.create({
-          data: {
-            products: { connect: { id: "" } },
-            created: new Date(),
-            type: "pending",
-          },
-        });
+    t.field("addToCart", {
+      type: "Cart",
+      args: {
+        product: schema.arg({ type: "ProductWhereUniqueInput" }),
+        quantity: schema.intArg(),
+      },
+      async resolve(root, { product, quantity }, ctx) {
+        return await ctx.db.cartItem
+          .create({
+            data: {
+              product: { connect: product },
+              quantity,
+              cart: {
+                connectOrCreate: {
+                  where: { userId: getUserId(ctx.token) },
+                  create: {
+                    user: { connect: { id: getUserId(ctx.token) } },
+                  },
+                },
+              },
+            },
+          })
+          .cart();
       },
     });
   },

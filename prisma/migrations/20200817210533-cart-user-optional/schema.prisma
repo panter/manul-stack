@@ -1,0 +1,107 @@
+datasource db {
+  provider = "sqlite"
+  url = "***"
+}
+
+generator prisma_client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["connectOrCreate"]
+}
+
+model BlogPost {
+  id        String  @default(uuid()) @id
+  title     String
+  content   String?
+  author    User    @relation(fields: [authorId], references: [id])
+  authorId  String
+  published Boolean @default(false)
+}
+
+model UserRole {
+  id    String @id
+  users User[]
+}
+
+model User {
+  id        String     @default(uuid()) @id
+  email     String     @unique
+  password  String
+  blogPosts BlogPost[]
+  roles     UserRole[]
+  orders    Order[]
+  cart      Cart?
+}
+
+model Product {
+  id          String      @default(uuid()) @id
+  slug        String      @unique
+  title       String
+  description String
+  orderItems  OrderItem[]
+  cartItems   CartItem[]
+}
+
+model OrderItem {
+  id        String  @default(uuid()) @id
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
+  order     Order   @relation(fields: [orderId], references: [id])
+  orderId   String
+  quantity  Int     @default(1)
+}
+
+model Order {
+  id         String      @default(uuid()) @id
+  status     String
+  created    DateTime    @default(now())
+  orderItems OrderItem[]
+  user       User        @relation(fields: [userId], references: [id])
+  userId     String
+}
+
+model CartItem {
+  id        String  @default(uuid()) @id
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
+  cart      Cart?   @relation(fields: [cartId], references: [id])
+  cartId    String?
+  quantity  Int     @default(1)
+}
+
+model Cart {
+  id        String     @default(uuid()) @id
+  created   DateTime   @default(now())
+  cartItems CartItem[]
+  user      User?      @relation(fields: [userId], references: [id])
+  userId    String?    @unique
+}
+
+model Page {
+  id                 String   @default(uuid()) @id
+  published          Boolean? @default(false)
+  createdAt          DateTime @default(now())
+  path               String?  @unique
+  slug               String
+  sortKey            Int?     @default(100)
+  parentPageId       String?
+  parentPage         Page?    @relation("parentChild", fields: [parentPageId], references: [id])
+  childPages         Page[]   @relation("parentChild")
+  navigationTitle_en String
+  navigationTitle_de String?
+
+  htmlTitle_en String?
+  htmlTitle_de String?
+
+  content             String? // is multilang already
+  meta_description_en String?
+  meta_description_de String?
+
+  social_description_en String?
+  social_description_de String?
+
+  social_title_en String?
+  social_title_de String?
+
+
+  @@unique([parentPageId, slug])
+}

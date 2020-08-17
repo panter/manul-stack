@@ -7,7 +7,7 @@ const SVG = styled.svg`
 `;
 
 export type PanterLogoProps = {
-  style?: {};
+  style?: React.CSSProperties;
   className?: string;
 };
 

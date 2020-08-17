@@ -1,6 +1,14 @@
 # Prisma Migrate lockfile v1
 
 20200813141606-initial
-20200817040128-product
-20200817121550-orders
-20200817121824-order-created
+20200813145412-make-blog-post-content-optional
+20200814214144-add-pages
+20200815223740-make-html-title-optional
+20200817195804-order-and-product
+20200817202537-order-and-product
+20200817204124-cart
+20200817204310-cart-user-unique
+20200817205631-user-only-one-cart
+20200817210102-user-cart-optional
+20200817210313-cartitems-cart-optional
+20200817210533-cart-user-optional

@@ -1,16 +1,14 @@
 import { compare, hash } from "bcryptjs";
 import { sign } from "jsonwebtoken";
 import { schema } from "nexus";
-import {
-  APP_SECRET,
-  getUserId,
-  ROOT_URL,
-  getHashedPassword,
-} from "../../utils";
+import { APP_SECRET, getUserId, getHashedPassword } from "../../utils/user";
 import { User } from "@prisma/client";
 import { booleanArg, objectType } from "nexus/components/schema";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
+
+const { ROOT_URL = "http://localhost:3000" } = process.env;
+
 dayjs.extend(utc);
 
 const setLoginHeader = (ctx: NexusContext, user: User) => {
@@ -46,6 +44,7 @@ schema.objectType({
     t.model.email();
     t.model.blogPosts();
     t.model.roles();
+    t.model.cart();
   },
 });
 

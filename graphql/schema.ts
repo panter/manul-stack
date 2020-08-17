@@ -1,27 +1,32 @@
-import { schema, use, settings } from "nexus";
+import { schema, use, settings, server } from "nexus";
 
 import { prisma } from "nexus-plugin-prisma";
 import { shield } from "nexus-plugin-shield";
 import { auth } from "nexus-plugin-jwt-auth";
-import "./modules/user";
-import "./modules/product";
-import { nexusAddCrudResolvers } from "@ra-data-prisma/backend";
-import { APP_SECRET } from "./utils";
-import { rules } from "./permissions";
 
-nexusAddCrudResolvers(
-  schema,
-  {
-    User: {},
-    BlogPost: {},
-    Product: {},
-  },
-  {
-    aliasPrefix: "admin",
-  }
-);
+import { APP_SECRET } from "./utils/user";
+import { rules } from "./permissions";
+import { getRequestLang } from "./utils/i18n";
+
+import "./modules/admin";
+import "./modules/user";
+import "./modules/files";
+import "./modules/blogPost";
+import "./modules/page";
+import "./modules/product";
+import "./modules/order";
+
+schema.addToContext(({ req, res }) => {
+  return {
+    lang: getRequestLang(req),
+  };
+});
+
 settings.change({
   server: {
+    graphql: {
+      introspection: true,
+    },
     playground: {
       settings: {
         "request.credentials": "include",
@@ -54,39 +59,3 @@ use(
     },
   })
 );
-
-schema.objectType({
-  name: "BlogPost",
-  definition(t) {
-    t.model.id();
-    t.model.title();
-    t.model.content();
-    t.model.author();
-    t.model.published();
-  },
-});
-
-schema.queryType({
-  definition(t) {
-    t.crud.blogPosts({
-      filtering: true,
-
-      resolve(root, { where, ...args }, ctx, info, originalResolve) {
-        return originalResolve(
-          root,
-          {
-            where: {
-              ...where,
-              published: {
-                equals: true,
-              },
-            },
-            ...args,
-          },
-          ctx,
-          info
-        );
-      },
-    });
-  },
-});

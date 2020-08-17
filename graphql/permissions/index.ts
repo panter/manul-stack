@@ -1,5 +1,5 @@
 import { rule, allow, deny, or } from "nexus-plugin-shield";
-import { getUserId } from "../utils";
+import { getUserId } from "../utils/user";
 
 const isAuthenticated = rule({ cache: "contextual" })(
   async (parent, args, ctx: NexusContext, info) => {
@@ -28,13 +28,16 @@ const rules = {
   Query: {
     "*": isAdmin,
     me: allow,
-
+    page: allow,
+    pages: allow,
     blogPosts: allow,
+    products: allow,
   },
   Mutations: {
     adminCreateOneBlogPost: isAdmin,
     login: allow,
     signup: allow,
+    addToCart: isAuthenticated,
   },
 };
 

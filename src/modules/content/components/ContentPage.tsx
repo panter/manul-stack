@@ -1,12 +1,18 @@
 import { gql, useQuery } from "@apollo/client";
 import Editor from "@react-page/editor";
 import { NextSeo } from "next-seo";
+import dynamic from "next/dynamic";
 import React from "react";
 import styled from "styled-components";
-import { useTranslation, Link } from "../../../config/i18n";
+import { useTranslation } from "../../../config/i18n";
 import { plugins } from "../../reactPage/plugins";
-import { GetPageByPath, GetPageByPathVariables } from "./types/GetPageByPath";
 import ErrorMissing from "./ErrorMissing";
+import { GetPageByPath, GetPageByPathVariables } from "./types/GetPageByPath";
+
+const PageEditButton = dynamic({
+  loader: () => import("./PageEditButton"),
+  ssr: false,
+});
 
 const Base = styled.div``;
 
@@ -28,8 +34,10 @@ const QUERY = gql`
     }
   }
 `;
+
 const ContentPage: React.FC<ContentPageProps> = ({ path }) => {
   const { i18n } = useTranslation();
+
   const { data, loading, error } = useQuery<
     GetPageByPath,
     GetPageByPathVariables
@@ -55,9 +63,7 @@ const ContentPage: React.FC<ContentPageProps> = ({ path }) => {
         }}
       />
       <Base>
-        <Link href="/admin" as={`/admin#/Page/${page.id}/1`}>
-          <a>Edit page</a>
-        </Link>
+        <PageEditButton pageId={page.id} />
         {page.content ? (
           <Editor
             lang={i18n.language}

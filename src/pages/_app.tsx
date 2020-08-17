@@ -12,10 +12,10 @@ import "@react-page/plugins-slate/lib/index.css";
 import "@react-page/ui/lib/index.css";
 import { createUploadLink } from "apollo-upload-client";
 import withApollo from "next-with-apollo";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { ThemeProvider } from "styled-components";
 import { Reset } from "styled-reset";
-import { appWithTranslation, i18n } from "../config/i18n";
+import { appWithTranslation, i18n, useTranslation } from "../config/i18n";
 import theme from "../config/theme";
 import BasePageLayout from "../modules/layout/components/BasePageLayout";
 import { useRouter } from "next/router";
@@ -46,14 +46,26 @@ const withApolloClient = withApollo(
 
 const getDefaultLayout = (el: any) => <BasePageLayout>{el}</BasePageLayout>;
 function MyApp({ Component, pageProps, apollo }: any) {
-  const lng = useRouter().query?.lng;
+  const { i18n } = useTranslation();
+  const previousLang = useRef<string>();
   useEffect(() => {
-    // the backend will return some content in the language thats defined in the context
-    // the client will cache that, so we have to reset it on language change
-    if (lng) {
-      apollo.resetStore();
-    }
-  }, [lng]);
+    const onLangChange = (lng) => {
+      if (!previousLang.current) {
+        previousLang.current = lng;
+      } else if (previousLang.current !== lng) {
+        previousLang.current = lng;
+        // the backend will return some content in the language thats defined in the context
+        // the client will cache that, so we have to reset it on language change
+
+        apollo.resetStore();
+      }
+    };
+    i18n.on("languageChanged", onLangChange);
+    return () => {
+      i18n.off("languageChanged", onLangChange);
+    };
+  });
+
   const getLayout = Component.getLayout ?? getDefaultLayout;
   return (
     <ThemeProvider theme={theme}>

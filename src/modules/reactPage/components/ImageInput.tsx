@@ -1,4 +1,3 @@
-import { readAndCompressImage } from "browser-image-resizer";
 import FileInput from "./FileInput";
 import { File } from "aws-sdk/lib/dynamodb/document_client";
 
@@ -35,7 +34,9 @@ const ImageInput: React.FC<ImageInputProps> = ({
 
           const shouldResize = file.size > 512 * 1024;
           const resizedFile = shouldResize
-            ? await readAndCompressImage(file, config)
+            ? await import("browser-image-resizer").then((r) =>
+                r.readAndCompressImage(file, config)
+              )
             : file;
 
           onChange(resizedFile, file.name);

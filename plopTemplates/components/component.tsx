@@ -6,7 +6,7 @@ const Base = styled.div`
 `;
 
 export type {{name}}Props = {
-    style?: {};
+    style?: React.CSSProperties;
     className?: string;
 }
 

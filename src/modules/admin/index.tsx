@@ -3,12 +3,13 @@ import { useDataProvider } from "@ra-data-prisma/dataprovider";
 import useAuthProvider from "./useAuthProvider";
 import userResource from "./resources/user";
 import blogPostResource from "./resources/blogPost";
+import pageResource from "./resources/page";
+import { useApolloClient } from "@apollo/client";
 
 const AdminApp = () => {
+  const apolloClient = useApolloClient();
   const dataProvider = useDataProvider({
-    clientOptions: {
-      uri: "/graphql",
-    },
+    client: apolloClient,
     aliasPrefix: "admin",
   });
   const authProvider = useAuthProvider();
@@ -20,6 +21,7 @@ const AdminApp = () => {
   return (
     <Admin dataProvider={dataProvider} authProvider={authProvider}>
       {userResource()}
+      {pageResource()}
       {blogPostResource()}
     </Admin>
   );

@@ -6,4 +6,10 @@ require("../../../graphql/schema");
 
 app.assemble();
 
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
 export default app.server.handlers.graphql;

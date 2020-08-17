@@ -109,7 +109,9 @@ const FileInput: React.FC<FileInputProps> = ({
                   paddingBottom: 5,
                 }}
                 src={value}
-                onError={(e) => setImageError(true)}
+                onError={(e) => {
+                  setImageError(true);
+                }}
                 onLoad={() => setImageError(false)}
               />
             ) : (

@@ -144,6 +144,17 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the
 """
 scalar DateTime
 
+input DateTimeFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: DateTime
+  notIn: [DateTime!]
+}
+
 """
 The `JSON` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -155,31 +166,189 @@ type LoginResult {
 
 type Mutation {
   adminCreateOneBlogPost(data: BlogPostCreateInput!): BlogPost!
+  adminCreateOneProduct(data: ProductCreateInput!): Product!
   adminCreateOneUser(data: UserCreateInput!): User!
   adminDeleteManyBlogPost(where: BlogPostWhereInput): BatchPayload!
+  adminDeleteManyProduct(where: ProductWhereInput): BatchPayload!
   adminDeleteManyUser(where: UserWhereInput): BatchPayload!
   adminDeleteOneBlogPost(where: BlogPostWhereUniqueInput!): BlogPost
+  adminDeleteOneProduct(where: ProductWhereUniqueInput!): Product
   adminDeleteOneUser(where: UserWhereUniqueInput!): User
   adminUpdateManyBlogPost(data: BlogPostUpdateManyMutationInput!, where: BlogPostWhereInput): BatchPayload!
+  adminUpdateManyProduct(data: ProductUpdateManyMutationInput!, where: ProductWhereInput): BatchPayload!
   adminUpdateManyUser(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
   adminUpdateOneBlogPost(data: BlogPostUpdateInput!, where: BlogPostWhereUniqueInput!): BlogPost
+  adminUpdateOneProduct(data: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product
   adminUpdateOneUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   adminUpsertOneBlogPost(create: BlogPostCreateInput!, update: BlogPostUpdateInput!, where: BlogPostWhereUniqueInput!): BlogPost!
+  adminUpsertOneProduct(create: ProductCreateInput!, update: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product!
   adminUpsertOneUser(create: UserCreateInput!, update: UserUpdateInput!, where: UserWhereUniqueInput!): User!
   login(email: String!, password: String!): LoginResult
   logout: Boolean
   signup(email: String!, password: String!): SignupResult
+  upsertCart: Order
+}
+
+type Order {
+  created: DateTime!
+  id: String!
+  products(cursor: ProductWhereUniqueInput, skip: Int, take: Int): [Product!]!
+  type: String!
+}
+
+input OrderCreateManyWithoutProductsInput {
+  connect: [OrderWhereUniqueInput!]
+  create: [OrderCreateWithoutProductsInput!]
+}
+
+input OrderCreateWithoutProductsInput {
+  created: DateTime!
+  id: String
+  type: String!
+}
+
+input OrderFilter {
+  every: OrderWhereInput
+  none: OrderWhereInput
+  some: OrderWhereInput
+}
+
+input OrderScalarWhereInput {
+  AND: [OrderScalarWhereInput!]
+  created: DateTimeFilter
+  id: UUIDFilter
+  NOT: [OrderScalarWhereInput!]
+  OR: [OrderScalarWhereInput!]
+  products: ProductFilter
+  type: StringFilter
+}
+
+input OrderUpdateManyDataInput {
+  created: DateTime
+  id: String
+  type: String
+}
+
+input OrderUpdateManyWithoutProductsInput {
+  connect: [OrderWhereUniqueInput!]
+  create: [OrderCreateWithoutProductsInput!]
+  delete: [OrderWhereUniqueInput!]
+  deleteMany: [OrderScalarWhereInput!]
+  disconnect: [OrderWhereUniqueInput!]
+  set: [OrderWhereUniqueInput!]
+  update: [OrderUpdateWithWhereUniqueWithoutProductsInput!]
+  updateMany: [OrderUpdateManyWithWhereNestedInput!]
+  upsert: [OrderUpsertWithWhereUniqueWithoutProductsInput!]
+}
+
+input OrderUpdateManyWithWhereNestedInput {
+  data: OrderUpdateManyDataInput!
+  where: OrderScalarWhereInput!
+}
+
+input OrderUpdateWithoutProductsDataInput {
+  created: DateTime
+  id: String
+  type: String
+}
+
+input OrderUpdateWithWhereUniqueWithoutProductsInput {
+  data: OrderUpdateWithoutProductsDataInput!
+  where: OrderWhereUniqueInput!
+}
+
+input OrderUpsertWithWhereUniqueWithoutProductsInput {
+  create: OrderCreateWithoutProductsInput!
+  update: OrderUpdateWithoutProductsDataInput!
+  where: OrderWhereUniqueInput!
+}
+
+input OrderWhereInput {
+  AND: [OrderWhereInput!]
+  created: DateTimeFilter
+  id: UUIDFilter
+  NOT: [OrderWhereInput!]
+  OR: [OrderWhereInput!]
+  products: ProductFilter
+  type: StringFilter
+}
+
+input OrderWhereUniqueInput {
+  id: String
+}
+
+type Product {
+  description: String!
+  id: String!
+  slug: String!
+  title: String!
+}
+
+input ProductCreateInput {
+  description: String!
+  id: String
+  orders: OrderCreateManyWithoutProductsInput
+  slug: String!
+  title: String!
+}
+
+input ProductFilter {
+  every: ProductWhereInput
+  none: ProductWhereInput
+  some: ProductWhereInput
+}
+
+input ProductOrderByInput {
+  description: SortOrder
+  id: SortOrder
+  slug: SortOrder
+  title: SortOrder
+}
+
+input ProductUpdateInput {
+  description: String
+  id: String
+  orders: OrderUpdateManyWithoutProductsInput
+  slug: String
+  title: String
+}
+
+input ProductUpdateManyMutationInput {
+  description: String
+  id: String
+  slug: String
+  title: String
+}
+
+input ProductWhereInput {
+  AND: [ProductWhereInput!]
+  description: StringFilter
+  id: UUIDFilter
+  NOT: [ProductWhereInput!]
+  OR: [ProductWhereInput!]
+  orders: OrderFilter
+  slug: StringFilter
+  title: StringFilter
+}
+
+input ProductWhereUniqueInput {
+  id: String
+  slug: String
 }
 
 type Query {
   adminBlogPost(where: BlogPostWhereUniqueInput!): BlogPost
   adminBlogPosts(cursor: BlogPostWhereUniqueInput, orderBy: [BlogPostOrderByInput!], skip: Int, take: Int, where: BlogPostWhereInput): [BlogPost!]!
   adminBlogPostsCount(cursor: BlogPostWhereUniqueInput, orderBy: BlogPostOrderByInput, skip: Int, take: Int, where: BlogPostWhereInput): Int
+  adminProduct(where: ProductWhereUniqueInput!): Product
+  adminProducts(cursor: ProductWhereUniqueInput, orderBy: [ProductOrderByInput!], skip: Int, take: Int, where: ProductWhereInput): [Product!]!
+  adminProductsCount(cursor: ProductWhereUniqueInput, orderBy: ProductOrderByInput, skip: Int, take: Int, where: ProductWhereInput): Int
   adminUser(where: UserWhereUniqueInput!): User
   adminUsers(cursor: UserWhereUniqueInput, orderBy: [UserOrderByInput!], skip: Int, take: Int, where: UserWhereInput): [User!]!
   adminUsersCount(cursor: UserWhereUniqueInput, orderBy: UserOrderByInput, skip: Int, take: Int, where: UserWhereInput): Int
   blogPosts(cursor: BlogPostWhereUniqueInput, skip: Int, take: Int, where: BlogPostWhereInput): [BlogPost!]!
   me: User
+  products(cursor: ProductWhereUniqueInput, skip: Int, take: Int, where: ProductWhereInput): [Product!]!
 }
 
 type SignupResult {
@@ -203,6 +372,15 @@ input StringFilter {
   not: String
   notIn: [String!]
   startsWith: String
+}
+
+input UpsertCartInput {
+  products: [UpsertCartProductsInput!]
+}
+
+input UpsertCartProductsInput {
+  productId: String
+  quantity: Int
 }
 
 type User {

@@ -4,6 +4,7 @@ import { prisma } from "nexus-plugin-prisma";
 import { shield } from "nexus-plugin-shield";
 import { auth } from "nexus-plugin-jwt-auth";
 import "./modules/user";
+import "./modules/product";
 import { nexusAddCrudResolvers } from "@ra-data-prisma/backend";
 import { APP_SECRET } from "./utils";
 import { rules } from "./permissions";
@@ -13,6 +14,7 @@ nexusAddCrudResolvers(
   {
     User: {},
     BlogPost: {},
+    Product: {},
   },
   {
     aliasPrefix: "admin",

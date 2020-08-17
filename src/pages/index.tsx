@@ -16,6 +16,7 @@ const Base = styled.div`
   max-width: 960px;
   padding: 20px;
 `;
+
 export default function Home() {
   return (
     <Base>

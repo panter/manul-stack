@@ -1,6 +1,6 @@
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator prisma_client {
@@ -30,16 +30,8 @@ model User {
 }
 
 model Product {
-  id          String  @default(uuid()) @id
-  slug        String  @unique
+  id          String @default(uuid()) @id
+  slug        String @unique
   title       String
   description String
-  orders      Order[] @relation(references: [id])
-}
-
-model Order {
-  id       String    @default(uuid()) @id
-  type     String
-  products Product[] @relation(references: [id])
-  created  DateTime
 }

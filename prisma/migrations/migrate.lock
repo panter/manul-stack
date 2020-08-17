@@ -1,3 +1,6 @@
 # Prisma Migrate lockfile v1
 
 20200813141606-initial
+20200817040128-product
+20200817121550-orders
+20200817121824-order-created

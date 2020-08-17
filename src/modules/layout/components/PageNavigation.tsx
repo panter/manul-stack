@@ -12,7 +12,7 @@ const Base = styled.ul`
 `;
 
 export type PageNavigationProps = {
-  style?: {};
+  style?: React.CSSProperties;
   className?: string;
   parentPageId?: string;
 };
@@ -42,6 +42,11 @@ const PageNavigation: React.FC<PageNavigationProps> = ({
   }
   return (
     <Base style={style} className={className}>
+      {!parentPageId ? (
+        <li>
+          <PageLink path="/" />
+        </li>
+      ) : null}
       {data?.pages.map((page) => (
         <li key={page.id}>
           <PageLink page={page} />

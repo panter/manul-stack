@@ -3,7 +3,7 @@ import Editor from "@react-page/editor";
 import { NextSeo } from "next-seo";
 import React from "react";
 import styled from "styled-components";
-import { useTranslation } from "../../../config/i18n";
+import { useTranslation, Link } from "../../../config/i18n";
 import { plugins } from "../../reactPage/plugins";
 import { GetPageByPath, GetPageByPathVariables } from "./types/GetPageByPath";
 import ErrorMissing from "./ErrorMissing";
@@ -49,8 +49,15 @@ const ContentPage: React.FC<ContentPageProps> = ({ path }) => {
       <NextSeo
         title={page.htmlTitle || page.navigationTitle}
         description={page.meta_description}
+        openGraph={{
+          title: page.social_title || page.htmlTitle || page.navigationTitle,
+          description: page.social_description || page.meta_description,
+        }}
       />
       <Base>
+        <Link href="/admin" as={`/admin#/Page/${page.id}/1`}>
+          <a>Edit page</a>
+        </Link>
         {page.content ? (
           <Editor
             lang={i18n.language}

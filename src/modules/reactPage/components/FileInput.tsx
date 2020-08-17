@@ -47,7 +47,7 @@ const Base = styled.div`
 `;
 
 export interface FileInputProps {
-  style?: {};
+  style?: React.CSSProperties;
   className?: string;
   name?: string;
   value?: string;
@@ -102,7 +102,12 @@ const FileInput: React.FC<FileInputProps> = ({
           >
             {!imageError ? (
               <img
-                style={{ display: "block", width: 200, paddingBottom: 5 }}
+                style={{
+                  display: "block",
+                  width: "100%",
+                  maxWidth: 200,
+                  paddingBottom: 5,
+                }}
                 src={value}
                 onError={(e) => setImageError(true)}
                 onLoad={() => setImageError(false)}

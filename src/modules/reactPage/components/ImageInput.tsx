@@ -3,7 +3,7 @@ import FileInput from "./FileInput";
 import { File } from "aws-sdk/lib/dynamodb/document_client";
 
 export interface ImageInputProps {
-  style?: {};
+  style?: React.CSSProperties;
   className?: string;
   name?: string;
   value?: string;

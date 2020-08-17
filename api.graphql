@@ -180,13 +180,13 @@ type Mutation {
   adminUpdateOneBlogPost(data: BlogPostUpdateInput!, where: BlogPostWhereUniqueInput!): BlogPost
   adminUpdateOnePage(data: PageUpdateInput!, where: PageWhereUniqueInput!): Page
   adminUpdateOneUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  adminUploadFile(file: Upload, fileName: String, folderName: String): String
   adminUpsertOneBlogPost(create: BlogPostCreateInput!, update: BlogPostUpdateInput!, where: BlogPostWhereUniqueInput!): BlogPost!
   adminUpsertOnePage(create: PageCreateInput!, update: PageUpdateInput!, where: PageWhereUniqueInput!): Page!
   adminUpsertOneUser(create: UserCreateInput!, update: UserUpdateInput!, where: UserWhereUniqueInput!): User!
   login(email: String!, password: String!): LoginResult
   logout: Boolean
   signup(email: String!, password: String!): SignupResult
-  uploadFile(file: Upload, fileName: String): String
 }
 
 input NullableBooleanFilter {

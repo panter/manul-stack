@@ -1,4 +1,4 @@
-import { schema, use, settings } from "nexus";
+import { schema, use, settings, server } from "nexus";
 
 import { prisma } from "nexus-plugin-prisma";
 import { shield } from "nexus-plugin-shield";

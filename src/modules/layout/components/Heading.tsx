@@ -17,7 +17,7 @@ const HeadingBase = styled.h1<{ level?: Level }>`
 
 type HeadingProps = {
   level?: Level;
-  style?: {};
+  style?: React.CSSProperties;
   className?: string;
 };
 const Heading: React.FC<HeadingProps> = ({

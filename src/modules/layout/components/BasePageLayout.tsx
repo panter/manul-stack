@@ -1,17 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-
-import PanterLogo from "../../example/components/PanterLogo";
 import { Link } from "../../../config/i18n";
-import Heading from "./Heading";
+import PanterLogo from "../../example/components/PanterLogo";
+import LanguageSwitcher from "./LanguageSwitcher";
 import PageNavigation from "./PageNavigation";
 import StyledLink from "./StyledLink";
-import LanguageSwitcher from "./LanguageSwitcher";
-const ManulStackImg = styled.img.attrs({
-  src: "https://i.imgur.com/kwp7cRt.jpg",
-})`
-  max-width: 320px;
-`;
 
 const Base = styled.div`
   display: flex;
@@ -33,12 +26,10 @@ const BasePageLayout: React.FC<BasePageLayoutProps> = ({ children }) => {
           `}
         />
       </a>
-      <Heading>Manul stack</Heading>
       <LanguageSwitcher />
       <Link href="/admin" passHref>
         <StyledLink>Admin Area</StyledLink>
       </Link>
-      <ManulStackImg />
 
       <PageNavigation />
       {children}

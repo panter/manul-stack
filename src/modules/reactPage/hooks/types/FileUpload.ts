@@ -8,10 +8,11 @@
 // ====================================================
 
 export interface FileUpload {
-  uploadFile: string | null;
+  adminUploadFile: string | null;
 }
 
 export interface FileUploadVariables {
   file: any;
   fileName?: string | null;
+  folderName?: string | null;
 }

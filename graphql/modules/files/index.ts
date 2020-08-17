@@ -2,10 +2,14 @@ import { schema } from "nexus";
 import { v4 } from "uuid";
 
 import Aws from "aws-sdk";
-const { AWS_SECRET_ACCESS_KEY, AWS_ACCESS_KEY_ID } = process.env;
+const { S3_SECRET_ACCESS_KEY, S3_ENDPOINT, S3_ACCESS_KEY_ID } = process.env;
 const s3 = new Aws.S3({
-  accessKeyId: AWS_ACCESS_KEY_ID,
-  secretAccessKey: AWS_SECRET_ACCESS_KEY,
+  endpoint: S3_ENDPOINT,
+  accessKeyId: S3_ACCESS_KEY_ID,
+  secretAccessKey: S3_SECRET_ACCESS_KEY,
+  // needed for minio
+  s3ForcePathStyle: true,
+  signatureVersion: "v4",
 });
 
 import { GraphQLUpload, UserInputError } from "apollo-server-core";
@@ -24,23 +28,29 @@ schema.scalarType({
 schema.extendType({
   type: "Mutation",
   definition(t) {
-    t.string("uploadFile", {
+    t.string("adminUploadFile", {
       args: {
         file: "Upload",
         fileName: schema.stringArg({
           required: false,
         }),
+        folderName: schema.stringArg({
+          required: false,
+        }),
       },
-      async resolve(root, { file, fileName }) {
+      async resolve(root, { file, fileName, folderName = "uploads" }) {
         if (!file) {
           throw new UserInputError("missing file");
         }
         const { mimetype, createReadStream, filename } = await file;
-        console.log({ mimetype, filename }, file, await file);
-        const fullName = `${fileName ?? filename}.${mimetype?.split("/")[1]}`;
+
+        // force extension
+        const name = fileName ?? filename;
+        const extension = mimetype?.split("/")[1];
+        const fullName = name.endsWith(extension) ? name : name + extension;
 
         const stream = createReadStream();
-        const Key = `${v4()}-${fullName}`;
+        const Key = `${folderName}/${v4()}-${fullName}`;
         const result = await s3
           .upload({
             ACL: "public-read",

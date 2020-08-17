@@ -1,0 +1,13 @@
+diff --git a/node_modules/nexus/dist/runtime/server/apollo-server/serverless.js b/node_modules/nexus/dist/runtime/server/apollo-server/serverless.js
+index 71604f6..27a8849 100644
+--- a/node_modules/nexus/dist/runtime/server/apollo-server/serverless.js
++++ b/node_modules/nexus/dist/runtime/server/apollo-server/serverless.js
+@@ -129,7 +129,7 @@ function graphqlHandler(options) {
+             if (req.method !== 'GET' && req.method !== 'POST') {
+                 return utils_1.sendError(res, http_errors_1.default(400, 'Only GET and POST requests allowed'));
+             }
+-            const query = req.method === 'POST' ? await parse_body_1.parseBody(req) : parse_body_1.parseQuery(req);
++            const query = req.method === 'POST' ? ( req.filePayload ? { right: req.filePayload } : await parse_body_1.parseBody(req)) : parse_body_1.parseQuery(req);
+             if (Either_1.isLeft(query)) {
+                 return utils_1.sendError(res, query.left);
+             }

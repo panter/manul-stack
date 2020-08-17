@@ -10,8 +10,10 @@ const ImageField = connectField(({ value, onChange }) => {
       value={value}
       onChange={async (file, fileName) => {
         if (file) {
-          const { data } = await upload({ variables: { file, fileName } });
-          onChange(data.uploadToAws);
+          const { data } = await upload({
+            variables: { file, fileName, folderName: "content/images" },
+          });
+          onChange(data?.adminUploadFile);
         } else {
           onChange(null);
         }

@@ -14,13 +14,18 @@ import {
   TabbedForm,
   TextField,
   TextInput,
+  SaveButton,
 } from "react-admin";
+import { Button } from "@material-ui/core";
 import I18nTextInput from "../inputs/I18nTextInput";
-
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import PageSelectInput from "../inputs/PageSelectInput";
 import PageIcon from "@material-ui/icons/MenuBook";
 import ContentEditorInput from "../inputs/contentEditor/ContentEditorInput";
 import EditToolbar from "../layout/EditToolbar";
+import PageLink from "../../layout/components/PageLink";
+import { useRouter } from "next/router";
+import usePageLink from "../../layout/hooks/usePageLink";
 
 const PageFilter = (props: any) => (
   <Filter {...props}>
@@ -48,31 +53,46 @@ const PageTitle = ({ record }: any) => {
   return <span>Page {record ? `"${record.htmlTitle}"` : ""}</span>;
 };
 
-export const PageEdit = (props: any) => (
-  <Edit title={<PageTitle />} {...props} undoable={false}>
-    <TabbedForm variant="outlined" toolbar={<EditToolbar />}>
-      <FormTab label="summary">
-        <BooleanInput source="published" />
-        <TextInput source="slug" />
-        <I18nTextInput source="navigationTitle" />
-        <PageSelectInput label="Parent page" source="parentPage" />
-        <NumberInput source="sortKey" />
-      </FormTab>
+export const PageEdit = (props: any) => {
+  const link = usePageLink({ pageId: props.id });
 
-      <FormTab label="content">
-        <ContentEditorInput source="content" />
-      </FormTab>
-      <FormTab label="SEO & Social">
-        <I18nTextInput source="htmlTitle" />
-        <I18nTextInput multiline fullWidth source="meta_description" />
+  const router = useRouter();
+  return (
+    <Edit title={<PageTitle />} {...props} undoable={false}>
+      <TabbedForm
+        variant="outlined"
+        toolbar={
+          <EditToolbar
+            additionalSaveAction={{
+              label: "Save and View",
+              onSuccess: () =>
+                link ? router.push(link?.href, link?.as) : null,
+            }}
+          />
+        }
+      >
+        <FormTab label="summary">
+          <BooleanInput source="published" />
+          <TextInput source="slug" />
+          <I18nTextInput source="navigationTitle" />
+          <PageSelectInput label="Parent page" source="parentPage" />
+          <NumberInput source="sortKey" />
+        </FormTab>
 
-        <I18nTextInput source="social_title" />
-        <I18nTextInput source="social_description" />
-      </FormTab>
-    </TabbedForm>
-  </Edit>
-);
+        <FormTab label="content">
+          <ContentEditorInput source="content" />
+        </FormTab>
+        <FormTab label="SEO & Social">
+          <I18nTextInput source="htmlTitle" />
+          <I18nTextInput multiline fullWidth source="meta_description" />
 
+          <I18nTextInput source="social_title" />
+          <I18nTextInput source="social_description" />
+        </FormTab>
+      </TabbedForm>
+    </Edit>
+  );
+};
 const PageCreate = (props: any) => (
   <Create title="Create a Page" {...props}>
     <SimpleForm>

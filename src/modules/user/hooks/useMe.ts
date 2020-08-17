@@ -4,12 +4,16 @@ import { Me } from "./types/Me";
 
 export const getMe = (data: Me | undefined) => ({
   me: data?.me,
+  isAdmin: data?.me?.roles?.some((r) => r.id === "admin") ?? false,
 });
 
 export const ME_QUERY = gql`
   query Me {
     me {
       id
+      roles {
+        id
+      }
     }
   }
 `;

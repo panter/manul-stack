@@ -21,23 +21,23 @@ const useAuthProvider = () => {
       return getMe(data);
     };
     return {
-      login: async ({ email, password }) => {
+      login: async ({ username, password }) => {
         await apolloClient.mutate<
           LoginWithPassword,
           LoginWithPasswordVariables
         >({
           mutation: LOGIN_WITH_PASSWORD_MUTATION,
           variables: {
-            email,
+            email: username,
             password,
           },
         });
 
-        // const { isAdmin } = await fetchMe()
+        const { isAdmin } = await fetchMe();
 
-        // if (!isAdmin) {
-        //   throw new Error("error")
-        // }
+        if (!isAdmin) {
+          throw new Error("error");
+        }
         return true;
       },
       logout: async () => {
@@ -49,11 +49,11 @@ const useAuthProvider = () => {
         console.error(error);
       },
       checkAuth: async () => {
-        // const { isAdmin } = await fetchMe()
+        const { isAdmin } = await fetchMe();
 
-        // if (!isAdmin) {
-        //   throw new Error()
-        // }
+        if (!isAdmin) {
+          throw new Error();
+        }
         return true;
       },
       getPermissions: () => Promise.resolve(),

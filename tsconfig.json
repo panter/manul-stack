@@ -1,11 +1,15 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
-
+    "noImplicitAny": false,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
@@ -14,10 +18,26 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "typeRoots": ["node_modules/@types", "types"],
+    "typeRoots": [
+      "node_modules/@types",
+      "types"
+    ],
     "rootDir": ".",
-    "plugins": [{ "name": "nexus/typescript-language-service" }]
+    "plugins": [
+      {
+        "name": "nexus/typescript-language-service"
+      }
+    ]
   },
-  "include": [".", "types.d.ts", "next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", "plopTemplates"]
+  "include": [
+    ".",
+    "types.d.ts",
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules",
+    "plopTemplates"
+  ]
 }

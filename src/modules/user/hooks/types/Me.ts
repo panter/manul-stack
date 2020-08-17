@@ -7,9 +7,15 @@
 // GraphQL query operation: Me
 // ====================================================
 
+export interface Me_me_roles {
+  __typename: "UserRole";
+  id: string;
+}
+
 export interface Me_me {
   __typename: "User";
   id: string;
+  roles: Me_me_roles[];
 }
 
 export interface Me {

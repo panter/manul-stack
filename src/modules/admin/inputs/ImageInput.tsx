@@ -18,7 +18,7 @@ const ImageInput = (props) => {
             file,
           },
         });
-        console.log(value, data);
+
         onChange(data?.adminUploadFile);
       }}
     />

@@ -7,4 +7,4 @@ export default {
   title: "content/ContentPage",
 };
 
-export const defaultView = () => <ContentPage />;
+export const defaultView = () => <ContentPage path="/some" />;

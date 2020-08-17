@@ -25,7 +25,7 @@ const usePageLink = ({ page, pageId, path }: UsePageLinkProps) => {
       pageId,
       path,
     },
-    skip: Boolean(page),
+    skip: Boolean(page) || (!pageId && !path),
   });
   const thePage = data?.page ?? page;
   if (!thePage) {

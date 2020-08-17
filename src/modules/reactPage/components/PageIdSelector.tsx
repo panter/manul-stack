@@ -1,5 +1,5 @@
 import { connectField } from "uniforms";
-import PageSelectInput from "../inputs/PageSelectInput";
+import PageSelectInput from "../../admin/inputs/PageSelectInput";
 
 const PageIdSelector = connectField(({ value, onChange }) => {
   return (

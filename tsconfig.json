@@ -23,5 +23,5 @@
     ]
   },
   "include": [".", "types.d.ts", "next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", "plopTemplates"]
+  "exclude": ["node_modules", "plopTemplates", "src/types/global-types.ts"]
 }

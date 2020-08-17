@@ -1,10 +1,10 @@
 import { pluginFactories } from "@react-page/plugins-slate";
 import dynamic from "next/dynamic";
 import React from "react";
-import PageLink from "../../components/PageLink";
+import PageLink from "../../layout/components/PageLink";
 
 const PageIdSelector = dynamic({
-  loader: () => import("../../../admin/reactPageFormFields/PageIdSelector"),
+  loader: () => import("../components/PageIdSelector"),
   ssr: false,
 });
 
@@ -35,7 +35,7 @@ export default pluginFactories.createComponentPlugin<{
   },
   getInitialData: () => ({
     type: "inline",
-    pageId: "asdf",
+    pageId: null,
   }),
   Component: (props) => (
     <PageLink pageId={props.pageId}>{props.children}</PageLink>

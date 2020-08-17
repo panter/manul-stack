@@ -2,7 +2,7 @@ import slate from "@react-page/plugins-slate";
 import React from "react";
 import styled from "styled-components";
 
-//import pageLink from "./pageLink";
+import pageLink from "./pageLink";
 import externalLink from "./externalLink";
 import fileLink from "./fileLink";
 import { selectFont } from "../../../utils/themeUtils";
@@ -78,7 +78,7 @@ export const defaultSlate = slate((f) => ({
     quotes: f.plugins.quotes,
     link: {
       externalLink,
-      // pageLink,
+      pageLink,
       fileLink,
     },
   },

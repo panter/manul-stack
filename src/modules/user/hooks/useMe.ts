@@ -19,9 +19,7 @@ export const ME_QUERY = gql`
 `;
 
 const useMe = () => {
-  const { data, refetch, ...props } = useQuery<Me>(ME_QUERY, {
-    fetchPolicy: "cache-and-network",
-  });
+  const { data, refetch, ...props } = useQuery<Me>(ME_QUERY, {});
 
   return {
     ...getMe(data),

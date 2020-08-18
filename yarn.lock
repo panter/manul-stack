@@ -2040,10 +2040,10 @@
   resolved "https://registry.yarnpkg.com/@react-dnd/shallowequal/-/shallowequal-2.0.0.tgz#a3031eb54129f2c66b2753f8404266ec7bf67f0a"
   integrity sha512-Pc/AFTdwZwEKJxFJvlxrSmGe/di+aAOBn60sremrpLo6VI/6cmiUYNNwlI5KNYttg7uypzA3ILPMPgxB2GYZEg==
 
-"@react-page/core@^0.23.2":
-  version "0.23.2"
-  resolved "https://registry.yarnpkg.com/@react-page/core/-/core-0.23.2.tgz#c823af31dd8de28e89ed9728539c328e8e376a13"
-  integrity sha512-VHYtf7qkF3FA3maj18Fe9MdvmnFIoxkATuOBhhafj2DfgWGB7A7FfxI+X+kvrcaJsJlX7IrvUEJEjSSkqpKQPA==
+"@react-page/core@^0.23.3":
+  version "0.23.3"
+  resolved "https://registry.yarnpkg.com/@react-page/core/-/core-0.23.3.tgz#50d62d26a13cd6e5a05cdac9f98b389ca346eb22"
+  integrity sha512-+7EO8PB0pDIBbfyl9XqFxeF9rgWsK2mxMazfGfa/XY4syn87CxGMnGDkhBc4xtsxNxdbWBr1ovT2yQyo59B2GA==
   dependencies:
     "@loadable/component" "^5.10.2"
     classnames "^2.2.5"
@@ -2061,35 +2061,35 @@
     semver "^7.3.2"
     uuid "^3.0.1"
 
-"@react-page/create-plugin-materialui@^0.23.2":
-  version "0.23.2"
-  resolved "https://registry.yarnpkg.com/@react-page/create-plugin-materialui/-/create-plugin-materialui-0.23.2.tgz#7ab27455b21a355ddf0169459d36eff8d7a82fb8"
-  integrity sha512-POo7C6tMUWDfMFwRd9DGlth76KAsDqCa0gtBHycaV0ml3MYoNg7MQDtMrILsPDFmVUt/LF6L73yrw5ESCVlXLg==
+"@react-page/create-plugin-materialui@^0.23.3":
+  version "0.23.3"
+  resolved "https://registry.yarnpkg.com/@react-page/create-plugin-materialui/-/create-plugin-materialui-0.23.3.tgz#a7c360d1fe7d9ebfec97176013fdbc794bd3f5b6"
+  integrity sha512-H8H++souDuFGqOKZo8mBKHYo6yCH7sCPQhDjN8mWxJVlDkLQdQgMBqqKkfrR2tnpZnuLCee9TjTS24ANOP16qg==
   dependencies:
-    "@react-page/core" "^0.23.2"
-    "@react-page/ui" "^0.23.2"
+    "@react-page/core" "^0.23.3"
+    "@react-page/ui" "^0.23.3"
     lodash.debounce "^4.0.8"
     uniforms "~2.5.0"
     uniforms-bridge-json-schema "~2.5.0"
     uniforms-material "~2.5.0"
 
-"@react-page/editor@^0.23.2":
-  version "0.23.2"
-  resolved "https://registry.yarnpkg.com/@react-page/editor/-/editor-0.23.2.tgz#b0e8b72c190474204dd63b54166c57640ab37c99"
-  integrity sha512-91vCzJhwoktXeCgelStzbtFSuaHny8740SyKnAyq+HrIXUd3GaXyeCx/jyQuxcYodYEtibiN11PAzWsFQEfpHw==
+"@react-page/editor@^0.23.3":
+  version "0.23.3"
+  resolved "https://registry.yarnpkg.com/@react-page/editor/-/editor-0.23.3.tgz#3dae1179ac8707b11b140b9e734bf210cee274bc"
+  integrity sha512-GE5Omciz1jVcC+5v9y8EdrzzxTMVKwNjWErcljaj/4vZ8DctNwL8D3gnIre2ULWwWWDGzKLnLQEltZRQk+vwWg==
   dependencies:
-    "@react-page/core" "^0.23.2"
-    "@react-page/renderer" "^0.23.2"
-    "@react-page/ui" "^0.23.2"
+    "@react-page/core" "^0.23.3"
+    "@react-page/renderer" "^0.23.3"
+    "@react-page/ui" "^0.23.3"
 
-"@react-page/plugins-slate@^0.23.2":
-  version "0.23.2"
-  resolved "https://registry.yarnpkg.com/@react-page/plugins-slate/-/plugins-slate-0.23.2.tgz#1a62b635c4da0219a85d269115e28a38bdb5dd0e"
-  integrity sha512-QpQAnmvdPsxvR4wzxK3UN1AgjqmCf9Ualq+l+JXeQ3kLzhqzjlbgL2saEDG9KbaoJaeluC60d+5G6f6meW/jXw==
+"@react-page/plugins-slate@^0.23.3":
+  version "0.23.3"
+  resolved "https://registry.yarnpkg.com/@react-page/plugins-slate/-/plugins-slate-0.23.3.tgz#997ac2590a02230a8d4ed5b8e181bc1eee60d9c1"
+  integrity sha512-A8+IieFnk2SEa9AeQ7rYv4XxsvZGqdJ7hYdY5AfTPcYkvNq2r65UG+9003gtK5JmJ2/pzWaZIEdtoonmg7al+Q==
   dependencies:
-    "@react-page/core" "^0.23.2"
-    "@react-page/create-plugin-materialui" "^0.23.2"
-    "@react-page/ui" "^0.23.2"
+    "@react-page/core" "^0.23.3"
+    "@react-page/create-plugin-materialui" "^0.23.3"
+    "@react-page/ui" "^0.23.3"
     cssstyle "^2.3.0"
     deep-rename-keys "^0.2.1"
     is-hotkey "^0.1.6"
@@ -2109,24 +2109,24 @@
     uniforms-material "~2.5.0"
     xmldom "^0.3.0"
 
-"@react-page/renderer@^0.23.2":
-  version "0.23.2"
-  resolved "https://registry.yarnpkg.com/@react-page/renderer/-/renderer-0.23.2.tgz#f9b545a51fcada7d8ee5c082d316b9afffab48fc"
-  integrity sha512-r4DV01b1RE/2PZg3hqaTQYKn38ZQhn4fj29lulwN/oLMjfszR1ByVcSEn5YOg1PpjKWFu1OARmAvzpfLf7XWTA==
+"@react-page/renderer@^0.23.3":
+  version "0.23.3"
+  resolved "https://registry.yarnpkg.com/@react-page/renderer/-/renderer-0.23.3.tgz#05861027a453eae83e5230a0e4735fbbd0d194a8"
+  integrity sha512-JTur2hDbqhQRWe1Gp51IL1hmhRH/plF5XN3UZbDd9h8hqsYlV2fYvxwXNwkYxGl9DiU13SOwf0CsQxeyzewj5w==
   dependencies:
-    "@react-page/core" "^0.23.2"
+    "@react-page/core" "^0.23.3"
     classnames "^2.2.5"
 
-"@react-page/ui@^0.23.2":
-  version "0.23.2"
-  resolved "https://registry.yarnpkg.com/@react-page/ui/-/ui-0.23.2.tgz#bd3e08ebddb72bcfa0cd884520d05f2c5e9dd94a"
-  integrity sha512-AM/xfzqNHjKYZYlKfbEYd2j6fPARlQLPfQXUwe0OukhfXXkkqpUu8Y6wRwti9iWaunEuKLXn/5l8JqwHXjDDxA==
+"@react-page/ui@^0.23.3":
+  version "0.23.3"
+  resolved "https://registry.yarnpkg.com/@react-page/ui/-/ui-0.23.3.tgz#87eaea959bacc21201e23c33ce4b100691927af6"
+  integrity sha512-hzOxlK9kl5buqXuksF+c/GsXRZZT/pyqfI39gI/w+3jluzhVyCidCko/XPEG17SxPFcLb7mjd8m8AajYw9XaYQ==
   dependencies:
     "@loadable/component" "^5.10.2"
     "@material-ui/core" "^4.3.3"
     "@material-ui/icons" "^4.2.1"
     "@material-ui/styles" "^4.3.3"
-    "@react-page/core" "^0.23.2"
+    "@react-page/core" "^0.23.3"
     classnames "^2.2.5"
     device.js "^2.3.0"
     lodash.throttle "^4.1.1"

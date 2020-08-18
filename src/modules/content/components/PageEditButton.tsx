@@ -17,6 +17,7 @@ const PageEditButton: React.FC<PageEditButtonProps> = ({
 }) => {
   const { isAdmin } = useMe();
   if (!isAdmin) return null;
+
   return (
     <Link href="/admin" as={`/admin#/Page/${pageId}/1`} passHref>
       <MuiLink style={style} className={className}>

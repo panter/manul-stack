@@ -1,11 +1,10 @@
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator prisma_client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["connectOrCreate"]
+  provider = "prisma-client-js"
 }
 
 model BlogPost {
@@ -28,7 +27,6 @@ model User {
   password  String
   blogPosts BlogPost[]
   roles     UserRole[]
-  carts     Cart[]
 }
 
 model Page {
@@ -62,26 +60,8 @@ model Page {
 }
 
 model Product {
-  id          String     @default(uuid()) @id
-  slug        String     @unique
+  id          String @default(uuid()) @id
+  slug        String
   title       String
   description String
-  cartItems   CartItem[]
-}
-
-model CartItem {
-  id        String  @default(uuid()) @id
-  product   Product @relation(fields: [productId], references: [id])
-  productId String
-  cart      Cart?   @relation(fields: [cartId], references: [id])
-  cartId    String?
-  quantity  Int?    @default(1)
-}
-
-model Cart {
-  id        String     @default(uuid()) @id
-  created   DateTime   @default(now())
-  cartItems CartItem[]
-  user      User?      @relation(fields: [userId], references: [id])
-  userId    String?    @unique
 }

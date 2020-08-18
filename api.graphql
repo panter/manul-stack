@@ -24,7 +24,13 @@ input BlogPostCreateInput {
 
 input BlogPostCreateManyWithoutAuthorInput {
   connect: [BlogPostWhereUniqueInput!]
+  connectOrCreate: [BlogPostCreateOrConnectWithoutUserInput!]
   create: [BlogPostCreateWithoutAuthorInput!]
+}
+
+input BlogPostCreateOrConnectWithoutUserInput {
+  create: BlogPostCreateWithoutAuthorInput!
+  where: BlogPostWhereUniqueInput!
 }
 
 input BlogPostCreateWithoutAuthorInput {
@@ -83,6 +89,7 @@ input BlogPostUpdateManyMutationInput {
 
 input BlogPostUpdateManyWithoutAuthorInput {
   connect: [BlogPostWhereUniqueInput!]
+  connectOrCreate: [BlogPostCreateOrConnectWithoutUserInput!]
   create: [BlogPostCreateWithoutAuthorInput!]
   delete: [BlogPostWhereUniqueInput!]
   deleteMany: [BlogPostScalarWhereInput!]
@@ -137,6 +144,282 @@ input BooleanFilter {
   not: Boolean
 }
 
+type Cart {
+  cartItems(cursor: CartItemWhereUniqueInput, skip: Int, take: Int): [CartItem!]!
+  created: DateTime!
+  id: String!
+}
+
+input CartCreateManyWithoutUserInput {
+  connect: [CartWhereUniqueInput!]
+  connectOrCreate: [CartCreateOrConnectWithoutUserInput!]
+  create: [CartCreateWithoutUserInput!]
+}
+
+input CartCreateOneWithoutCartItemsInput {
+  connect: CartWhereUniqueInput
+  connectOrCreate: CartCreateOrConnectWithoutCartItemInput
+  create: CartCreateWithoutCartItemsInput
+}
+
+input CartCreateOrConnectWithoutCartItemInput {
+  create: CartCreateWithoutCartItemsInput!
+  where: CartWhereUniqueInput!
+}
+
+input CartCreateOrConnectWithoutUserInput {
+  create: CartCreateWithoutUserInput!
+  where: CartWhereUniqueInput!
+}
+
+input CartCreateWithoutCartItemsInput {
+  created: DateTime
+  id: String
+  user: UserCreateOneWithoutCartsInput
+}
+
+input CartCreateWithoutUserInput {
+  cartItems: CartItemCreateManyWithoutCartInput
+  created: DateTime
+  id: String
+}
+
+input CartFilter {
+  every: CartWhereInput
+  none: CartWhereInput
+  some: CartWhereInput
+}
+
+type CartItem {
+  cart: Cart
+  id: String!
+  product: Product!
+  quantity: Int
+}
+
+input CartItemCreateManyWithoutCartInput {
+  connect: [CartItemWhereUniqueInput!]
+  connectOrCreate: [CartItemCreateOrConnectWithoutCartInput!]
+  create: [CartItemCreateWithoutCartInput!]
+}
+
+input CartItemCreateManyWithoutProductInput {
+  connect: [CartItemWhereUniqueInput!]
+  connectOrCreate: [CartItemCreateOrConnectWithoutProductInput!]
+  create: [CartItemCreateWithoutProductInput!]
+}
+
+input CartItemCreateOrConnectWithoutCartInput {
+  create: CartItemCreateWithoutCartInput!
+  where: CartItemWhereUniqueInput!
+}
+
+input CartItemCreateOrConnectWithoutProductInput {
+  create: CartItemCreateWithoutProductInput!
+  where: CartItemWhereUniqueInput!
+}
+
+input CartItemCreateWithoutCartInput {
+  id: String
+  product: ProductCreateOneWithoutCartItemsInput!
+  quantity: Int
+}
+
+input CartItemCreateWithoutProductInput {
+  cart: CartCreateOneWithoutCartItemsInput
+  id: String
+  quantity: Int
+}
+
+input CartItemFilter {
+  every: CartItemWhereInput
+  none: CartItemWhereInput
+  some: CartItemWhereInput
+}
+
+input CartItemScalarWhereInput {
+  AND: [CartItemScalarWhereInput!]
+  cartId: NullableStringFilter
+  id: UUIDFilter
+  NOT: [CartItemScalarWhereInput!]
+  OR: [CartItemScalarWhereInput!]
+  productId: StringFilter
+  quantity: NullableIntFilter
+}
+
+input CartItemUpdateManyDataInput {
+  id: String
+  quantity: Int
+}
+
+input CartItemUpdateManyWithoutCartInput {
+  connect: [CartItemWhereUniqueInput!]
+  connectOrCreate: [CartItemCreateOrConnectWithoutCartInput!]
+  create: [CartItemCreateWithoutCartInput!]
+  delete: [CartItemWhereUniqueInput!]
+  deleteMany: [CartItemScalarWhereInput!]
+  disconnect: [CartItemWhereUniqueInput!]
+  set: [CartItemWhereUniqueInput!]
+  update: [CartItemUpdateWithWhereUniqueWithoutCartInput!]
+  updateMany: [CartItemUpdateManyWithWhereNestedInput!]
+  upsert: [CartItemUpsertWithWhereUniqueWithoutCartInput!]
+}
+
+input CartItemUpdateManyWithoutProductInput {
+  connect: [CartItemWhereUniqueInput!]
+  connectOrCreate: [CartItemCreateOrConnectWithoutProductInput!]
+  create: [CartItemCreateWithoutProductInput!]
+  delete: [CartItemWhereUniqueInput!]
+  deleteMany: [CartItemScalarWhereInput!]
+  disconnect: [CartItemWhereUniqueInput!]
+  set: [CartItemWhereUniqueInput!]
+  update: [CartItemUpdateWithWhereUniqueWithoutProductInput!]
+  updateMany: [CartItemUpdateManyWithWhereNestedInput!]
+  upsert: [CartItemUpsertWithWhereUniqueWithoutProductInput!]
+}
+
+input CartItemUpdateManyWithWhereNestedInput {
+  data: CartItemUpdateManyDataInput!
+  where: CartItemScalarWhereInput!
+}
+
+input CartItemUpdateWithoutCartDataInput {
+  id: String
+  product: ProductUpdateOneRequiredWithoutCartItemsInput
+  quantity: Int
+}
+
+input CartItemUpdateWithoutProductDataInput {
+  cart: CartUpdateOneWithoutCartItemsInput
+  id: String
+  quantity: Int
+}
+
+input CartItemUpdateWithWhereUniqueWithoutCartInput {
+  data: CartItemUpdateWithoutCartDataInput!
+  where: CartItemWhereUniqueInput!
+}
+
+input CartItemUpdateWithWhereUniqueWithoutProductInput {
+  data: CartItemUpdateWithoutProductDataInput!
+  where: CartItemWhereUniqueInput!
+}
+
+input CartItemUpsertWithWhereUniqueWithoutCartInput {
+  create: CartItemCreateWithoutCartInput!
+  update: CartItemUpdateWithoutCartDataInput!
+  where: CartItemWhereUniqueInput!
+}
+
+input CartItemUpsertWithWhereUniqueWithoutProductInput {
+  create: CartItemCreateWithoutProductInput!
+  update: CartItemUpdateWithoutProductDataInput!
+  where: CartItemWhereUniqueInput!
+}
+
+input CartItemWhereInput {
+  AND: [CartItemWhereInput!]
+  cart: CartWhereInput
+  cartId: NullableStringFilter
+  id: UUIDFilter
+  NOT: [CartItemWhereInput!]
+  OR: [CartItemWhereInput!]
+  product: ProductWhereInput
+  productId: StringFilter
+  quantity: NullableIntFilter
+}
+
+input CartItemWhereUniqueInput {
+  id: String
+}
+
+input CartScalarWhereInput {
+  AND: [CartScalarWhereInput!]
+  cartItems: CartItemFilter
+  created: DateTimeFilter
+  id: UUIDFilter
+  NOT: [CartScalarWhereInput!]
+  OR: [CartScalarWhereInput!]
+  userId: NullableStringFilter
+}
+
+input CartUpdateManyDataInput {
+  created: DateTime
+  id: String
+}
+
+input CartUpdateManyWithoutUserInput {
+  connect: [CartWhereUniqueInput!]
+  connectOrCreate: [CartCreateOrConnectWithoutUserInput!]
+  create: [CartCreateWithoutUserInput!]
+  delete: [CartWhereUniqueInput!]
+  deleteMany: [CartScalarWhereInput!]
+  disconnect: [CartWhereUniqueInput!]
+  set: [CartWhereUniqueInput!]
+  update: [CartUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [CartUpdateManyWithWhereNestedInput!]
+  upsert: [CartUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input CartUpdateManyWithWhereNestedInput {
+  data: CartUpdateManyDataInput!
+  where: CartScalarWhereInput!
+}
+
+input CartUpdateOneWithoutCartItemsInput {
+  connect: CartWhereUniqueInput
+  connectOrCreate: CartCreateOrConnectWithoutCartItemInput
+  create: CartCreateWithoutCartItemsInput
+  delete: Boolean
+  disconnect: Boolean
+  update: CartUpdateWithoutCartItemsDataInput
+  upsert: CartUpsertWithoutCartItemsInput
+}
+
+input CartUpdateWithoutCartItemsDataInput {
+  created: DateTime
+  id: String
+  user: UserUpdateOneWithoutCartsInput
+}
+
+input CartUpdateWithoutUserDataInput {
+  cartItems: CartItemUpdateManyWithoutCartInput
+  created: DateTime
+  id: String
+}
+
+input CartUpdateWithWhereUniqueWithoutUserInput {
+  data: CartUpdateWithoutUserDataInput!
+  where: CartWhereUniqueInput!
+}
+
+input CartUpsertWithoutCartItemsInput {
+  create: CartCreateWithoutCartItemsInput!
+  update: CartUpdateWithoutCartItemsDataInput!
+}
+
+input CartUpsertWithWhereUniqueWithoutUserInput {
+  create: CartCreateWithoutUserInput!
+  update: CartUpdateWithoutUserDataInput!
+  where: CartWhereUniqueInput!
+}
+
+input CartWhereInput {
+  AND: [CartWhereInput!]
+  cartItems: CartItemFilter
+  created: DateTimeFilter
+  id: UUIDFilter
+  NOT: [CartWhereInput!]
+  OR: [CartWhereInput!]
+  user: UserWhereInput
+  userId: NullableStringFilter
+}
+
+input CartWhereUniqueInput {
+  id: String
+  userId: String
+}
+
 """
 A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the
 `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO
@@ -165,29 +448,36 @@ type LoginResult {
 }
 
 type Mutation {
+  addToCart(product: ProductWhereUniqueInput, quantity: Int): Cart
   adminCreateOneBlogPost(data: BlogPostCreateInput!): BlogPost!
   adminCreateOnePage(data: PageCreateInput!): Page!
+  adminCreateOneProduct(data: ProductCreateInput!): Product!
   adminCreateOneUser(data: UserCreateInput!): User!
   adminCreateOneUserRole(data: UserRoleCreateInput!): UserRole!
   adminDeleteManyBlogPost(where: BlogPostWhereInput): BatchPayload!
   adminDeleteManyPage(where: PageWhereInput): BatchPayload!
+  adminDeleteManyProduct(where: ProductWhereInput): BatchPayload!
   adminDeleteManyUser(where: UserWhereInput): BatchPayload!
   adminDeleteManyUserRole(where: UserRoleWhereInput): BatchPayload!
   adminDeleteOneBlogPost(where: BlogPostWhereUniqueInput!): BlogPost
   adminDeleteOnePage(where: PageWhereUniqueInput!): Page
+  adminDeleteOneProduct(where: ProductWhereUniqueInput!): Product
   adminDeleteOneUser(where: UserWhereUniqueInput!): User
   adminDeleteOneUserRole(where: UserRoleWhereUniqueInput!): UserRole
   adminUpdateManyBlogPost(data: BlogPostUpdateManyMutationInput!, where: BlogPostWhereInput): BatchPayload!
   adminUpdateManyPage(data: PageUpdateManyMutationInput!, where: PageWhereInput): BatchPayload!
+  adminUpdateManyProduct(data: ProductUpdateManyMutationInput!, where: ProductWhereInput): BatchPayload!
   adminUpdateManyUser(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
   adminUpdateManyUserRole(data: UserRoleUpdateManyMutationInput!, where: UserRoleWhereInput): BatchPayload!
   adminUpdateOneBlogPost(data: BlogPostUpdateInput!, where: BlogPostWhereUniqueInput!): BlogPost
   adminUpdateOnePage(data: PageUpdateInput!, where: PageWhereUniqueInput!): Page
+  adminUpdateOneProduct(data: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product
   adminUpdateOneUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   adminUpdateOneUserRole(data: UserRoleUpdateInput!, where: UserRoleWhereUniqueInput!): UserRole
   adminUploadFile(file: Upload, fileName: String, folderName: String): String
   adminUpsertOneBlogPost(create: BlogPostCreateInput!, update: BlogPostUpdateInput!, where: BlogPostWhereUniqueInput!): BlogPost!
   adminUpsertOnePage(create: PageCreateInput!, update: PageUpdateInput!, where: PageWhereUniqueInput!): Page!
+  adminUpsertOneProduct(create: ProductCreateInput!, update: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product!
   adminUpsertOneUser(create: UserCreateInput!, update: UserUpdateInput!, where: UserWhereUniqueInput!): User!
   adminUpsertOneUserRole(create: UserRoleCreateInput!, update: UserRoleUpdateInput!, where: UserRoleWhereUniqueInput!): UserRole!
   login(email: String!, password: String!): LoginResult
@@ -274,12 +564,19 @@ input PageCreateInput {
 
 input PageCreateManyWithoutParentPageInput {
   connect: [PageWhereUniqueInput!]
+  connectOrCreate: [PageCreateOrConnectWithoutPageInput!]
   create: [PageCreateWithoutParentPageInput!]
 }
 
 input PageCreateOneWithoutChildPagesInput {
   connect: PageWhereUniqueInput
+  connectOrCreate: PageCreateOrConnectWithoutPageInput
   create: PageCreateWithoutChildPagesInput
+}
+
+input PageCreateOrConnectWithoutPageInput {
+  create: PageCreateWithoutChildPagesInput!
+  where: PageWhereUniqueInput!
 }
 
 input PageCreateWithoutChildPagesInput {
@@ -439,6 +736,7 @@ input PageUpdateManyMutationInput {
 
 input PageUpdateManyWithoutParentPageInput {
   connect: [PageWhereUniqueInput!]
+  connectOrCreate: [PageCreateOrConnectWithoutPageInput!]
   create: [PageCreateWithoutParentPageInput!]
   delete: [PageWhereUniqueInput!]
   deleteMany: [PageScalarWhereInput!]
@@ -456,6 +754,7 @@ input PageUpdateManyWithWhereNestedInput {
 
 input PageUpdateOneWithoutChildPagesInput {
   connect: PageWhereUniqueInput
+  connectOrCreate: PageCreateOrConnectWithoutPageInput
   create: PageCreateWithoutChildPagesInput
   delete: Boolean
   disconnect: Boolean
@@ -558,6 +857,97 @@ input ParentPageIdSlugCompoundUniqueInput {
   slug: String!
 }
 
+type Product {
+  description: String!
+  id: String!
+  slug: String!
+  title: String!
+}
+
+input ProductCreateInput {
+  cartItems: CartItemCreateManyWithoutProductInput
+  description: String!
+  id: String
+  slug: String!
+  title: String!
+}
+
+input ProductCreateOneWithoutCartItemsInput {
+  connect: ProductWhereUniqueInput
+  connectOrCreate: ProductCreateOrConnectWithoutCartItemInput
+  create: ProductCreateWithoutCartItemsInput
+}
+
+input ProductCreateOrConnectWithoutCartItemInput {
+  create: ProductCreateWithoutCartItemsInput!
+  where: ProductWhereUniqueInput!
+}
+
+input ProductCreateWithoutCartItemsInput {
+  description: String!
+  id: String
+  slug: String!
+  title: String!
+}
+
+input ProductOrderByInput {
+  description: SortOrder
+  id: SortOrder
+  slug: SortOrder
+  title: SortOrder
+}
+
+input ProductUpdateInput {
+  cartItems: CartItemUpdateManyWithoutProductInput
+  description: String
+  id: String
+  slug: String
+  title: String
+}
+
+input ProductUpdateManyMutationInput {
+  description: String
+  id: String
+  slug: String
+  title: String
+}
+
+input ProductUpdateOneRequiredWithoutCartItemsInput {
+  connect: ProductWhereUniqueInput
+  connectOrCreate: ProductCreateOrConnectWithoutCartItemInput
+  create: ProductCreateWithoutCartItemsInput
+  update: ProductUpdateWithoutCartItemsDataInput
+  upsert: ProductUpsertWithoutCartItemsInput
+}
+
+input ProductUpdateWithoutCartItemsDataInput {
+  description: String
+  id: String
+  slug: String
+  title: String
+}
+
+input ProductUpsertWithoutCartItemsInput {
+  create: ProductCreateWithoutCartItemsInput!
+  update: ProductUpdateWithoutCartItemsDataInput!
+}
+
+input ProductWhereInput {
+  AND: [ProductWhereInput!]
+  cartItems: CartItemFilter
+  description: StringFilter
+  id: UUIDFilter
+  NOT: [ProductWhereInput!]
+  OR: [ProductWhereInput!]
+  slug: StringFilter
+  title: StringFilter
+}
+
+input ProductWhereUniqueInput {
+  id: String
+  slug: String
+}
+
 type Query {
   adminBlogPost(where: BlogPostWhereUniqueInput!): BlogPost
   adminBlogPosts(cursor: BlogPostWhereUniqueInput, orderBy: [BlogPostOrderByInput!], skip: Int, take: Int, where: BlogPostWhereInput): [BlogPost!]!
@@ -565,6 +955,9 @@ type Query {
   adminPage(where: PageWhereUniqueInput!): Page
   adminPages(cursor: PageWhereUniqueInput, orderBy: [PageOrderByInput!], skip: Int, take: Int, where: PageWhereInput): [Page!]!
   adminPagesCount(cursor: PageWhereUniqueInput, orderBy: PageOrderByInput, skip: Int, take: Int, where: PageWhereInput): Int
+  adminProduct(where: ProductWhereUniqueInput!): Product
+  adminProducts(cursor: ProductWhereUniqueInput, orderBy: [ProductOrderByInput!], skip: Int, take: Int, where: ProductWhereInput): [Product!]!
+  adminProductsCount(cursor: ProductWhereUniqueInput, orderBy: ProductOrderByInput, skip: Int, take: Int, where: ProductWhereInput): Int
   adminUser(where: UserWhereUniqueInput!): User
   adminUserRole(where: UserRoleWhereUniqueInput!): UserRole
   adminUserRoles(cursor: UserRoleWhereUniqueInput, orderBy: [UserRoleOrderByInput!], skip: Int, take: Int, where: UserRoleWhereInput): [UserRole!]!
@@ -575,6 +968,7 @@ type Query {
   me: User
   page(pageId: String, path: String): Page
   pages(parentPageId: String, parentPath: String): [Page!]
+  products(cursor: ProductWhereUniqueInput, skip: Int, take: Int, where: ProductWhereInput): [Product!]!
 }
 
 type SignupResult {
@@ -612,6 +1006,7 @@ type User {
 
 input UserCreateInput {
   blogPosts: BlogPostCreateManyWithoutAuthorInput
+  carts: CartCreateManyWithoutUserInput
   email: String!
   id: String
   password: String!
@@ -620,15 +1015,47 @@ input UserCreateInput {
 
 input UserCreateManyWithoutRolesInput {
   connect: [UserWhereUniqueInput!]
+  connectOrCreate: [UserCreateOrConnectWithoutUserRoleInput!]
   create: [UserCreateWithoutRolesInput!]
 }
 
 input UserCreateOneWithoutBlogPostsInput {
   connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutBlogPostInput
   create: UserCreateWithoutBlogPostsInput
 }
 
+input UserCreateOneWithoutCartsInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutCartInput
+  create: UserCreateWithoutCartsInput
+}
+
+input UserCreateOrConnectWithoutBlogPostInput {
+  create: UserCreateWithoutBlogPostsInput!
+  where: UserWhereUniqueInput!
+}
+
+input UserCreateOrConnectWithoutCartInput {
+  create: UserCreateWithoutCartsInput!
+  where: UserWhereUniqueInput!
+}
+
+input UserCreateOrConnectWithoutUserRoleInput {
+  create: UserCreateWithoutRolesInput!
+  where: UserWhereUniqueInput!
+}
+
 input UserCreateWithoutBlogPostsInput {
+  carts: CartCreateManyWithoutUserInput
+  email: String!
+  id: String
+  password: String!
+  roles: UserRoleCreateManyWithoutUsersInput
+}
+
+input UserCreateWithoutCartsInput {
+  blogPosts: BlogPostCreateManyWithoutAuthorInput
   email: String!
   id: String
   password: String!
@@ -637,6 +1064,7 @@ input UserCreateWithoutBlogPostsInput {
 
 input UserCreateWithoutRolesInput {
   blogPosts: BlogPostCreateManyWithoutAuthorInput
+  carts: CartCreateManyWithoutUserInput
   email: String!
   id: String
   password: String!
@@ -666,7 +1094,13 @@ input UserRoleCreateInput {
 
 input UserRoleCreateManyWithoutUsersInput {
   connect: [UserRoleWhereUniqueInput!]
+  connectOrCreate: [UserRoleCreateOrConnectWithoutUserInput!]
   create: [UserRoleCreateWithoutUsersInput!]
+}
+
+input UserRoleCreateOrConnectWithoutUserInput {
+  create: UserRoleCreateWithoutUsersInput!
+  where: UserRoleWhereUniqueInput!
 }
 
 input UserRoleCreateWithoutUsersInput {
@@ -706,6 +1140,7 @@ input UserRoleUpdateManyMutationInput {
 
 input UserRoleUpdateManyWithoutUsersInput {
   connect: [UserRoleWhereUniqueInput!]
+  connectOrCreate: [UserRoleCreateOrConnectWithoutUserInput!]
   create: [UserRoleCreateWithoutUsersInput!]
   delete: [UserRoleWhereUniqueInput!]
   deleteMany: [UserRoleScalarWhereInput!]
@@ -751,6 +1186,7 @@ input UserRoleWhereUniqueInput {
 input UserScalarWhereInput {
   AND: [UserScalarWhereInput!]
   blogPosts: BlogPostFilter
+  carts: CartFilter
   email: StringFilter
   id: UUIDFilter
   NOT: [UserScalarWhereInput!]
@@ -761,6 +1197,7 @@ input UserScalarWhereInput {
 
 input UserUpdateInput {
   blogPosts: BlogPostUpdateManyWithoutAuthorInput
+  carts: CartUpdateManyWithoutUserInput
   email: String
   id: String
   password: String
@@ -781,6 +1218,7 @@ input UserUpdateManyMutationInput {
 
 input UserUpdateManyWithoutRolesInput {
   connect: [UserWhereUniqueInput!]
+  connectOrCreate: [UserCreateOrConnectWithoutUserRoleInput!]
   create: [UserCreateWithoutRolesInput!]
   delete: [UserWhereUniqueInput!]
   deleteMany: [UserScalarWhereInput!]
@@ -798,12 +1236,32 @@ input UserUpdateManyWithWhereNestedInput {
 
 input UserUpdateOneRequiredWithoutBlogPostsInput {
   connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutBlogPostInput
   create: UserCreateWithoutBlogPostsInput
   update: UserUpdateWithoutBlogPostsDataInput
   upsert: UserUpsertWithoutBlogPostsInput
 }
 
+input UserUpdateOneWithoutCartsInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutCartInput
+  create: UserCreateWithoutCartsInput
+  delete: Boolean
+  disconnect: Boolean
+  update: UserUpdateWithoutCartsDataInput
+  upsert: UserUpsertWithoutCartsInput
+}
+
 input UserUpdateWithoutBlogPostsDataInput {
+  carts: CartUpdateManyWithoutUserInput
+  email: String
+  id: String
+  password: String
+  roles: UserRoleUpdateManyWithoutUsersInput
+}
+
+input UserUpdateWithoutCartsDataInput {
+  blogPosts: BlogPostUpdateManyWithoutAuthorInput
   email: String
   id: String
   password: String
@@ -812,6 +1270,7 @@ input UserUpdateWithoutBlogPostsDataInput {
 
 input UserUpdateWithoutRolesDataInput {
   blogPosts: BlogPostUpdateManyWithoutAuthorInput
+  carts: CartUpdateManyWithoutUserInput
   email: String
   id: String
   password: String
@@ -827,6 +1286,11 @@ input UserUpsertWithoutBlogPostsInput {
   update: UserUpdateWithoutBlogPostsDataInput!
 }
 
+input UserUpsertWithoutCartsInput {
+  create: UserCreateWithoutCartsInput!
+  update: UserUpdateWithoutCartsDataInput!
+}
+
 input UserUpsertWithWhereUniqueWithoutRolesInput {
   create: UserCreateWithoutRolesInput!
   update: UserUpdateWithoutRolesDataInput!
@@ -836,6 +1300,7 @@ input UserUpsertWithWhereUniqueWithoutRolesInput {
 input UserWhereInput {
   AND: [UserWhereInput!]
   blogPosts: BlogPostFilter
+  carts: CartFilter
   email: StringFilter
   id: UUIDFilter
   NOT: [UserWhereInput!]

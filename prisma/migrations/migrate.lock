@@ -4,3 +4,9 @@
 20200813145412-make-blog-post-content-optional
 20200814214144-add-pages
 20200815223740-make-html-title-optional
+20200818164052-products
+20200818164151-product-slug-unique
+20200818172656-cart
+20200818172945-cart-quantity
+20200818173920-cart-user
+20200818174216-cart-user-unique

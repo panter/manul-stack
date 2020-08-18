@@ -1,7 +1,7 @@
 import { SelectInput, ReferenceInput } from "react-admin";
 
 const TagSelectInput = (props) => (
-  <ReferenceInput reference="ProductTag" label="Tags" {...props}>
+  <ReferenceInput reference="ProductTag" label="Tags" allowEmpty {...props}>
     <SelectInput optionText="title" />
   </ReferenceInput>
 );

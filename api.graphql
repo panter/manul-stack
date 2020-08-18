@@ -426,32 +426,38 @@ type Mutation {
   adminCreateOneBlogPost(data: BlogPostCreateInput!): BlogPost!
   adminCreateOnePage(data: PageCreateInput!): Page!
   adminCreateOneProduct(data: ProductCreateInput!): Product!
+  adminCreateOneProductTag(data: ProductTagCreateInput!): ProductTag!
   adminCreateOneUser(data: UserCreateInput!): User!
   adminCreateOneUserRole(data: UserRoleCreateInput!): UserRole!
   adminDeleteManyBlogPost(where: BlogPostWhereInput): BatchPayload!
   adminDeleteManyPage(where: PageWhereInput): BatchPayload!
   adminDeleteManyProduct(where: ProductWhereInput): BatchPayload!
+  adminDeleteManyProductTag(where: ProductTagWhereInput): BatchPayload!
   adminDeleteManyUser(where: UserWhereInput): BatchPayload!
   adminDeleteManyUserRole(where: UserRoleWhereInput): BatchPayload!
   adminDeleteOneBlogPost(where: BlogPostWhereUniqueInput!): BlogPost
   adminDeleteOnePage(where: PageWhereUniqueInput!): Page
   adminDeleteOneProduct(where: ProductWhereUniqueInput!): Product
+  adminDeleteOneProductTag(where: ProductTagWhereUniqueInput!): ProductTag
   adminDeleteOneUser(where: UserWhereUniqueInput!): User
   adminDeleteOneUserRole(where: UserRoleWhereUniqueInput!): UserRole
   adminUpdateManyBlogPost(data: BlogPostUpdateManyMutationInput!, where: BlogPostWhereInput): BatchPayload!
   adminUpdateManyPage(data: PageUpdateManyMutationInput!, where: PageWhereInput): BatchPayload!
   adminUpdateManyProduct(data: ProductUpdateManyMutationInput!, where: ProductWhereInput): BatchPayload!
+  adminUpdateManyProductTag(data: ProductTagUpdateManyMutationInput!, where: ProductTagWhereInput): BatchPayload!
   adminUpdateManyUser(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
   adminUpdateManyUserRole(data: UserRoleUpdateManyMutationInput!, where: UserRoleWhereInput): BatchPayload!
   adminUpdateOneBlogPost(data: BlogPostUpdateInput!, where: BlogPostWhereUniqueInput!): BlogPost
   adminUpdateOnePage(data: PageUpdateInput!, where: PageWhereUniqueInput!): Page
   adminUpdateOneProduct(data: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product
+  adminUpdateOneProductTag(data: ProductTagUpdateInput!, where: ProductTagWhereUniqueInput!): ProductTag
   adminUpdateOneUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   adminUpdateOneUserRole(data: UserRoleUpdateInput!, where: UserRoleWhereUniqueInput!): UserRole
   adminUploadFile(file: Upload, fileName: String, folderName: String): String
   adminUpsertOneBlogPost(create: BlogPostCreateInput!, update: BlogPostUpdateInput!, where: BlogPostWhereUniqueInput!): BlogPost!
   adminUpsertOnePage(create: PageCreateInput!, update: PageUpdateInput!, where: PageWhereUniqueInput!): Page!
   adminUpsertOneProduct(create: ProductCreateInput!, update: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product!
+  adminUpsertOneProductTag(create: ProductTagCreateInput!, update: ProductTagUpdateInput!, where: ProductTagWhereUniqueInput!): ProductTag!
   adminUpsertOneUser(create: UserCreateInput!, update: UserUpdateInput!, where: UserWhereUniqueInput!): User!
   adminUpsertOneUserRole(create: UserRoleCreateInput!, update: UserRoleUpdateInput!, where: UserRoleWhereUniqueInput!): UserRole!
   login(email: String!, password: String!): LoginResult
@@ -1110,6 +1116,7 @@ type Product {
   id: String!
   imageUrl: String!
   slug: String!
+  tags(cursor: ProductTagWhereUniqueInput, skip: Int, take: Int): [ProductTag!]!
   title: String!
 }
 
@@ -1119,7 +1126,14 @@ input ProductCreateInput {
   imageUrl: String!
   OrderItem: OrderItemCreateManyWithoutProductInput
   slug: String!
+  tags: ProductTagCreateManyWithoutProductsInput
   title: String!
+}
+
+input ProductCreateManyWithoutTagsInput {
+  connect: [ProductWhereUniqueInput!]
+  connectOrCreate: [ProductCreateOrConnectWithoutProductTagInput!]
+  create: [ProductCreateWithoutTagsInput!]
 }
 
 input ProductCreateOneWithoutCartItemsInput {
@@ -1144,11 +1158,17 @@ input ProductCreateOrConnectWithoutOrderItemInput {
   where: ProductWhereUniqueInput!
 }
 
+input ProductCreateOrConnectWithoutProductTagInput {
+  create: ProductCreateWithoutTagsInput!
+  where: ProductWhereUniqueInput!
+}
+
 input ProductCreateWithoutCartItemsInput {
   id: String
   imageUrl: String!
   OrderItem: OrderItemCreateManyWithoutProductInput
   slug: String!
+  tags: ProductTagCreateManyWithoutProductsInput
   title: String!
 }
 
@@ -1157,7 +1177,23 @@ input ProductCreateWithoutOrderItemInput {
   id: String
   imageUrl: String!
   slug: String!
+  tags: ProductTagCreateManyWithoutProductsInput
   title: String!
+}
+
+input ProductCreateWithoutTagsInput {
+  cartItems: CartItemCreateManyWithoutProductInput
+  id: String
+  imageUrl: String!
+  OrderItem: OrderItemCreateManyWithoutProductInput
+  slug: String!
+  title: String!
+}
+
+input ProductFilter {
+  every: ProductWhereInput
+  none: ProductWhereInput
+  some: ProductWhereInput
 }
 
 input ProductOrderByInput {
@@ -1167,11 +1203,142 @@ input ProductOrderByInput {
   title: SortOrder
 }
 
+input ProductScalarWhereInput {
+  AND: [ProductScalarWhereInput!]
+  cartItems: CartItemFilter
+  id: UUIDFilter
+  imageUrl: StringFilter
+  NOT: [ProductScalarWhereInput!]
+  OR: [ProductScalarWhereInput!]
+  OrderItem: OrderItemFilter
+  slug: StringFilter
+  tags: ProductTagFilter
+  title: StringFilter
+}
+
+type ProductTag {
+  id: String!
+  title: String!
+}
+
+input ProductTagCreateInput {
+  id: String
+  products: ProductCreateManyWithoutTagsInput
+  title: String!
+}
+
+input ProductTagCreateManyWithoutProductsInput {
+  connect: [ProductTagWhereUniqueInput!]
+  connectOrCreate: [ProductTagCreateOrConnectWithoutProductInput!]
+  create: [ProductTagCreateWithoutProductsInput!]
+}
+
+input ProductTagCreateOrConnectWithoutProductInput {
+  create: ProductTagCreateWithoutProductsInput!
+  where: ProductTagWhereUniqueInput!
+}
+
+input ProductTagCreateWithoutProductsInput {
+  id: String
+  title: String!
+}
+
+input ProductTagFilter {
+  every: ProductTagWhereInput
+  none: ProductTagWhereInput
+  some: ProductTagWhereInput
+}
+
+input ProductTagOrderByInput {
+  id: SortOrder
+  title: SortOrder
+}
+
+input ProductTagScalarWhereInput {
+  AND: [ProductTagScalarWhereInput!]
+  id: UUIDFilter
+  NOT: [ProductTagScalarWhereInput!]
+  OR: [ProductTagScalarWhereInput!]
+  products: ProductFilter
+  title: StringFilter
+}
+
+input ProductTagUpdateInput {
+  id: String
+  products: ProductUpdateManyWithoutTagsInput
+  title: String
+}
+
+input ProductTagUpdateManyDataInput {
+  id: String
+  title: String
+}
+
+input ProductTagUpdateManyMutationInput {
+  id: String
+  title: String
+}
+
+input ProductTagUpdateManyWithoutProductsInput {
+  connect: [ProductTagWhereUniqueInput!]
+  connectOrCreate: [ProductTagCreateOrConnectWithoutProductInput!]
+  create: [ProductTagCreateWithoutProductsInput!]
+  delete: [ProductTagWhereUniqueInput!]
+  deleteMany: [ProductTagScalarWhereInput!]
+  disconnect: [ProductTagWhereUniqueInput!]
+  set: [ProductTagWhereUniqueInput!]
+  update: [ProductTagUpdateWithWhereUniqueWithoutProductsInput!]
+  updateMany: [ProductTagUpdateManyWithWhereNestedInput!]
+  upsert: [ProductTagUpsertWithWhereUniqueWithoutProductsInput!]
+}
+
+input ProductTagUpdateManyWithWhereNestedInput {
+  data: ProductTagUpdateManyDataInput!
+  where: ProductTagScalarWhereInput!
+}
+
+input ProductTagUpdateWithoutProductsDataInput {
+  id: String
+  title: String
+}
+
+input ProductTagUpdateWithWhereUniqueWithoutProductsInput {
+  data: ProductTagUpdateWithoutProductsDataInput!
+  where: ProductTagWhereUniqueInput!
+}
+
+input ProductTagUpsertWithWhereUniqueWithoutProductsInput {
+  create: ProductTagCreateWithoutProductsInput!
+  update: ProductTagUpdateWithoutProductsDataInput!
+  where: ProductTagWhereUniqueInput!
+}
+
+input ProductTagWhereInput {
+  AND: [ProductTagWhereInput!]
+  id: UUIDFilter
+  NOT: [ProductTagWhereInput!]
+  OR: [ProductTagWhereInput!]
+  products: ProductFilter
+  title: StringFilter
+}
+
+input ProductTagWhereUniqueInput {
+  id: String
+}
+
 input ProductUpdateInput {
   cartItems: CartItemUpdateManyWithoutProductInput
   id: String
   imageUrl: String
   OrderItem: OrderItemUpdateManyWithoutProductInput
+  slug: String
+  tags: ProductTagUpdateManyWithoutProductsInput
+  title: String
+}
+
+input ProductUpdateManyDataInput {
+  id: String
+  imageUrl: String
   slug: String
   title: String
 }
@@ -1181,6 +1348,24 @@ input ProductUpdateManyMutationInput {
   imageUrl: String
   slug: String
   title: String
+}
+
+input ProductUpdateManyWithoutTagsInput {
+  connect: [ProductWhereUniqueInput!]
+  connectOrCreate: [ProductCreateOrConnectWithoutProductTagInput!]
+  create: [ProductCreateWithoutTagsInput!]
+  delete: [ProductWhereUniqueInput!]
+  deleteMany: [ProductScalarWhereInput!]
+  disconnect: [ProductWhereUniqueInput!]
+  set: [ProductWhereUniqueInput!]
+  update: [ProductUpdateWithWhereUniqueWithoutTagsInput!]
+  updateMany: [ProductUpdateManyWithWhereNestedInput!]
+  upsert: [ProductUpsertWithWhereUniqueWithoutTagsInput!]
+}
+
+input ProductUpdateManyWithWhereNestedInput {
+  data: ProductUpdateManyDataInput!
+  where: ProductScalarWhereInput!
 }
 
 input ProductUpdateOneRequiredWithoutCartItemsInput {
@@ -1204,6 +1389,7 @@ input ProductUpdateWithoutCartItemsDataInput {
   imageUrl: String
   OrderItem: OrderItemUpdateManyWithoutProductInput
   slug: String
+  tags: ProductTagUpdateManyWithoutProductsInput
   title: String
 }
 
@@ -1212,7 +1398,22 @@ input ProductUpdateWithoutOrderItemDataInput {
   id: String
   imageUrl: String
   slug: String
+  tags: ProductTagUpdateManyWithoutProductsInput
   title: String
+}
+
+input ProductUpdateWithoutTagsDataInput {
+  cartItems: CartItemUpdateManyWithoutProductInput
+  id: String
+  imageUrl: String
+  OrderItem: OrderItemUpdateManyWithoutProductInput
+  slug: String
+  title: String
+}
+
+input ProductUpdateWithWhereUniqueWithoutTagsInput {
+  data: ProductUpdateWithoutTagsDataInput!
+  where: ProductWhereUniqueInput!
 }
 
 input ProductUpsertWithoutCartItemsInput {
@@ -1225,6 +1426,12 @@ input ProductUpsertWithoutOrderItemInput {
   update: ProductUpdateWithoutOrderItemDataInput!
 }
 
+input ProductUpsertWithWhereUniqueWithoutTagsInput {
+  create: ProductCreateWithoutTagsInput!
+  update: ProductUpdateWithoutTagsDataInput!
+  where: ProductWhereUniqueInput!
+}
+
 input ProductWhereInput {
   AND: [ProductWhereInput!]
   cartItems: CartItemFilter
@@ -1234,6 +1441,7 @@ input ProductWhereInput {
   OR: [ProductWhereInput!]
   OrderItem: OrderItemFilter
   slug: StringFilter
+  tags: ProductTagFilter
   title: StringFilter
 }
 
@@ -1252,6 +1460,9 @@ type Query {
   adminProduct(where: ProductWhereUniqueInput!): Product
   adminProducts(cursor: ProductWhereUniqueInput, orderBy: [ProductOrderByInput!], skip: Int, take: Int, where: ProductWhereInput): [Product!]!
   adminProductsCount(cursor: ProductWhereUniqueInput, orderBy: ProductOrderByInput, skip: Int, take: Int, where: ProductWhereInput): Int
+  adminProductTag(where: ProductTagWhereUniqueInput!): ProductTag
+  adminProductTags(cursor: ProductTagWhereUniqueInput, orderBy: [ProductTagOrderByInput!], skip: Int, take: Int, where: ProductTagWhereInput): [ProductTag!]!
+  adminProductTagsCount(cursor: ProductTagWhereUniqueInput, orderBy: ProductTagOrderByInput, skip: Int, take: Int, where: ProductTagWhereInput): Int
   adminUser(where: UserWhereUniqueInput!): User
   adminUserRole(where: UserRoleWhereUniqueInput!): UserRole
   adminUserRoles(cursor: UserRoleWhereUniqueInput, orderBy: [UserRoleOrderByInput!], skip: Int, take: Int, where: UserRoleWhereInput): [UserRole!]!

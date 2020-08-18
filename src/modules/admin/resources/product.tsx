@@ -14,6 +14,8 @@ import {
   SelectInput,
   ReferenceInput,
   BooleanInput,
+  SelectArrayInput,
+  ReferenceArrayInput,
   required,
 } from "react-admin";
 
@@ -45,6 +47,15 @@ const renderForm = (isCreate = false) => (
     <TextInput source="slug" validate={required()} />
     <TextInput source="title" validate={required()} />
     <ImageInput source="imageUrl" validate={required()} />
+    <ReferenceArrayInput
+      label="Tags"
+      source="tags"
+      reference="ProductTag"
+      allowEmpty
+      alwaysOn
+    >
+      <SelectArrayInput optionText="title" />
+    </ReferenceArrayInput>
   </>
 );
 

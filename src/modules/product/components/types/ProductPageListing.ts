@@ -3,6 +3,8 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
+import { ProductWhereInput } from "./../../../../types/global-types";
+
 // ====================================================
 // GraphQL query operation: ProductPageListing
 // ====================================================
@@ -17,4 +19,8 @@ export interface ProductPageListing_products {
 
 export interface ProductPageListing {
   products: ProductPageListing_products[];
+}
+
+export interface ProductPageListingVariables {
+  where?: ProductWhereInput | null;
 }

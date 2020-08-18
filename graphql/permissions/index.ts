@@ -31,11 +31,13 @@ const rules = {
     page: allow,
     pages: allow,
     blogPosts: allow,
+    products: allow,
   },
   Mutations: {
     adminCreateOneBlogPost: isAdmin,
     login: allow,
     signup: allow,
+    addToCart: isAuthenticated,
   },
 };
 

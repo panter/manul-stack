@@ -5,6 +5,7 @@ import userResource from "./resources/user";
 import userRoleResource from "./resources/userRole";
 import blogPostResource from "./resources/blogPost";
 import pageResource from "./resources/page";
+import productResource from "./resources/product";
 import { useApolloClient } from "@apollo/client";
 import { muiTheme } from "../../pages/_app";
 
@@ -30,6 +31,7 @@ const AdminApp = () => {
       {userRoleResource()}
       {pageResource()}
       {blogPostResource()}
+      {productResource()}
     </Admin>
   );
 };

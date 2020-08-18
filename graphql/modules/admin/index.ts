@@ -46,6 +46,7 @@ nexusAddCrudResolvers(
     User: {},
     UserRole: {},
     BlogPost: {},
+    Product: {},
     // we need to customize pages, so that path is always auto-generated
     // needs https://github.com/graphql-nexus/nexus-plugin-prisma/pull/795
     Page: {

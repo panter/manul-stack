@@ -1,11 +1,10 @@
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator prisma_client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["connectOrCreate"]
+  provider = "prisma-client-js"
 }
 
 model BlogPost {
@@ -44,7 +43,7 @@ model CartItem {
   product   Product @relation(fields: [productId], references: [id])
   productId String
   cart      Cart    @relation(fields: [cartId], references: [id])
-  quantity  Int     @default(1)
+  quantity  Int
   cartId    String
 }
 

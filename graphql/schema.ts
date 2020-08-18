@@ -13,6 +13,8 @@ import "./modules/user";
 import "./modules/files";
 import "./modules/blogPost";
 import "./modules/page";
+import "./modules/product";
+import "./modules/cart";
 
 schema.addToContext(({ req, res }) => {
   return {

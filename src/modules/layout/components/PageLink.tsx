@@ -1,19 +1,20 @@
 import React from "react";
 import { Link } from "../../../config/i18n";
 import usePageLink, { UsePageLinkProps } from "../hooks/usePageLink";
-import StyledLink from "./StyledLink";
+import { Link as MuiLink } from "@material-ui/core";
 import usePreventOnClickInEditor from "../../reactPage/hooks/usePreventOnClickInEditor";
 
 export type PageLinkProps = {
   style?: React.CSSProperties;
   className?: string;
+  Component?: React.ComponentType;
 } & UsePageLinkProps;
 
 const PageLink: React.FC<PageLinkProps> = ({
   page,
   pageId,
   path,
-
+  Component,
   style,
   className,
   children,
@@ -28,11 +29,12 @@ const PageLink: React.FC<PageLinkProps> = ({
     );
   } else {
     const { href, navigationTitle, as } = link;
+    const C = Component ?? MuiLink;
     return (
-      <Link href={href} as={as} passHref onClick={onClick}>
-        <StyledLink style={style} className={className}>
+      <Link href={href} as={as} passHref>
+        <C style={style} className={className} onClick={onClick}>
           {children || navigationTitle}
-        </StyledLink>
+        </C>
       </Link>
     );
   }

@@ -1,8 +1,7 @@
 import { pluginFactories } from "@react-page/plugins-slate";
 import dynamic from "next/dynamic";
 import React from "react";
-
-import StyledLink from "../../layout/components/StyledLink";
+import { Link as MuiLink } from "@material-ui/core";
 
 const Icon = dynamic({
   loader: () => import("@material-ui/icons/ExitToApp"),
@@ -32,8 +31,13 @@ export default pluginFactories.createComponentPlugin<{
   },
 
   Component: (props) => (
-    <StyledLink external href={props.href} title={props.title}>
+    <MuiLink
+      target="_blank"
+      rel="noreferrer"
+      href={props.href}
+      title={props.title}
+    >
       {props.children}
-    </StyledLink>
+    </MuiLink>
   ),
 });

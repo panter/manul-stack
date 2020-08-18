@@ -6,28 +6,9 @@ import pageLink from "./pageLink";
 import externalLink from "./externalLink";
 import fileLink from "./fileLink";
 import { selectFont } from "../../../utils/themeUtils";
-import Heading from "../../layout/components/Heading";
-import Paragraph from "../../layout/components/Paragraph";
 
-const LI = styled.li`
-  margin-left: 25px;
-  ${selectFont("fontText")};
-`;
+import { Typography } from "@material-ui/core";
 
-const UL = styled.ul`
-  list-style-type: disc;
-  margin-bottom: 1.5em;
-`;
-
-const OL = styled.ol`
-  list-style-type: decimal;
-  margin-bottom: 1.5em;
-`;
-
-const H1 = styled(Heading).attrs({ level: 1 })``;
-
-const H2 = styled(Heading).attrs({ level: 2 })``;
-const H3 = styled(Heading).attrs({ level: 3 })``;
 export const defaultSlate = slate((f) => ({
   ...f,
   plugins: {
@@ -35,45 +16,67 @@ export const defaultSlate = slate((f) => ({
     headings: {
       h1: f.plugins.headings.h1((d) => ({
         ...d,
-        Component: H1,
+        Component: ({ attributes, style, children }) => (
+          <Typography
+            variant="h1"
+            {...attributes}
+            style={style}
+            children={children}
+            gutterBottom
+          />
+        ),
       })),
       h2: f.plugins.headings.h2((d) => ({
         ...d,
-        Component: H2,
+        Component: ({ attributes, style, children }) => (
+          <Typography
+            variant="h2"
+            {...attributes}
+            style={style}
+            children={children}
+            gutterBottom
+          />
+        ),
       })),
       h3: f.plugins.headings.h3((d) => ({
         ...d,
-        Component: H3,
+        Component: ({ attributes, style, children }) => (
+          <Typography
+            variant="h3"
+            {...attributes}
+            style={style}
+            children={children}
+            gutterBottom
+          />
+        ),
+      })),
+      h4: f.plugins.headings.h4((d) => ({
+        ...d,
+        Component: ({ attributes, style, children }) => (
+          <Typography
+            variant="h4"
+            {...attributes}
+            style={style}
+            children={children}
+            gutterBottom
+          />
+        ),
       })),
     },
     paragraphs: {
       paragraph: f.plugins.paragraphs.paragraph((d) => ({
         ...d,
-        Component: Paragraph,
+        Component: ({ attributes, style, children }) => (
+          <Typography
+            {...attributes}
+            style={style}
+            children={children}
+            gutterBottom
+          />
+        ),
       })),
     },
-    lists: {
-      ul: f.plugins.lists.ul({
-        customizeList: (d) => ({
-          ...d,
-          Component: UL,
-        }),
-        customizeListItem: (d) => ({
-          ...d,
-          Component: LI,
-        }),
-      }),
-      ol: f.plugins.lists.ol({
-        customizeList: (d) => ({
-          ...d,
-          Component: OL,
-        }),
-        customizeListItem: (d) => ({
-          ...d,
-          Component: LI,
-        }),
-      }),
-    },
+    lists: f.plugins.lists,
     alignment: f.plugins.alignment,
     quotes: f.plugins.quotes,
     link: {

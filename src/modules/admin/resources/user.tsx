@@ -11,15 +11,26 @@ import {
   EditButton,
   Filter,
   Resource,
+  ReferenceInput,
+  SelectInput,
 } from "react-admin";
 
 const UserFilter = (props) => (
   <Filter {...props}>
     <TextInput label="Email" source="email" alwaysOn />
+    <ReferenceInput
+      label="Role"
+      source="roles"
+      reference="UserRole"
+      allowEmpty
+      alwaysOn
+    >
+      <SelectInput optionText="id" />
+    </ReferenceInput>
   </Filter>
 );
 
-export const UserList = (props) => (
+const UserList = (props) => (
   <List {...props} filters={<UserFilter />} perPage={20}>
     <Datagrid>
       <TextField source="id" />
@@ -36,16 +47,25 @@ const UserTitle = ({ record }: any) => {
 const renderForm = (isCreate = false) => (
   <>
     <TextInput source="email" />
+    <ReferenceInput
+      label="Role"
+      source="roles"
+      reference="UserRole"
+      allowEmpty
+      alwaysOn
+    >
+      <SelectInput optionText="id" />
+    </ReferenceInput>
   </>
 );
 
-export const UserEdit = (props) => (
+const UserEdit = (props) => (
   <Edit title={<UserTitle />} {...props} undoable={false}>
     <SimpleForm variant="outlined">{renderForm()}</SimpleForm>
   </Edit>
 );
 
-export const UserCreate = (props) => (
+const UserCreate = (props) => (
   <Create title="Create a User" {...props}>
     <SimpleForm>{renderForm(true)}</SimpleForm>
   </Create>

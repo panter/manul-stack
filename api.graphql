@@ -168,22 +168,28 @@ type Mutation {
   adminCreateOneBlogPost(data: BlogPostCreateInput!): BlogPost!
   adminCreateOnePage(data: PageCreateInput!): Page!
   adminCreateOneUser(data: UserCreateInput!): User!
+  adminCreateOneUserRole(data: UserRoleCreateInput!): UserRole!
   adminDeleteManyBlogPost(where: BlogPostWhereInput): BatchPayload!
   adminDeleteManyPage(where: PageWhereInput): BatchPayload!
   adminDeleteManyUser(where: UserWhereInput): BatchPayload!
+  adminDeleteManyUserRole(where: UserRoleWhereInput): BatchPayload!
   adminDeleteOneBlogPost(where: BlogPostWhereUniqueInput!): BlogPost
   adminDeleteOnePage(where: PageWhereUniqueInput!): Page
   adminDeleteOneUser(where: UserWhereUniqueInput!): User
+  adminDeleteOneUserRole(where: UserRoleWhereUniqueInput!): UserRole
   adminUpdateManyBlogPost(data: BlogPostUpdateManyMutationInput!, where: BlogPostWhereInput): BatchPayload!
   adminUpdateManyPage(data: PageUpdateManyMutationInput!, where: PageWhereInput): BatchPayload!
   adminUpdateManyUser(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
+  adminUpdateManyUserRole(data: UserRoleUpdateManyMutationInput!, where: UserRoleWhereInput): BatchPayload!
   adminUpdateOneBlogPost(data: BlogPostUpdateInput!, where: BlogPostWhereUniqueInput!): BlogPost
   adminUpdateOnePage(data: PageUpdateInput!, where: PageWhereUniqueInput!): Page
   adminUpdateOneUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  adminUpdateOneUserRole(data: UserRoleUpdateInput!, where: UserRoleWhereUniqueInput!): UserRole
   adminUploadFile(file: Upload, fileName: String, folderName: String): String
   adminUpsertOneBlogPost(create: BlogPostCreateInput!, update: BlogPostUpdateInput!, where: BlogPostWhereUniqueInput!): BlogPost!
   adminUpsertOnePage(create: PageCreateInput!, update: PageUpdateInput!, where: PageWhereUniqueInput!): Page!
   adminUpsertOneUser(create: UserCreateInput!, update: UserUpdateInput!, where: UserWhereUniqueInput!): User!
+  adminUpsertOneUserRole(create: UserRoleCreateInput!, update: UserRoleUpdateInput!, where: UserRoleWhereUniqueInput!): UserRole!
   login(email: String!, password: String!): LoginResult
   logout: Boolean
   signup(email: String!, password: String!): SignupResult
@@ -560,6 +566,9 @@ type Query {
   adminPages(cursor: PageWhereUniqueInput, orderBy: [PageOrderByInput!], skip: Int, take: Int, where: PageWhereInput): [Page!]!
   adminPagesCount(cursor: PageWhereUniqueInput, orderBy: PageOrderByInput, skip: Int, take: Int, where: PageWhereInput): Int
   adminUser(where: UserWhereUniqueInput!): User
+  adminUserRole(where: UserRoleWhereUniqueInput!): UserRole
+  adminUserRoles(cursor: UserRoleWhereUniqueInput, orderBy: [UserRoleOrderByInput!], skip: Int, take: Int, where: UserRoleWhereInput): [UserRole!]!
+  adminUserRolesCount(cursor: UserRoleWhereUniqueInput, orderBy: UserRoleOrderByInput, skip: Int, take: Int, where: UserRoleWhereInput): Int
   adminUsers(cursor: UserWhereUniqueInput, orderBy: [UserOrderByInput!], skip: Int, take: Int, where: UserWhereInput): [User!]!
   adminUsersCount(cursor: UserWhereUniqueInput, orderBy: UserOrderByInput, skip: Int, take: Int, where: UserWhereInput): Int
   blogPosts(cursor: BlogPostWhereUniqueInput, skip: Int, take: Int, where: BlogPostWhereInput): [BlogPost!]!
@@ -609,6 +618,11 @@ input UserCreateInput {
   roles: UserRoleCreateManyWithoutUsersInput
 }
 
+input UserCreateManyWithoutRolesInput {
+  connect: [UserWhereUniqueInput!]
+  create: [UserCreateWithoutRolesInput!]
+}
+
 input UserCreateOneWithoutBlogPostsInput {
   connect: UserWhereUniqueInput
   create: UserCreateWithoutBlogPostsInput
@@ -619,6 +633,13 @@ input UserCreateWithoutBlogPostsInput {
   id: String
   password: String!
   roles: UserRoleCreateManyWithoutUsersInput
+}
+
+input UserCreateWithoutRolesInput {
+  blogPosts: BlogPostCreateManyWithoutAuthorInput
+  email: String!
+  id: String
+  password: String!
 }
 
 input UserFilter {
@@ -635,6 +656,12 @@ input UserOrderByInput {
 
 type UserRole {
   id: String!
+  users(cursor: UserWhereUniqueInput, skip: Int, take: Int): [User!]!
+}
+
+input UserRoleCreateInput {
+  id: String!
+  users: UserCreateManyWithoutRolesInput
 }
 
 input UserRoleCreateManyWithoutUsersInput {
@@ -652,6 +679,10 @@ input UserRoleFilter {
   some: UserRoleWhereInput
 }
 
+input UserRoleOrderByInput {
+  id: SortOrder
+}
+
 input UserRoleScalarWhereInput {
   AND: [UserRoleScalarWhereInput!]
   id: StringFilter
@@ -660,7 +691,16 @@ input UserRoleScalarWhereInput {
   users: UserFilter
 }
 
+input UserRoleUpdateInput {
+  id: String
+  users: UserUpdateManyWithoutRolesInput
+}
+
 input UserRoleUpdateManyDataInput {
+  id: String
+}
+
+input UserRoleUpdateManyMutationInput {
   id: String
 }
 
@@ -708,6 +748,17 @@ input UserRoleWhereUniqueInput {
   id: String
 }
 
+input UserScalarWhereInput {
+  AND: [UserScalarWhereInput!]
+  blogPosts: BlogPostFilter
+  email: StringFilter
+  id: UUIDFilter
+  NOT: [UserScalarWhereInput!]
+  OR: [UserScalarWhereInput!]
+  password: StringFilter
+  roles: UserRoleFilter
+}
+
 input UserUpdateInput {
   blogPosts: BlogPostUpdateManyWithoutAuthorInput
   email: String
@@ -716,10 +767,33 @@ input UserUpdateInput {
   roles: UserRoleUpdateManyWithoutUsersInput
 }
 
+input UserUpdateManyDataInput {
+  email: String
+  id: String
+  password: String
+}
+
 input UserUpdateManyMutationInput {
   email: String
   id: String
   password: String
+}
+
+input UserUpdateManyWithoutRolesInput {
+  connect: [UserWhereUniqueInput!]
+  create: [UserCreateWithoutRolesInput!]
+  delete: [UserWhereUniqueInput!]
+  deleteMany: [UserScalarWhereInput!]
+  disconnect: [UserWhereUniqueInput!]
+  set: [UserWhereUniqueInput!]
+  update: [UserUpdateWithWhereUniqueWithoutRolesInput!]
+  updateMany: [UserUpdateManyWithWhereNestedInput!]
+  upsert: [UserUpsertWithWhereUniqueWithoutRolesInput!]
+}
+
+input UserUpdateManyWithWhereNestedInput {
+  data: UserUpdateManyDataInput!
+  where: UserScalarWhereInput!
 }
 
 input UserUpdateOneRequiredWithoutBlogPostsInput {
@@ -736,9 +810,27 @@ input UserUpdateWithoutBlogPostsDataInput {
   roles: UserRoleUpdateManyWithoutUsersInput
 }
 
+input UserUpdateWithoutRolesDataInput {
+  blogPosts: BlogPostUpdateManyWithoutAuthorInput
+  email: String
+  id: String
+  password: String
+}
+
+input UserUpdateWithWhereUniqueWithoutRolesInput {
+  data: UserUpdateWithoutRolesDataInput!
+  where: UserWhereUniqueInput!
+}
+
 input UserUpsertWithoutBlogPostsInput {
   create: UserCreateWithoutBlogPostsInput!
   update: UserUpdateWithoutBlogPostsDataInput!
+}
+
+input UserUpsertWithWhereUniqueWithoutRolesInput {
+  create: UserCreateWithoutRolesInput!
+  update: UserUpdateWithoutRolesDataInput!
+  where: UserWhereUniqueInput!
 }
 
 input UserWhereInput {

@@ -2,7 +2,7 @@ import { pluginFactories } from "@react-page/plugins-slate";
 import dynamic from "next/dynamic";
 import React from "react";
 
-import StyledLink from "../../layout/components/StyledLink";
+import { Link as MuiLink } from "@material-ui/core";
 
 import Icon from "@material-ui/icons/AttachFile";
 const FileField = dynamic({
@@ -33,18 +33,11 @@ export default pluginFactories.createComponentPlugin<{
   },
 
   Component: (props) => (
-    <StyledLink isFile href={props.fileUrl}>
+    <MuiLink target="_blank" rel="noreferrer" href={props.fileUrl}>
       <span contentEditable={false}>
-        <Icon
-          style={{
-            fontSize: "1.5rem",
-            width: "1em",
-            height: "1em",
-            fill: "currentColor",
-          }}
-        />{" "}
+        <Icon />{" "}
       </span>
       {props.children}
-    </StyledLink>
+    </MuiLink>
   ),
 });

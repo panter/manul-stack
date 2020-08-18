@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Link } from "../../../config/i18n";
 import useMe from "../../user/hooks/useMe";
-const Base = styled.a``;
+import { Link as MuiLink } from "@material-ui/core";
 
 export type PageEditButtonProps = {
   style?: React.CSSProperties;
@@ -19,9 +19,9 @@ const PageEditButton: React.FC<PageEditButtonProps> = ({
   if (!isAdmin) return null;
   return (
     <Link href="/admin" as={`/admin#/Page/${pageId}/1`} passHref>
-      <Base style={style} className={className}>
+      <MuiLink style={style} className={className}>
         Edit page
-      </Base>
+      </MuiLink>
     </Link>
   );
 };

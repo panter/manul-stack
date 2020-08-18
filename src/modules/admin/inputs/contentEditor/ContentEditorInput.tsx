@@ -1,9 +1,10 @@
-import { Paper, Button } from "@material-ui/core";
+import { Paper, Button, MuiThemeProvider } from "@material-ui/core";
 import Editor from "@react-page/editor";
 import React, { Fragment, useState } from "react";
 import { Labeled, useInput } from "react-admin";
 import { defaultSlate, plugins } from "../../../reactPage/plugins";
 import InEditorContext from "./InEditorContext";
+import { muiTheme } from "../../../../pages/_app";
 const LANGUAGES = [
   {
     lang: "en",

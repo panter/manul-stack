@@ -24,7 +24,7 @@ const BlogPostFilter = (props) => (
   </Filter>
 );
 
-export const BlogPostList = (props) => (
+const BlogPostList = (props) => (
   <List {...props} filters={<BlogPostFilter />} perPage={20}>
     <Datagrid>
       <TextField source="id" />
@@ -50,13 +50,13 @@ const renderForm = (isCreate = false) => (
   </>
 );
 
-export const BlogPostEdit = (props) => (
+const BlogPostEdit = (props) => (
   <Edit title={<BlogPostTitle />} {...props} undoable={false}>
     <SimpleForm variant="outlined">{renderForm()}</SimpleForm>
   </Edit>
 );
 
-export const BlogPostCreate = (props) => (
+const BlogPostCreate = (props) => (
   <Create title="Create a BlogPost" {...props}>
     <SimpleForm>{renderForm(true)}</SimpleForm>
   </Create>

@@ -14,11 +14,45 @@ import { createUploadLink } from "apollo-upload-client";
 import withApollo from "next-with-apollo";
 import React, { useEffect, useRef } from "react";
 import { ThemeProvider } from "styled-components";
-import { Reset } from "styled-reset";
+
+import CssBaseline from "@material-ui/core/CssBaseline";
 import { appWithTranslation, i18n, useTranslation } from "../config/i18n";
 import theme from "../config/theme";
 import BasePageLayout from "../modules/layout/components/BasePageLayout";
-import { useRouter } from "next/router";
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import purple from "@material-ui/core/colors/purple";
+import green from "@material-ui/core/colors/green";
+
+export const muiTheme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#ef5867",
+    },
+    secondary: {
+      main: "#50c5f0",
+    },
+  },
+  typography: {
+    fontFamily: "Montserrat, sans-serif",
+    h1: {
+      fontFamily: '"Libre Baskerville", serif',
+
+      fontSize: "6rem",
+    },
+    h2: {
+      fontFamily: '"Libre Baskerville", serif',
+      fontSize: "4rem",
+    },
+    h3: {
+      fontFamily: '"Libre Baskerville", serif',
+      fontSize: "3rem",
+    },
+    h4: {
+      fontFamily: '"Libre Baskerville", serif',
+      fontSize: "2rem",
+    },
+  },
+});
 const { ROOT_URL } = require("next/config").default().publicRuntimeConfig;
 
 const withApolloClient = withApollo(
@@ -68,12 +102,14 @@ function MyApp({ Component, pageProps, apollo }: any) {
 
   const getLayout = Component.getLayout ?? getDefaultLayout;
   return (
-    <ThemeProvider theme={theme}>
-      <ApolloProvider client={apollo}>
-        <Reset />
-        {getLayout(<Component {...pageProps} />)}
-      </ApolloProvider>
-    </ThemeProvider>
+    <MuiThemeProvider theme={muiTheme}>
+      <ThemeProvider theme={theme}>
+        <ApolloProvider client={apollo}>
+          <CssBaseline />
+          {getLayout(<Component {...pageProps} />)}
+        </ApolloProvider>
+      </ThemeProvider>
+    </MuiThemeProvider>
   );
 }
 

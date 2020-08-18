@@ -53,7 +53,7 @@ const PageTitle = ({ record }: any) => {
   return <span>Page {record ? `"${record.htmlTitle}"` : ""}</span>;
 };
 
-export const PageEdit = (props: any) => {
+const PageEdit = (props: any) => {
   const link = usePageLink({ pageId: props.id });
 
   const router = useRouter();
@@ -61,6 +61,7 @@ export const PageEdit = (props: any) => {
     <Edit title={<PageTitle />} {...props} undoable={false}>
       <TabbedForm
         variant="outlined"
+        sanitizeEmptyValues={false}
         toolbar={
           <EditToolbar
             additionalSaveAction={{
@@ -95,7 +96,7 @@ export const PageEdit = (props: any) => {
 };
 const PageCreate = (props: any) => (
   <Create title="Create a Page" {...props}>
-    <SimpleForm>
+    <SimpleForm sanitizeEmptyValues={false}>
       <BooleanInput source="published" />
       <TextInput source="slug" />
       <I18nTextInput source="navigationTitle" />

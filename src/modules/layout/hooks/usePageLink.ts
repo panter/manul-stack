@@ -4,6 +4,7 @@ import {
   GetPageForLinkVariables,
   GetPageForLink_page,
 } from "./types/GetPageForLink";
+import usePreventOnClickInEditor from "../../reactPage/hooks/usePreventOnClickInEditor";
 export type UsePageLinkProps = {
   pageId?: string;
   path?: string;
@@ -27,12 +28,14 @@ const usePageLink = ({ page, pageId, path }: UsePageLinkProps) => {
     },
     skip: Boolean(page) || (!pageId && !path),
   });
+  const onClick = usePreventOnClickInEditor();
   const thePage = data?.page ?? page;
   if (!thePage) {
     return null;
   } else {
     const { path, navigationTitle } = thePage;
     return {
+      onClick,
       href: {
         pathname: "/[...path]",
         query: { path },

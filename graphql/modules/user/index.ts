@@ -35,6 +35,7 @@ schema.objectType({
   name: "UserRole",
   definition(t) {
     t.model.id();
+    t.model.users();
   },
 });
 schema.objectType({

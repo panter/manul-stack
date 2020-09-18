@@ -1,7 +1,7 @@
-import { schema, use, settings, server } from "nexus";
+import { schema, use, settings } from "nexus";
 
 import { prisma } from "nexus-plugin-prisma";
-import { shield } from "nexus-plugin-shield";
+import { deny, shield } from "nexus-plugin-shield";
 import { auth } from "nexus-plugin-jwt-auth";
 
 import { APP_SECRET } from "./utils/user";
@@ -22,9 +22,6 @@ schema.addToContext(({ req, res }) => {
 
 settings.change({
   server: {
-    graphql: {
-      introspection: true,
-    },
     playground: {
       settings: {
         "request.credentials": "include",
@@ -54,6 +51,8 @@ use(
     rules,
     options: {
       allowExternalErrors: true,
+      fallbackRule: deny,
+      debug: true,
     },
   })
 );

@@ -22,9 +22,6 @@ schema.addToContext(({ req, res }) => {
 
 settings.change({
   server: {
-    graphql: {
-      introspection: true,
-    },
     playground: {
       settings: {
         "request.credentials": "include",

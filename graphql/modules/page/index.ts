@@ -1,8 +1,7 @@
-import { schema } from "nexus";
+import { extendType, objectType, stringArg } from "@nexus/schema";
 import { i18nField } from "../../utils/i18n";
-import { stringArg } from "nexus/components/schema";
 
-schema.objectType({
+export const Page = objectType({
   name: "Page",
   definition(t) {
     t.model.id();
@@ -19,7 +18,7 @@ schema.objectType({
 
     t.field("content", {
       type: "Json",
-      resolve: (c) => (c.content ? JSON.parse(c.content) : null), // unfortunatly, sqlite has no json support
+      resolve: (c: any) => (c.content ? JSON.parse(c.content) : null), // unfortunatly, sqlite has no json support
     });
     i18nField(t, "navigationTitle");
     i18nField(t, "htmlTitle");
@@ -29,7 +28,7 @@ schema.objectType({
   },
 });
 
-schema.extendType({
+export const Query = extendType({
   type: "Query",
   definition(t) {
     t.field("page", {
@@ -38,11 +37,11 @@ schema.extendType({
         path: stringArg(),
         pageId: stringArg(),
       },
-      resolve(root, args, { db }) {
+      resolve(root, args, { prisma }) {
         const selector = args.pageId
           ? { id: args.pageId }
           : { path: args.path };
-        return db.page.findOne({ where: selector });
+        return prisma.page.findOne({ where: selector });
       },
     });
     t.list.field("pages", {
@@ -51,7 +50,7 @@ schema.extendType({
         parentPageId: stringArg(),
         parentPath: stringArg(),
       },
-      resolve(root, { parentPageId, parentPath }, { db }) {
+      resolve(root, { parentPageId, parentPath }, { prisma }) {
         const where = parentPageId
           ? { parentPageId }
           : parentPath
@@ -71,7 +70,7 @@ schema.extendType({
                 },
               ],
             };
-        return db.page.findMany({
+        return prisma.page.findMany({
           where,
         });
       },

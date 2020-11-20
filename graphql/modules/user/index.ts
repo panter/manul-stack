@@ -1,17 +1,15 @@
 import { compare, hash } from "bcryptjs";
 import { sign } from "jsonwebtoken";
-import { schema } from "nexus";
 import { APP_SECRET, getUserId, getHashedPassword } from "../../utils/user";
-import { User } from "@prisma/client";
-import { booleanArg, objectType } from "nexus/components/schema";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
+import { extendType, objectType, stringArg } from "@nexus/schema";
 
 const { ROOT_URL = "http://localhost:3000" } = process.env;
 
 dayjs.extend(utc);
 
-const setLoginHeader = (ctx: NexusContext, user: User) => {
+const setLoginHeader = (ctx, user) => {
   const token = sign({ userId: user.id }, APP_SECRET);
 
   const expires = dayjs().add(8, "week").utc();
@@ -23,7 +21,7 @@ const setLoginHeader = (ctx: NexusContext, user: User) => {
   );
 };
 
-const setLogoutHeader = (ctx: NexusContext) =>
+const setLogoutHeader = (ctx) =>
   ctx.res.setHeader(
     "Set-Cookie",
     `token=deleted; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; Domain=${
@@ -31,14 +29,15 @@ const setLogoutHeader = (ctx: NexusContext) =>
     }`
   );
 
-schema.objectType({
+export const UserRole = objectType({
   name: "UserRole",
   definition(t) {
     t.model.id();
     t.model.users();
   },
 });
-schema.objectType({
+
+export const User = objectType({
   name: "User",
   definition(t) {
     t.model.id();
@@ -48,23 +47,22 @@ schema.objectType({
   },
 });
 
-schema.extendType({
+export const Query = extendType({
   type: "Query",
   definition(t) {
     t.field("me", {
       type: "User",
-      resolve(root, args, context) {
-        const userId = getUserId(context.token);
-        if (!userId) {
+      resolve(root, args, { prisma, user }) {
+        if (!user) {
           return null;
         }
-        return context.db.user.findOne({ where: { id: userId } });
+        return prisma.user.findOne({ where: { id: user.id } });
       },
     });
   },
 });
 
-schema.extendType({
+export const Mutation = extendType({
   type: "Mutation",
   definition(t) {
     t.field("signup", {
@@ -77,13 +75,13 @@ schema.extendType({
         },
       }),
       args: {
-        email: schema.stringArg({ nullable: false }),
-        password: schema.stringArg({ nullable: false }),
+        email: stringArg({ nullable: false }),
+        password: stringArg({ nullable: false }),
       },
       resolve: async (_parent, { email, password }, ctx) => {
         ctx.res;
 
-        const user = await ctx.db.user.create({
+        const user = await ctx.prisma.user.create({
           data: {
             email,
             password: await getHashedPassword(password),
@@ -109,11 +107,11 @@ schema.extendType({
         },
       }),
       args: {
-        email: schema.stringArg({ nullable: false }),
-        password: schema.stringArg({ nullable: false }),
+        email: stringArg({ nullable: false }),
+        password: stringArg({ nullable: false }),
       },
       resolve: async (_parent, { email, password }, ctx) => {
-        const user = await ctx.db.user.findOne({
+        const user = await ctx.prisma.user.findOne({
           where: {
             email,
           },

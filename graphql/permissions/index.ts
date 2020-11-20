@@ -1,30 +1,25 @@
-import { rule, allow, deny, or } from "nexus-plugin-shield";
-import { getUserId } from "../utils/user";
+import { allow, rule } from "graphql-shield";
+import { Context } from "../types";
 
 const isAuthenticated = rule({ cache: "contextual" })(
-  async (parent, args, ctx: NexusContext, info) => {
-    const userId = getUserId(ctx.token);
-    return Boolean(userId);
+  async (parent, args, ctx, info) => {
+    return Boolean(ctx.user);
   }
 );
 
 const isAdmin = rule({ cache: "contextual" })(
-  async (parent, args, ctx: NexusContext, info) => {
-    const userId = getUserId(ctx.token);
-    const user = await ctx.db.user.findOne({
-      where: {
-        id: userId,
-      },
-      include: {
-        roles: true,
-      },
-    });
-
-    return user?.roles.some((r) => r.id === "admin") ?? false;
+  async (parent, args, ctx: Context, info) => {
+    if (!ctx.user) {
+      return null;
+    }
+    return ctx.prisma.user
+      .findOne({ where: { id: ctx.user.id } })
+      .roles({ where: { id: "admin" } })
+      .then((r) => r.length > 0);
   }
 );
 
-const rules = {
+export default {
   Query: {
     "*": isAdmin,
     me: allow,
@@ -32,11 +27,8 @@ const rules = {
     pages: allow,
     blogPosts: allow,
   },
-  Mutations: {
-    adminCreateOneBlogPost: isAdmin,
+  Mutation: {
     login: allow,
     signup: allow,
   },
 };
-
-export { rules };

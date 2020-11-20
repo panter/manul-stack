@@ -1,10 +1,4 @@
-if (process.env.NODE_ENV === "development") require("nexus").default.reset();
-
-const app = require("nexus").default;
-
-require("../../../graphql/schema");
-
-app.assemble();
+import server from "../../../graphql/server";
 
 export const config = {
   api: {
@@ -12,4 +6,4 @@ export const config = {
   },
 };
 
-export default app.server.handlers.graphql;
+export default server.createHandler({ path: "/api/graphql" });

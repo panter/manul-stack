@@ -1,6 +1,13 @@
-import { schema } from "nexus";
+import { objectType, queryType, scalarType } from "@nexus/schema";
 
-schema.objectType({
+export const JSONScalar = scalarType({
+  name: "Json",
+  serialize: (data: any) => JSON.parse(data),
+  parseValue: (data: any) => JSON.stringify(data),
+  asNexusMethod: "json",
+});
+
+export const BlogPost = objectType({
   name: "BlogPost",
   definition(t) {
     t.model.id();
@@ -9,12 +16,12 @@ schema.objectType({
     t.model.published();
     t.field("content", {
       type: "Json",
-      resolve: (c) => (c.content ? JSON.parse(c.content) : null), // unfortunatly, sqlite has no json support
+      resolve: (c: any) => (c.content ? JSON.parse(c.content) : null),
     });
   },
 });
 
-schema.queryType({
+export const QueryType = queryType({
   definition(t) {
     t.crud.blogPosts({
       filtering: true,

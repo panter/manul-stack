@@ -1,7 +1,9 @@
-import { schema } from "nexus";
 import { v4 } from "uuid";
-
 import Aws from "aws-sdk";
+import { GraphQLUpload, UserInputError } from "apollo-server-core";
+import type { FileUpload } from "graphql-upload";
+import { extendType, scalarType, stringArg } from "@nexus/schema";
+
 const { S3_SECRET_ACCESS_KEY, S3_ENDPOINT, S3_ACCESS_KEY_ID } = process.env;
 const s3 = new Aws.S3({
   endpoint: S3_ENDPOINT,
@@ -12,29 +14,26 @@ const s3 = new Aws.S3({
   signatureVersion: "v4",
 });
 
-import { GraphQLUpload, UserInputError } from "apollo-server-core";
-import type { FileUpload } from "graphql-upload";
-
 const BUCKET_NAME = "manul-stack-example";
 
 // see https://github.com/graphql-nexus/nexus/issues/844#issuecomment-666699822
 export type UploadRoot = Promise<FileUpload>;
-schema.scalarType({
+export const UploadRoot = scalarType({
   // Why we need the bang: https://github.com/apollographql/apollo-server/blob/570f548b88750a06fbf5f67a4abe78fb0f870ccd/packages/apollo-server-core/src/index.ts#L49-L56
   ...GraphQLUpload!,
   rootTyping: "UploadRoot",
 });
 
-schema.extendType({
+export const Mutation = extendType({
   type: "Mutation",
   definition(t) {
     t.string("adminUploadFile", {
       args: {
         file: "Upload",
-        fileName: schema.stringArg({
+        fileName: stringArg({
           required: false,
         }),
-        folderName: schema.stringArg({
+        folderName: stringArg({
           required: false,
         }),
       },

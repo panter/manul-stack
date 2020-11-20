@@ -20,8 +20,6 @@ import { appWithTranslation, i18n, useTranslation } from "../config/i18n";
 import theme from "../config/theme";
 import BasePageLayout from "../modules/layout/components/BasePageLayout";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
-import purple from "@material-ui/core/colors/purple";
-import green from "@material-ui/core/colors/green";
 
 export const muiTheme = createMuiTheme({
   palette: {
@@ -56,19 +54,31 @@ export const muiTheme = createMuiTheme({
 const { ROOT_URL } = require("next/config").default().publicRuntimeConfig;
 
 const withApolloClient = withApollo(
-  ({ initialState }) => {
+  ({ initialState, ctx }) => {
     return new ApolloClient({
       link: from([
-        setContext((a, b) => {
+        setContext(() => {
+          const headers: {
+            "accept-language"?: string;
+            authorization?: string;
+          } = {
+            ["accept-language"]: i18n.language,
+          };
+
+          // add auth header for ssr executed
+          // queries to pass the cookie token
+          const token = (ctx?.req as any)?.cookies?.token;
+          if (!process.browser && token) {
+            headers.authorization = token;
+          }
+
           return {
-            headers: {
-              ["accept-language"]: i18n.language,
-            },
+            headers,
           };
         }) as any,
 
         createUploadLink({
-          uri: `${!process.browser ? `${ROOT_URL}` : ""}/graphql`,
+          uri: `${!process.browser ? `${ROOT_URL}` : ""}/api/graphql`,
         }),
       ]),
       ssrMode: !process.browser,

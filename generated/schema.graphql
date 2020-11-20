@@ -24,7 +24,13 @@ input BlogPostCreateInput {
 
 input BlogPostCreateManyWithoutAuthorInput {
   connect: [BlogPostWhereUniqueInput!]
+  connectOrCreate: [BlogPostCreateOrConnectWithoutauthorInput!]
   create: [BlogPostCreateWithoutAuthorInput!]
+}
+
+input BlogPostCreateOrConnectWithoutauthorInput {
+  create: BlogPostCreateWithoutAuthorInput!
+  where: BlogPostWhereUniqueInput!
 }
 
 input BlogPostCreateWithoutAuthorInput {
@@ -34,7 +40,7 @@ input BlogPostCreateWithoutAuthorInput {
   title: String!
 }
 
-input BlogPostFilter {
+input BlogPostListRelationFilter {
   every: BlogPostWhereInput
   none: BlogPostWhereInput
   some: BlogPostWhereInput
@@ -51,68 +57,62 @@ input BlogPostOrderByInput {
 input BlogPostScalarWhereInput {
   AND: [BlogPostScalarWhereInput!]
   authorId: StringFilter
-  content: NullableStringFilter
-  id: UUIDFilter
+  content: StringNullableFilter
+  id: StringFilter
   NOT: [BlogPostScalarWhereInput!]
   OR: [BlogPostScalarWhereInput!]
-  published: BooleanFilter
+  published: BoolFilter
   title: StringFilter
 }
 
 input BlogPostUpdateInput {
   author: UserUpdateOneRequiredWithoutBlogPostsInput
-  content: String
-  id: String
-  published: Boolean
-  title: String
-}
-
-input BlogPostUpdateManyDataInput {
-  content: String
-  id: String
-  published: Boolean
-  title: String
+  content: NullableStringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  published: BoolFieldUpdateOperationsInput
+  title: StringFieldUpdateOperationsInput
 }
 
 input BlogPostUpdateManyMutationInput {
-  content: String
-  id: String
-  published: Boolean
-  title: String
+  content: NullableStringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  published: BoolFieldUpdateOperationsInput
+  title: StringFieldUpdateOperationsInput
 }
 
 input BlogPostUpdateManyWithoutAuthorInput {
   connect: [BlogPostWhereUniqueInput!]
+  connectOrCreate: [BlogPostCreateOrConnectWithoutauthorInput!]
   create: [BlogPostCreateWithoutAuthorInput!]
   delete: [BlogPostWhereUniqueInput!]
   deleteMany: [BlogPostScalarWhereInput!]
   disconnect: [BlogPostWhereUniqueInput!]
   set: [BlogPostWhereUniqueInput!]
   update: [BlogPostUpdateWithWhereUniqueWithoutAuthorInput!]
-  updateMany: [BlogPostUpdateManyWithWhereNestedInput!]
+  updateMany: [BlogPostUpdateManyWithWhereWithoutAuthorInput!]
   upsert: [BlogPostUpsertWithWhereUniqueWithoutAuthorInput!]
 }
 
-input BlogPostUpdateManyWithWhereNestedInput {
-  data: BlogPostUpdateManyDataInput!
+input BlogPostUpdateManyWithWhereWithoutAuthorInput {
+  data: BlogPostUpdateManyMutationInput!
   where: BlogPostScalarWhereInput!
 }
 
-input BlogPostUpdateWithoutAuthorDataInput {
-  content: String
-  id: String
-  published: Boolean
-  title: String
+input BlogPostUpdateWithoutAuthorInput {
+  content: NullableStringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  published: BoolFieldUpdateOperationsInput
+  title: StringFieldUpdateOperationsInput
 }
 
 input BlogPostUpdateWithWhereUniqueWithoutAuthorInput {
-  data: BlogPostUpdateWithoutAuthorDataInput!
+  data: BlogPostUpdateWithoutAuthorInput!
   where: BlogPostWhereUniqueInput!
 }
 
 input BlogPostUpsertWithWhereUniqueWithoutAuthorInput {
   create: BlogPostCreateWithoutAuthorInput!
-  update: BlogPostUpdateWithoutAuthorDataInput!
+  update: BlogPostUpdateWithoutAuthorInput!
   where: BlogPostWhereUniqueInput!
 }
 
@@ -120,11 +120,11 @@ input BlogPostWhereInput {
   AND: [BlogPostWhereInput!]
   author: UserWhereInput
   authorId: StringFilter
-  content: NullableStringFilter
-  id: UUIDFilter
+  content: StringNullableFilter
+  id: StringFilter
   NOT: [BlogPostWhereInput!]
   OR: [BlogPostWhereInput!]
-  published: BooleanFilter
+  published: BoolFilter
   title: StringFilter
 }
 
@@ -132,17 +132,25 @@ input BlogPostWhereUniqueInput {
   id: String
 }
 
-input BooleanFilter {
-  equals: Boolean
-  not: Boolean
+input BoolFieldUpdateOperationsInput {
+  set: Boolean
 }
 
-"""
-A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the
-`date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO
-8601 standard for representation of dates and times using the Gregorian calendar.
-"""
+input BoolFilter {
+  equals: Boolean
+  not: NestedBoolFilter
+}
+
+input BoolNullableFilter {
+  equals: Boolean
+  not: NestedBoolNullableFilter
+}
+
 scalar DateTime
+
+input DateTimeFieldUpdateOperationsInput {
+  set: DateTime
+}
 
 input DateTimeFilter {
   equals: DateTime
@@ -151,13 +159,21 @@ input DateTimeFilter {
   in: [DateTime!]
   lt: DateTime
   lte: DateTime
-  not: DateTime
+  not: NestedDateTimeFilter
   notIn: [DateTime!]
 }
 
-"""
-The `JSON` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
-"""
+input IntNullableFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: NestedIntNullableFilter
+  notIn: [Int!]
+}
+
 scalar Json
 
 type LoginResult {
@@ -195,23 +211,39 @@ type Mutation {
   signup(email: String!, password: String!): SignupResult
 }
 
-input NullableBooleanFilter {
+input NestedBoolFilter {
   equals: Boolean
-  not: Boolean
+  not: NestedBoolFilter
 }
 
-input NullableIntFilter {
+input NestedBoolNullableFilter {
+  equals: Boolean
+  not: NestedBoolNullableFilter
+}
+
+input NestedDateTimeFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: NestedDateTimeFilter
+  notIn: [DateTime!]
+}
+
+input NestedIntNullableFilter {
   equals: Int
   gt: Int
   gte: Int
   in: [Int!]
   lt: Int
   lte: Int
-  not: Int
+  not: NestedIntNullableFilter
   notIn: [Int!]
 }
 
-input NullableStringFilter {
+input NestedStringFilter {
   contains: String
   endsWith: String
   equals: String
@@ -220,9 +252,39 @@ input NullableStringFilter {
   in: [String!]
   lt: String
   lte: String
-  not: String
+  not: NestedStringFilter
   notIn: [String!]
   startsWith: String
+}
+
+input NestedStringNullableFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  not: NestedStringNullableFilter
+  notIn: [String!]
+  startsWith: String
+}
+
+input NullableBoolFieldUpdateOperationsInput {
+  set: Boolean
+}
+
+input NullableIntFieldUpdateOperationsInput {
+  decrement: Int
+  divide: Int
+  increment: Int
+  multiply: Int
+  set: Int
+}
+
+input NullableStringFieldUpdateOperationsInput {
+  set: String
 }
 
 type Page {
@@ -274,12 +336,24 @@ input PageCreateInput {
 
 input PageCreateManyWithoutParentPageInput {
   connect: [PageWhereUniqueInput!]
+  connectOrCreate: [PageCreateOrConnectWithoutparentPageInput!]
   create: [PageCreateWithoutParentPageInput!]
 }
 
 input PageCreateOneWithoutChildPagesInput {
   connect: PageWhereUniqueInput
+  connectOrCreate: PageCreateOrConnectWithoutchildPagesInput
   create: PageCreateWithoutChildPagesInput
+}
+
+input PageCreateOrConnectWithoutchildPagesInput {
+  create: PageCreateWithoutChildPagesInput!
+  where: PageWhereUniqueInput!
+}
+
+input PageCreateOrConnectWithoutparentPageInput {
+  create: PageCreateWithoutParentPageInput!
+  where: PageWhereUniqueInput!
 }
 
 input PageCreateWithoutChildPagesInput {
@@ -324,7 +398,7 @@ input PageCreateWithoutParentPageInput {
   sortKey: Int
 }
 
-input PageFilter {
+input PageListRelationFilter {
   every: PageWhereInput
   none: PageWhereInput
   some: PageWhereInput
@@ -353,198 +427,179 @@ input PageOrderByInput {
 
 input PageScalarWhereInput {
   AND: [PageScalarWhereInput!]
-  childPages: PageFilter
-  content: NullableStringFilter
+  content: StringNullableFilter
   createdAt: DateTimeFilter
-  htmlTitle_de: NullableStringFilter
-  htmlTitle_en: NullableStringFilter
-  id: UUIDFilter
-  meta_description_de: NullableStringFilter
-  meta_description_en: NullableStringFilter
-  navigationTitle_de: NullableStringFilter
+  htmlTitle_de: StringNullableFilter
+  htmlTitle_en: StringNullableFilter
+  id: StringFilter
+  meta_description_de: StringNullableFilter
+  meta_description_en: StringNullableFilter
+  navigationTitle_de: StringNullableFilter
   navigationTitle_en: StringFilter
   NOT: [PageScalarWhereInput!]
   OR: [PageScalarWhereInput!]
-  parentPageId: NullableStringFilter
-  path: NullableStringFilter
-  published: NullableBooleanFilter
+  parentPageId: StringNullableFilter
+  path: StringNullableFilter
+  published: BoolNullableFilter
   slug: StringFilter
-  social_description_de: NullableStringFilter
-  social_description_en: NullableStringFilter
-  social_title_de: NullableStringFilter
-  social_title_en: NullableStringFilter
-  sortKey: NullableIntFilter
+  social_description_de: StringNullableFilter
+  social_description_en: StringNullableFilter
+  social_title_de: StringNullableFilter
+  social_title_en: StringNullableFilter
+  sortKey: IntNullableFilter
 }
 
 input PageUpdateInput {
   childPages: PageUpdateManyWithoutParentPageInput
-  content: String
-  createdAt: DateTime
-  htmlTitle_de: String
-  htmlTitle_en: String
-  id: String
-  meta_description_de: String
-  meta_description_en: String
-  navigationTitle_de: String
-  navigationTitle_en: String
+  content: NullableStringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  htmlTitle_de: NullableStringFieldUpdateOperationsInput
+  htmlTitle_en: NullableStringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  meta_description_de: NullableStringFieldUpdateOperationsInput
+  meta_description_en: NullableStringFieldUpdateOperationsInput
+  navigationTitle_de: NullableStringFieldUpdateOperationsInput
+  navigationTitle_en: StringFieldUpdateOperationsInput
   parentPage: PageUpdateOneWithoutChildPagesInput
-  published: Boolean
-  slug: String
-  social_description_de: String
-  social_description_en: String
-  social_title_de: String
-  social_title_en: String
-  sortKey: Int
-}
-
-input PageUpdateManyDataInput {
-  content: String
-  createdAt: DateTime
-  htmlTitle_de: String
-  htmlTitle_en: String
-  id: String
-  meta_description_de: String
-  meta_description_en: String
-  navigationTitle_de: String
-  navigationTitle_en: String
-  path: String
-  published: Boolean
-  slug: String
-  social_description_de: String
-  social_description_en: String
-  social_title_de: String
-  social_title_en: String
-  sortKey: Int
+  published: NullableBoolFieldUpdateOperationsInput
+  slug: StringFieldUpdateOperationsInput
+  social_description_de: NullableStringFieldUpdateOperationsInput
+  social_description_en: NullableStringFieldUpdateOperationsInput
+  social_title_de: NullableStringFieldUpdateOperationsInput
+  social_title_en: NullableStringFieldUpdateOperationsInput
+  sortKey: NullableIntFieldUpdateOperationsInput
 }
 
 input PageUpdateManyMutationInput {
-  content: String
-  createdAt: DateTime
-  htmlTitle_de: String
-  htmlTitle_en: String
-  id: String
-  meta_description_de: String
-  meta_description_en: String
-  navigationTitle_de: String
-  navigationTitle_en: String
-  path: String
-  published: Boolean
-  slug: String
-  social_description_de: String
-  social_description_en: String
-  social_title_de: String
-  social_title_en: String
-  sortKey: Int
+  content: NullableStringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  htmlTitle_de: NullableStringFieldUpdateOperationsInput
+  htmlTitle_en: NullableStringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  meta_description_de: NullableStringFieldUpdateOperationsInput
+  meta_description_en: NullableStringFieldUpdateOperationsInput
+  navigationTitle_de: NullableStringFieldUpdateOperationsInput
+  navigationTitle_en: StringFieldUpdateOperationsInput
+  path: NullableStringFieldUpdateOperationsInput
+  published: NullableBoolFieldUpdateOperationsInput
+  slug: StringFieldUpdateOperationsInput
+  social_description_de: NullableStringFieldUpdateOperationsInput
+  social_description_en: NullableStringFieldUpdateOperationsInput
+  social_title_de: NullableStringFieldUpdateOperationsInput
+  social_title_en: NullableStringFieldUpdateOperationsInput
+  sortKey: NullableIntFieldUpdateOperationsInput
 }
 
 input PageUpdateManyWithoutParentPageInput {
   connect: [PageWhereUniqueInput!]
+  connectOrCreate: [PageCreateOrConnectWithoutparentPageInput!]
   create: [PageCreateWithoutParentPageInput!]
   delete: [PageWhereUniqueInput!]
   deleteMany: [PageScalarWhereInput!]
   disconnect: [PageWhereUniqueInput!]
   set: [PageWhereUniqueInput!]
   update: [PageUpdateWithWhereUniqueWithoutParentPageInput!]
-  updateMany: [PageUpdateManyWithWhereNestedInput!]
+  updateMany: [PageUpdateManyWithWhereWithoutParentPageInput!]
   upsert: [PageUpsertWithWhereUniqueWithoutParentPageInput!]
 }
 
-input PageUpdateManyWithWhereNestedInput {
-  data: PageUpdateManyDataInput!
+input PageUpdateManyWithWhereWithoutParentPageInput {
+  data: PageUpdateManyMutationInput!
   where: PageScalarWhereInput!
 }
 
 input PageUpdateOneWithoutChildPagesInput {
   connect: PageWhereUniqueInput
+  connectOrCreate: PageCreateOrConnectWithoutchildPagesInput
   create: PageCreateWithoutChildPagesInput
   delete: Boolean
   disconnect: Boolean
-  update: PageUpdateWithoutChildPagesDataInput
+  update: PageUpdateWithoutChildPagesInput
   upsert: PageUpsertWithoutChildPagesInput
 }
 
-input PageUpdateWithoutChildPagesDataInput {
-  content: String
-  createdAt: DateTime
-  htmlTitle_de: String
-  htmlTitle_en: String
-  id: String
-  meta_description_de: String
-  meta_description_en: String
-  navigationTitle_de: String
-  navigationTitle_en: String
+input PageUpdateWithoutChildPagesInput {
+  content: NullableStringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  htmlTitle_de: NullableStringFieldUpdateOperationsInput
+  htmlTitle_en: NullableStringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  meta_description_de: NullableStringFieldUpdateOperationsInput
+  meta_description_en: NullableStringFieldUpdateOperationsInput
+  navigationTitle_de: NullableStringFieldUpdateOperationsInput
+  navigationTitle_en: StringFieldUpdateOperationsInput
   parentPage: PageUpdateOneWithoutChildPagesInput
-  path: String
-  published: Boolean
-  slug: String
-  social_description_de: String
-  social_description_en: String
-  social_title_de: String
-  social_title_en: String
-  sortKey: Int
+  path: NullableStringFieldUpdateOperationsInput
+  published: NullableBoolFieldUpdateOperationsInput
+  slug: StringFieldUpdateOperationsInput
+  social_description_de: NullableStringFieldUpdateOperationsInput
+  social_description_en: NullableStringFieldUpdateOperationsInput
+  social_title_de: NullableStringFieldUpdateOperationsInput
+  social_title_en: NullableStringFieldUpdateOperationsInput
+  sortKey: NullableIntFieldUpdateOperationsInput
 }
 
-input PageUpdateWithoutParentPageDataInput {
+input PageUpdateWithoutParentPageInput {
   childPages: PageUpdateManyWithoutParentPageInput
-  content: String
-  createdAt: DateTime
-  htmlTitle_de: String
-  htmlTitle_en: String
-  id: String
-  meta_description_de: String
-  meta_description_en: String
-  navigationTitle_de: String
-  navigationTitle_en: String
-  path: String
-  published: Boolean
-  slug: String
-  social_description_de: String
-  social_description_en: String
-  social_title_de: String
-  social_title_en: String
-  sortKey: Int
+  content: NullableStringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  htmlTitle_de: NullableStringFieldUpdateOperationsInput
+  htmlTitle_en: NullableStringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  meta_description_de: NullableStringFieldUpdateOperationsInput
+  meta_description_en: NullableStringFieldUpdateOperationsInput
+  navigationTitle_de: NullableStringFieldUpdateOperationsInput
+  navigationTitle_en: StringFieldUpdateOperationsInput
+  path: NullableStringFieldUpdateOperationsInput
+  published: NullableBoolFieldUpdateOperationsInput
+  slug: StringFieldUpdateOperationsInput
+  social_description_de: NullableStringFieldUpdateOperationsInput
+  social_description_en: NullableStringFieldUpdateOperationsInput
+  social_title_de: NullableStringFieldUpdateOperationsInput
+  social_title_en: NullableStringFieldUpdateOperationsInput
+  sortKey: NullableIntFieldUpdateOperationsInput
 }
 
 input PageUpdateWithWhereUniqueWithoutParentPageInput {
-  data: PageUpdateWithoutParentPageDataInput!
+  data: PageUpdateWithoutParentPageInput!
   where: PageWhereUniqueInput!
 }
 
 input PageUpsertWithoutChildPagesInput {
   create: PageCreateWithoutChildPagesInput!
-  update: PageUpdateWithoutChildPagesDataInput!
+  update: PageUpdateWithoutChildPagesInput!
 }
 
 input PageUpsertWithWhereUniqueWithoutParentPageInput {
   create: PageCreateWithoutParentPageInput!
-  update: PageUpdateWithoutParentPageDataInput!
+  update: PageUpdateWithoutParentPageInput!
   where: PageWhereUniqueInput!
 }
 
 input PageWhereInput {
   AND: [PageWhereInput!]
-  childPages: PageFilter
-  content: NullableStringFilter
+  childPages: PageListRelationFilter
+  content: StringNullableFilter
   createdAt: DateTimeFilter
-  htmlTitle_de: NullableStringFilter
-  htmlTitle_en: NullableStringFilter
-  id: UUIDFilter
-  meta_description_de: NullableStringFilter
-  meta_description_en: NullableStringFilter
-  navigationTitle_de: NullableStringFilter
+  htmlTitle_de: StringNullableFilter
+  htmlTitle_en: StringNullableFilter
+  id: StringFilter
+  meta_description_de: StringNullableFilter
+  meta_description_en: StringNullableFilter
+  navigationTitle_de: StringNullableFilter
   navigationTitle_en: StringFilter
   NOT: [PageWhereInput!]
   OR: [PageWhereInput!]
   parentPage: PageWhereInput
-  parentPageId: NullableStringFilter
-  path: NullableStringFilter
-  published: NullableBooleanFilter
+  parentPageId: StringNullableFilter
+  path: StringNullableFilter
+  published: BoolNullableFilter
   slug: StringFilter
-  social_description_de: NullableStringFilter
-  social_description_en: NullableStringFilter
-  social_title_de: NullableStringFilter
-  social_title_en: NullableStringFilter
-  sortKey: NullableIntFilter
+  social_description_de: StringNullableFilter
+  social_description_en: StringNullableFilter
+  social_title_de: StringNullableFilter
+  social_title_en: StringNullableFilter
+  sortKey: IntNullableFilter
 }
 
 input PageWhereUniqueInput {
@@ -574,7 +629,7 @@ type Query {
   blogPosts(cursor: BlogPostWhereUniqueInput, skip: Int, take: Int, where: BlogPostWhereInput): [BlogPost!]!
   me: User
   page(pageId: String, path: String): Page
-  pages(parentPageId: String, parentPath: String): [Page!]
+  pages(parentPageId: String, parentPath: String): [Page]
 }
 
 type SignupResult {
@@ -586,6 +641,10 @@ enum SortOrder {
   desc
 }
 
+input StringFieldUpdateOperationsInput {
+  set: String
+}
+
 input StringFilter {
   contains: String
   endsWith: String
@@ -595,7 +654,21 @@ input StringFilter {
   in: [String!]
   lt: String
   lte: String
-  not: String
+  not: NestedStringFilter
+  notIn: [String!]
+  startsWith: String
+}
+
+input StringNullableFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  not: NestedStringNullableFilter
   notIn: [String!]
   startsWith: String
 }
@@ -620,12 +693,24 @@ input UserCreateInput {
 
 input UserCreateManyWithoutRolesInput {
   connect: [UserWhereUniqueInput!]
+  connectOrCreate: [UserCreateOrConnectWithoutrolesInput!]
   create: [UserCreateWithoutRolesInput!]
 }
 
 input UserCreateOneWithoutBlogPostsInput {
   connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutblogPostsInput
   create: UserCreateWithoutBlogPostsInput
+}
+
+input UserCreateOrConnectWithoutblogPostsInput {
+  create: UserCreateWithoutBlogPostsInput!
+  where: UserWhereUniqueInput!
+}
+
+input UserCreateOrConnectWithoutrolesInput {
+  create: UserCreateWithoutRolesInput!
+  where: UserWhereUniqueInput!
 }
 
 input UserCreateWithoutBlogPostsInput {
@@ -642,7 +727,7 @@ input UserCreateWithoutRolesInput {
   password: String!
 }
 
-input UserFilter {
+input UserListRelationFilter {
   every: UserWhereInput
   none: UserWhereInput
   some: UserWhereInput
@@ -666,14 +751,20 @@ input UserRoleCreateInput {
 
 input UserRoleCreateManyWithoutUsersInput {
   connect: [UserRoleWhereUniqueInput!]
+  connectOrCreate: [UserRoleCreateOrConnectWithoutusersInput!]
   create: [UserRoleCreateWithoutUsersInput!]
+}
+
+input UserRoleCreateOrConnectWithoutusersInput {
+  create: UserRoleCreateWithoutUsersInput!
+  where: UserRoleWhereUniqueInput!
 }
 
 input UserRoleCreateWithoutUsersInput {
   id: String!
 }
 
-input UserRoleFilter {
+input UserRoleListRelationFilter {
   every: UserRoleWhereInput
   none: UserRoleWhereInput
   some: UserRoleWhereInput
@@ -688,51 +779,47 @@ input UserRoleScalarWhereInput {
   id: StringFilter
   NOT: [UserRoleScalarWhereInput!]
   OR: [UserRoleScalarWhereInput!]
-  users: UserFilter
 }
 
 input UserRoleUpdateInput {
-  id: String
+  id: StringFieldUpdateOperationsInput
   users: UserUpdateManyWithoutRolesInput
 }
 
-input UserRoleUpdateManyDataInput {
-  id: String
-}
-
 input UserRoleUpdateManyMutationInput {
-  id: String
+  id: StringFieldUpdateOperationsInput
 }
 
 input UserRoleUpdateManyWithoutUsersInput {
   connect: [UserRoleWhereUniqueInput!]
+  connectOrCreate: [UserRoleCreateOrConnectWithoutusersInput!]
   create: [UserRoleCreateWithoutUsersInput!]
   delete: [UserRoleWhereUniqueInput!]
   deleteMany: [UserRoleScalarWhereInput!]
   disconnect: [UserRoleWhereUniqueInput!]
   set: [UserRoleWhereUniqueInput!]
   update: [UserRoleUpdateWithWhereUniqueWithoutUsersInput!]
-  updateMany: [UserRoleUpdateManyWithWhereNestedInput!]
+  updateMany: [UserRoleUpdateManyWithWhereWithoutUsersInput!]
   upsert: [UserRoleUpsertWithWhereUniqueWithoutUsersInput!]
 }
 
-input UserRoleUpdateManyWithWhereNestedInput {
-  data: UserRoleUpdateManyDataInput!
+input UserRoleUpdateManyWithWhereWithoutUsersInput {
+  data: UserRoleUpdateManyMutationInput!
   where: UserRoleScalarWhereInput!
 }
 
-input UserRoleUpdateWithoutUsersDataInput {
-  id: String
+input UserRoleUpdateWithoutUsersInput {
+  id: StringFieldUpdateOperationsInput
 }
 
 input UserRoleUpdateWithWhereUniqueWithoutUsersInput {
-  data: UserRoleUpdateWithoutUsersDataInput!
+  data: UserRoleUpdateWithoutUsersInput!
   where: UserRoleWhereUniqueInput!
 }
 
 input UserRoleUpsertWithWhereUniqueWithoutUsersInput {
   create: UserRoleCreateWithoutUsersInput!
-  update: UserRoleUpdateWithoutUsersDataInput!
+  update: UserRoleUpdateWithoutUsersInput!
   where: UserRoleWhereUniqueInput!
 }
 
@@ -741,7 +828,7 @@ input UserRoleWhereInput {
   id: StringFilter
   NOT: [UserRoleWhereInput!]
   OR: [UserRoleWhereInput!]
-  users: UserFilter
+  users: UserListRelationFilter
 }
 
 input UserRoleWhereUniqueInput {
@@ -750,117 +837,95 @@ input UserRoleWhereUniqueInput {
 
 input UserScalarWhereInput {
   AND: [UserScalarWhereInput!]
-  blogPosts: BlogPostFilter
   email: StringFilter
-  id: UUIDFilter
+  id: StringFilter
   NOT: [UserScalarWhereInput!]
   OR: [UserScalarWhereInput!]
   password: StringFilter
-  roles: UserRoleFilter
 }
 
 input UserUpdateInput {
   blogPosts: BlogPostUpdateManyWithoutAuthorInput
-  email: String
-  id: String
-  password: String
+  email: StringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  password: StringFieldUpdateOperationsInput
   roles: UserRoleUpdateManyWithoutUsersInput
 }
 
-input UserUpdateManyDataInput {
-  email: String
-  id: String
-  password: String
-}
-
 input UserUpdateManyMutationInput {
-  email: String
-  id: String
-  password: String
+  email: StringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  password: StringFieldUpdateOperationsInput
 }
 
 input UserUpdateManyWithoutRolesInput {
   connect: [UserWhereUniqueInput!]
+  connectOrCreate: [UserCreateOrConnectWithoutrolesInput!]
   create: [UserCreateWithoutRolesInput!]
   delete: [UserWhereUniqueInput!]
   deleteMany: [UserScalarWhereInput!]
   disconnect: [UserWhereUniqueInput!]
   set: [UserWhereUniqueInput!]
   update: [UserUpdateWithWhereUniqueWithoutRolesInput!]
-  updateMany: [UserUpdateManyWithWhereNestedInput!]
+  updateMany: [UserUpdateManyWithWhereWithoutRolesInput!]
   upsert: [UserUpsertWithWhereUniqueWithoutRolesInput!]
 }
 
-input UserUpdateManyWithWhereNestedInput {
-  data: UserUpdateManyDataInput!
+input UserUpdateManyWithWhereWithoutRolesInput {
+  data: UserUpdateManyMutationInput!
   where: UserScalarWhereInput!
 }
 
 input UserUpdateOneRequiredWithoutBlogPostsInput {
   connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutblogPostsInput
   create: UserCreateWithoutBlogPostsInput
-  update: UserUpdateWithoutBlogPostsDataInput
+  update: UserUpdateWithoutBlogPostsInput
   upsert: UserUpsertWithoutBlogPostsInput
 }
 
-input UserUpdateWithoutBlogPostsDataInput {
-  email: String
-  id: String
-  password: String
+input UserUpdateWithoutBlogPostsInput {
+  email: StringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  password: StringFieldUpdateOperationsInput
   roles: UserRoleUpdateManyWithoutUsersInput
 }
 
-input UserUpdateWithoutRolesDataInput {
+input UserUpdateWithoutRolesInput {
   blogPosts: BlogPostUpdateManyWithoutAuthorInput
-  email: String
-  id: String
-  password: String
+  email: StringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  password: StringFieldUpdateOperationsInput
 }
 
 input UserUpdateWithWhereUniqueWithoutRolesInput {
-  data: UserUpdateWithoutRolesDataInput!
+  data: UserUpdateWithoutRolesInput!
   where: UserWhereUniqueInput!
 }
 
 input UserUpsertWithoutBlogPostsInput {
   create: UserCreateWithoutBlogPostsInput!
-  update: UserUpdateWithoutBlogPostsDataInput!
+  update: UserUpdateWithoutBlogPostsInput!
 }
 
 input UserUpsertWithWhereUniqueWithoutRolesInput {
   create: UserCreateWithoutRolesInput!
-  update: UserUpdateWithoutRolesDataInput!
+  update: UserUpdateWithoutRolesInput!
   where: UserWhereUniqueInput!
 }
 
 input UserWhereInput {
   AND: [UserWhereInput!]
-  blogPosts: BlogPostFilter
+  blogPosts: BlogPostListRelationFilter
   email: StringFilter
-  id: UUIDFilter
+  id: StringFilter
   NOT: [UserWhereInput!]
   OR: [UserWhereInput!]
   password: StringFilter
-  roles: UserRoleFilter
+  roles: UserRoleListRelationFilter
 }
 
 input UserWhereUniqueInput {
   email: String
   id: String
-}
-
-scalar UUID
-
-input UUIDFilter {
-  contains: UUID
-  endsWith: UUID
-  equals: UUID
-  gt: UUID
-  gte: UUID
-  in: [UUID!]
-  lt: UUID
-  lte: UUID
-  not: UUID
-  notIn: [UUID!]
-  startsWith: UUID
 }

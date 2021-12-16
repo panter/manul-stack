@@ -3,6 +3,7 @@ const localeSubpaths = { en: "en", de: "de" };
 const { ROOT_URL = "http://localhost:3000" } = process.env;
 
 module.exports = {
+  swcMinify: true,
   publicRuntimeConfig: {
     localeSubpaths,
     ROOT_URL,

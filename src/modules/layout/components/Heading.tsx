@@ -10,7 +10,7 @@ const HeadingBase = styled.h1<{ level?: Level }>`
       ? "fontHeading"
       : p.level === 2
       ? "fontHeading2"
-      : "fontHeading3"
+      : "fontHeading3",
   )};
   margin-bottom: 0.5em;
 `;

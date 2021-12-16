@@ -38,7 +38,7 @@ use(
     appSecret: APP_SECRET,
     useCookie: true,
     cookieName: "token",
-  })
+  }),
 );
 use(
   prisma({
@@ -46,7 +46,7 @@ use(
     features: {
       crud: true,
     },
-  })
+  }),
 );
 
 use(
@@ -55,5 +55,5 @@ use(
     options: {
       allowExternalErrors: true,
     },
-  })
+  }),
 );

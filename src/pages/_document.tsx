@@ -13,7 +13,7 @@ export default class MyDocument extends Document {
         originalRenderPage({
           enhanceApp: (App) => (props) =>
             muiSheet.collect(
-              styledComponentsSheet.collectStyles(<App {...props} />)
+              styledComponentsSheet.collectStyles(<App {...props} />),
             ),
         });
 

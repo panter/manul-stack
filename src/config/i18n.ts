@@ -49,14 +49,8 @@ const nextI18Next = new NextI18Next({
 
 export default nextI18Next;
 
-const {
-  useTranslation,
-  Trans,
-  appWithTranslation,
-  Link,
-  Router,
-  i18n,
-} = nextI18Next;
+const { useTranslation, Trans, appWithTranslation, Link, Router, i18n } =
+  nextI18Next;
 
 /*
 moment.locale(["de"]);

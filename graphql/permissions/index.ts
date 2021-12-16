@@ -5,7 +5,7 @@ const isAuthenticated = rule({ cache: "contextual" })(
   async (parent, args, ctx: NexusContext, info) => {
     const userId = getUserId(ctx.token);
     return Boolean(userId);
-  }
+  },
 );
 
 const isAdmin = rule({ cache: "contextual" })(
@@ -21,7 +21,7 @@ const isAdmin = rule({ cache: "contextual" })(
     });
 
     return user?.roles.some((r) => r.id === "admin") ?? false;
-  }
+  },
 );
 
 const rules = {

@@ -35,7 +35,7 @@ const ImageInput: React.FC<ImageInputProps> = ({
           const shouldResize = file.size > 512 * 1024;
           const resizedFile = shouldResize
             ? await import("browser-image-resizer").then((r) =>
-                r.readAndCompressImage(file, config)
+                r.readAndCompressImage(file, config),
               )
             : file;
 

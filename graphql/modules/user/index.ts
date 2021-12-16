@@ -19,7 +19,7 @@ const setLoginHeader = (ctx: NexusContext, user: User) => {
     "Set-Cookie",
     `token=${token}; Path=/; expires=${expires}; HttpOnly; Domain=${
       new URL(ROOT_URL).hostname
-    }`
+    }`,
   );
 };
 
@@ -28,7 +28,7 @@ const setLogoutHeader = (ctx: NexusContext) =>
     "Set-Cookie",
     `token=deleted; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; Domain=${
       new URL(ROOT_URL).hostname
-    }`
+    }`,
   );
 
 schema.objectType({

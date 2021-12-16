@@ -32,7 +32,7 @@ schema.queryType({
             ...args,
           },
           ctx,
-          info
+          info,
         );
       },
     });

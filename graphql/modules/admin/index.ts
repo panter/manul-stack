@@ -17,7 +17,7 @@ const makePath = (parentPath: string | null | undefined, slug: string) => {
 const updateAllChildPaths = async (
   ctx: NexusContext,
   parentId: string,
-  parentPath: string
+  parentPath: string,
 ) => {
   const childPages = await ctx.db.page.findMany({
     where: {
@@ -37,7 +37,7 @@ const updateAllChildPaths = async (
         },
       });
       await updateAllChildPaths(ctx, child.id, childPath);
-    })
+    }),
   );
 };
 nexusAddCrudResolvers(
@@ -108,5 +108,5 @@ nexusAddCrudResolvers(
   },
   {
     aliasPrefix: "admin",
-  }
+  },
 );

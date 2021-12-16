@@ -75,7 +75,7 @@ const withApolloClient = withApollo(
       cache: new InMemoryCache().restore(initialState || {}),
     }) as any;
   },
-  { getDataFromTree }
+  { getDataFromTree },
 );
 
 const getDefaultLayout = (el: any) => <BasePageLayout>{el}</BasePageLayout>;

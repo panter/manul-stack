@@ -9,15 +9,12 @@ jobs:
         with:
           node-version: "12"
       - uses: actions/checkout@v2
-      - uses: borales/actions-yarn@v2.0.0
+      - uses: borales/actions-yarn@v2.3.0
         with:
           cmd: install
-          node-version: "12"
-      - uses: borales/actions-yarn@v2.0.0
+      - uses: borales/actions-yarn@v2.3.0
         with:
           cmd: lint
-          node-version: "12"
-      - uses: borales/actions-yarn@v2.0.0
+      - uses: borales/actions-yarn@v2.3.0
         with:
           cmd: test
-          node-version: "12"
